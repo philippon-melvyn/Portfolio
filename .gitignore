@@ -1,0 +1,23 @@
+# Dépendances et fichiers générés
+node_modules/
+dist/
+.astro/
+
+# Configuration locale et secrets
+.env
+.env.*
+!.env.example
+*.log
+
+# Données locales et sauvegardes PocketBase
+pb_data/
+pb_backups/
+backups/
+*.db
+*.db-shm
+*.db-wal
+*.bak
+
+# Système
+.DS_Store
+Thumbs.db
