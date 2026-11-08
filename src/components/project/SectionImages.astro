@@ -1,0 +1,22 @@
+---
+import { imagesFor } from "../../lib/pocketbase.js";
+import ProjectImage from "../ProjectImage.astro";
+const { section, field, full = false } = Astro.props;
+const images = imagesFor(section, field);
+---
+
+{images.length > 0 && (
+  <div class:list={["section-images", { "full-images": full }]}>
+    {images.map((src, index) => (
+      <ProjectImage
+        src={src}
+        sizes={full ? "100vw" : "(max-width: 899px) 100vw, 61vw"}
+        alt={
+          section.description_images
+            ? `${section.description_images}${images.length > 1 ? ` — visuel ${index + 1} sur ${images.length}` : ""}`
+            : `${section.titre || "Visuel du projet"} — ${field === "image_gauche" ? "colonne gauche" : field === "image_droite" ? "colonne droite" : "pleine largeur"}, image ${index + 1}`
+        }
+      />
+    ))}
+  </div>
+)}

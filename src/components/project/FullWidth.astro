@@ -1,0 +1,19 @@
+---
+import SectionImages from "./SectionImages.astro";
+import { asArray } from "../../lib/content.js";
+const { section } = Astro.props;
+---
+
+{(section.titre?.trim() || asArray(section.image_largeur).length > 0) && (
+  <section
+    class="case-section"
+    aria-labelledby={section.titre ? `section-${section.id}` : undefined}
+  >
+    {section.titre?.trim() && (
+      <h2 id={`section-${section.id}`} class="heading-medium panel case-title">
+        {section.titre}
+      </h2>
+    )}
+    <SectionImages section={section} field="image_largeur" full />
+  </section>
+)}

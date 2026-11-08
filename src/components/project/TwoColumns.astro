@@ -1,0 +1,52 @@
+---
+import SectionImages from "./SectionImages.astro";
+import { asArray } from "../../lib/content.js";
+const { section } = Astro.props;
+const hasLeft =
+  section.texte_gauche?.trim() || asArray(section.image_gauche).length > 0;
+const hasRight =
+  section.texte_droite?.trim() || asArray(section.image_droite).length > 0;
+---
+
+{(section.titre?.trim() || hasLeft || hasRight) && (
+  <section
+    class="case-section"
+    aria-labelledby={section.titre ? `section-${section.id}` : undefined}
+  >
+    {section.titre?.trim() && (
+      <h2 id={`section-${section.id}`} class="heading-medium panel case-title">
+        {section.titre}
+      </h2>
+    )}
+    <div
+      class:list={["case-columns", { "case-single": !hasLeft || !hasRight }]}
+    >
+      {hasLeft && (
+        <div
+          class:list={[
+            "case-column",
+            { "has-images": asArray(section.image_gauche).length > 0 },
+          ]}
+        >
+          {section.texte_gauche?.trim() && (
+            <p class="case-text whitespace-pre-line">{section.texte_gauche}</p>
+          )}
+          <SectionImages section={section} field="image_gauche" />
+        </div>
+      )}
+      {hasRight && (
+        <div
+          class:list={[
+            "case-column",
+            { "has-images": asArray(section.image_droite).length > 0 },
+          ]}
+        >
+          {section.texte_droite?.trim() && (
+            <p class="case-text whitespace-pre-line">{section.texte_droite}</p>
+          )}
+          <SectionImages section={section} field="image_droite" />
+        </div>
+      )}
+    </div>
+  </section>
+)}

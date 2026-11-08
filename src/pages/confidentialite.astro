@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../data/site.js";
+---
+
+<BaseLayout title="Confidentialité" noindex>
+  <article class="legal-page panel">
+    <h1 class="heading-large">Confidentialité</h1>
+    <p class="legal-notice">
+      Informations à vérifier et compléter avec l’hébergement définitif.
+    </p>
+    <h2 class="heading-medium">Navigation</h2>
+    <p>
+      Le code de ce portfolio n’ajoute aucun outil de mesure d’audience, cookie
+      de suivi ou contenu tiers embarqué. Les typographies sont hébergées avec
+      le site. Les fichiers des projets sont servis par l’instance PocketBase
+      configurée.
+    </p>
+    <h2 class="heading-medium">Prise de contact</h2>
+    <p>
+      Les liens e-mail et le formulaire Contact ouvrent votre application de
+      messagerie. Le formulaire prépare un brouillon avec les informations
+      saisies ; vous effectuez l’envoi depuis votre messagerie. Ces informations
+      ne sont pas enregistrées dans PocketBase. Aucun compte visiteur n’est
+      proposé sur ce site.
+    </p>
+    <p>
+      Responsable du traitement, finalités et durée de conservation des
+      échanges, destinataires, modalités d’exercice des droits et éventuels
+      transferts : à compléter par l’éditeur avant publication. Contact :{" "}
+      <a class="text-link" href={`mailto:${site.email}`}>
+        {site.email}
+      </a>
+      .
+    </p>
+    <h2 class="heading-medium">Hébergement et journaux techniques</h2>
+    <p>
+      Les pratiques de journalisation, la durée de conservation et la
+      localisation des données doivent être précisées après le choix de
+      l’hébergeur et de l’instance PocketBase de production.
+    </p>
+  </article>
+</BaseLayout>

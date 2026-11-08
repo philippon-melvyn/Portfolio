@@ -1,0 +1,128 @@
+---
+const current = Astro.url.pathname;
+const darkPage = current === "/projets/" || current === "/contact/";
+const links = [
+  { href: "/", label: "Accueil" },
+  { href: "/projets/", label: "Projets" },
+  { href: "/a-propos/", label: "À propos" },
+  { href: "/contact/", label: "Contact" },
+];
+---
+
+<a href="#contenu" class="skip-link">Aller au contenu</a>
+<header class="site-header">
+  <a class="brand" href="/" aria-label="Melvyn Philippon — Accueil" data-header-contrast data-header-ink={darkPage ? "white" : "black"}>
+    <span class="brand-symbol" aria-hidden="true"></span>
+  </a>
+  <button class="hamburger-trigger" type="button" data-open-menu aria-label="Ouvrir le menu" aria-haspopup="dialog" aria-controls="site-menu" aria-expanded="false" data-header-contrast data-header-ink={darkPage || current === "/" || current.startsWith("/projets/") ? "white" : "black"}>
+    <span class="hamburger-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+  </button>
+
+  <dialog id="site-menu" class="hamburger-panel" aria-labelledby="menu-title" data-fullscreen-menu>
+    <h2 id="menu-title" class="sr-only">Navigation principale</h2>
+    <a class="menu-brand" href="/" aria-label="Melvyn Philippon — Accueil"><span class="brand-symbol" aria-hidden="true"></span></a>
+    <button class="menu-close" type="button" data-close-menu aria-label="Fermer le menu" autofocus>
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true"><path d="m4 4 18 18M22 4 4 22" stroke="currentColor" stroke-width="1.5" /></svg>
+    </button>
+    <div class="menu-main">
+      <nav class="menu-navigation" aria-label="Navigation principale">
+        <ul>
+          {links.map((link, index) => (
+            <li style={`--menu-step: ${index}`}>
+              <a class="menu-link" href={link.href} aria-current={(link.href === "/" ? current === "/" : current.startsWith(link.href)) ? "page" : undefined}>
+                <span class="menu-link-line menu-link-line-before" aria-hidden="true"></span>
+                <span class="menu-label-mask"><span class="menu-label" data-menu-reveal>{link.label}</span></span>
+                <span class="menu-link-line" aria-hidden="true"></span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </dialog>
+</header>
+<script>
+  import "../scripts/disclosures.js";
+  import "../scripts/header-contrast.js";
+  import "../scripts/fullscreen-menu.js";
+</script>
+<style>
+  .site-header { position: static; height: 0; padding: 0; display: block; background: transparent; border: 0; box-shadow: none; color: white; pointer-events: none; }
+  .brand { position: fixed; z-index: 50; top: 16px; left: clamp(24px, 4.03vw, 80px); pointer-events: auto; color: #000; transition: color 160ms ease; }
+  .brand-symbol { display: block; width: 25px; height: 42px; background: currentColor; -webkit-mask: url("/images/logo.svg") center / contain no-repeat; mask: url("/images/logo.svg") center / contain no-repeat; }
+  .hamburger-trigger { position: fixed; z-index: 50; top: 16px; right: clamp(24px, 4.03vw, 80px); display: grid; place-items: center; width: 44px; height: 44px; background: transparent; color: #000; border: 0; pointer-events: auto; transition: color 160ms ease; }
+  [data-header-ink="white"] { color: #fff; }
+  .hamburger-icon { display: flex; flex-direction: column; gap: 6px; width: 26px; }
+  .hamburger-icon > span { display: block; width: 26px; height: 2px; background: currentColor; transition: transform 220ms ease, opacity 160ms ease; }
+  .hamburger-trigger[aria-expanded="true"] .hamburger-icon > :first-child { transform: translateY(8px) rotate(45deg); }
+  .hamburger-trigger[aria-expanded="true"] .hamburger-icon > :nth-child(2) { opacity: 0; }
+  .hamburger-trigger[aria-expanded="true"] .hamburger-icon > :last-child { transform: translateY(-8px) rotate(-45deg); }
+  .hamburger-panel {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100svh;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: #101113;
+    color: #fafaf8;
+    overflow: hidden;
+    overscroll-behavior: contain;
+    pointer-events: auto;
+  }
+  .hamburger-panel[open] { display: grid; grid-template-columns: 1fr; }
+  .hamburger-panel::backdrop { background: #10111380; }
+  .menu-brand { position: absolute; z-index: 3; top: 16px; left: clamp(24px, 4.03vw, 80px); color: #fff; }
+  .menu-close { position: absolute; z-index: 3; top: 16px; right: clamp(24px, 4.03vw, 80px); display: grid; place-items: center; width: 44px; height: 44px; padding: 0; background: transparent; color: #fff; border: 0; }
+  .menu-close svg { transition: rotate 300ms ease; }
+  .menu-close:hover svg { rotate: 90deg; }
+  .menu-main { display: flex; flex-direction: column; min-width: 0; min-height: 0; padding: 84px 0 20px; }
+  .menu-navigation { display: flex; align-items: stretch; flex: 1; min-height: 0; }
+  .menu-navigation ul { display: grid; grid-template-rows: repeat(4, minmax(0, 1fr)); width: 100%; }
+  .menu-navigation li { min-height: 0; }
+  .menu-link {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 26px;
+    padding: clamp(10px, 1.8dvh, 22px) clamp(24px, 4.03vw, 80px);
+    padding-left: clamp(24px, 4.03vw, 80px);
+  }
+  .menu-label-mask { display: block; overflow: clip; padding: .06em 18px .12em 0; margin-block: -.06em -.12em; transition: translate 500ms cubic-bezier(.16,1,.3,1); }
+  .menu-label { position: relative; display: block; white-space: nowrap; font: 500 clamp(48px, min(11vw, 16dvh), 180px)/1.05 var(--font-sans); text-transform: uppercase; letter-spacing: -.065em; color: #fafaf8; transition: color 250ms; }
+  .menu-link-line { flex: 1 1 0; min-width: 0; height: 3px; margin-left: 8px; background: var(--color-brick, #a33333); opacity: 0; transform: scaleX(0); transform-origin: left; transition: opacity 200ms, transform 550ms cubic-bezier(.16,1,.3,1); }
+  .menu-link-line-before { flex: 0 0 calc(24px + var(--menu-step) * 8vw); margin-left: 0; transform-origin: right; }
+  .menu-link:hover .menu-label-mask, .menu-link:focus-visible .menu-label-mask { translate: 22px 0; }
+  .menu-link:hover .menu-link-line, .menu-link:focus-visible .menu-link-line { opacity: 1; transform: scaleX(1); }
+  @media (min-width: 900px) and (max-width: 1100px) {
+    .menu-link-line-before { flex-basis: calc(24px + var(--menu-step) * 4vw); }
+  }
+  @media (max-width: 899px) {
+    .menu-main { padding: 84px 0 20px; }
+    .menu-label { font-size: clamp(36px, min(12vw, 16dvh), 108px); }
+    .menu-link { padding-left: 24px; padding-right: 16px; gap: 10px; }
+    .menu-link-line { flex: 0 0 clamp(28px, 8vw, 70px); height: 2px; margin-left: 0; }
+    .menu-link-line-before { flex-basis: calc(12px + var(--menu-step) * 2.5vw); }
+    .menu-link:hover .menu-label-mask, .menu-link:focus-visible .menu-label-mask { translate: 12px 0; }
+  }
+  @media (max-height: 650px) {
+    .menu-main { padding-top: 76px; padding-bottom: 20px; }
+    .menu-label { font-size: clamp(36px, min(11vw, 15.5dvh), 100px); }
+    .menu-link { padding-block: 10px; }
+  }
+  @media (max-height: 480px) {
+    .menu-main { padding-top: 64px; padding-bottom: 12px; }
+    .menu-label { font-size: clamp(30px, min(10vw, 14.5dvh), 66px); }
+    .menu-link { padding-block: 6px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .brand, .hamburger-trigger, .hamburger-icon > span, .menu-label, .menu-label-mask, .menu-link-line, .menu-close svg { transition: none; }
+  }
+</style>

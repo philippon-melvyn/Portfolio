@@ -1,0 +1,146 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectImage from "../../components/ProjectImage.astro";
+import { getProjects, imagesFor } from "../../lib/pocketbase.js";
+import { projectDomains } from "../../lib/project-browser.js";
+import { plainText } from "../../lib/content.js";
+import "../../styles/project-browser.css";
+import "../../styles/project-navigation.css";
+const projects = await getProjects();
+const domains = [
+  ...new Set(projects.flatMap((project) => projectDomains(project.domaines))),
+];
+---
+
+<BaseLayout
+  title="Mes projets"
+  description="Explorez mes réalisations en identité visuelle, direction artistique et conception numérique."
+  footer={false}
+  bodyClass="projects-screen"
+>
+  <section
+    class="project-browser"
+    data-project-browser
+    data-project-axis="vertical"
+    aria-label="Galerie verticale des projets"
+    aria-roledescription="carrousel"
+  >
+    <h1 class="sr-only">Mes projets</h1>
+    <details
+      class="project-filter-drawer"
+      data-project-filters
+      data-disclosure
+      data-disclosure-label="les filtres"
+      hidden
+    >
+      <summary>
+        Filtrer les projets <span aria-hidden="true">＋</span>
+      </summary>
+      <div class="project-filter-panel">
+        <h2 class="project-filter-label">Domaines</h2>
+        <div
+          class="project-filters"
+          role="group"
+          aria-label="Filtrer les projets par domaine"
+        >
+          <button
+            type="button"
+            data-project-domain="all"
+            data-close-disclosure
+            aria-pressed="true"
+            aria-controls="project-track"
+          >
+            Tous les projets{" "}
+            <span>{String(projects.length).padStart(2, "0")}</span>
+          </button>
+          {domains.map((domain) => (
+            <button
+              type="button"
+              data-project-domain={domain}
+              data-close-disclosure
+              aria-pressed="false"
+              aria-controls="project-track"
+            >
+              {domain}
+              <span>
+                {String(
+                  projects.filter((project) =>
+                    projectDomains(project.domaines).includes(domain),
+                  ).length,
+                ).padStart(2, "0")}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </details>
+    <div class="project-browser-content">
+      <p
+        class="sr-only"
+        data-project-status
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      ></p>
+      <div
+        class="project-viewport"
+        data-project-viewport
+        tabindex="0"
+        aria-label="Projets. Faites défiler vers le haut ou le bas, ou utilisez les flèches haut et bas."
+      >
+        {projects.length ? (
+          <ul class="project-track" id="project-track">
+            {projects.map((project, index) => {
+              const cover = imagesFor(project, "couverture")[0];
+              return (
+                <li
+                  class="project-tile"
+                  data-project-tile
+                  data-project-slug={project.slug}
+                  data-project-domains={JSON.stringify(
+                    projectDomains(project.domaines),
+                  )}
+                  data-current={index === 0 ? "true" : "false"}
+                >
+                  <a href={`/projets/${project.slug}/`} data-project-link>
+                    <div class="project-tile-image">
+                      {cover && (
+                        <ProjectImage
+                          src={cover}
+                          alt={project.couverture_alt || project.titre}
+                          priority={index < 2}
+                          sizes="(max-width: 699px) 90vw, 53vw"
+                          transitionName={`project-cover-${project.slug}`}
+                        />
+                      )}
+                    </div>
+                    <h2 class="sr-only">{project.titre}</h2>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p class="project-browser-empty">
+            Mes réalisations seront bientôt présentées ici.
+          </p>
+        )}
+      </div>
+      <div class="project-details" data-project-details>
+        {projects.map((project, index) => (
+          <article data-project-detail={project.slug} hidden={index > 0}>
+            <h2>{project.titre}</h2>
+            {project.introduction && (
+              <p class="project-detail-intro">
+                {plainText(project.introduction)}
+              </p>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+<script>
+  import "../../scripts/project-browser.js";
+</script>

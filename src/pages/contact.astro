@@ -1,0 +1,62 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import contactPattern from "../../public/images/engin-akyurt-pxA3AcRb0UE-unsplash.jpg";
+import { safeLink } from "../lib/content.js";
+import { site } from "../data/site.js";
+import "../styles/contact-studio.css";
+const cvUrl = safeLink(import.meta.env.CV_URL);
+---
+
+<BaseLayout title="Contact" description="Une proposition de stage, un projet ou une question ? Contactez Melvyn Philippon." footer={false} bodyClass="contact-screen">
+  <div id="contact-page" class="contact-studio" data-contact-view="details">
+    <div class="studio-visual" aria-hidden="true">
+      <Image src={contactPattern} widths={[600, 960, 1440, 1920]} width={1440} sizes="100vw" format="webp" alt="" loading="eager" fetchpriority="high" />
+    </div>
+    <section class="studio-content" data-contact-info aria-labelledby="contact-title" tabindex="-1">
+      <h1 id="contact-title">Prenons contact.</h1>
+      <p class="studio-intro">Une proposition de stage, un projet ou une question ? Parlons-en.</p>
+      <a class="email-block" href={`mailto:${site.email}`}>
+        <span class="block-label">E-mail</span>
+        <span class="email-address">{site.email}</span>
+        <svg class="email-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" /></svg>
+      </a>
+      <div class="studio-coordinates">
+        <a class="coordinate-block" href={`tel:${site.phoneHref}`}><span class="block-label">Téléphone</span><span>{site.phone}</span></a>
+        <div class="coordinate-block"><span class="block-label">Localisation</span><span>{site.location}</span></div>
+      </div>
+      <div class="studio-actions">
+        <button class="ct-btn studio-button" type="button" data-open-contact aria-expanded="false" aria-controls="contact-message">
+          Écrire un message
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" /></svg>
+        </button>
+        {cvUrl && <a class="studio-cv" href={cvUrl} target="_blank" rel="noopener noreferrer">Mon CV<span class="sr-only"> (nouvel onglet)</span></a>}
+      </div>
+      {site.socials.length > 0 && <nav class="studio-socials" aria-label="Réseaux professionnels">{site.socials.map((social) => <a href={social.url} target="_blank" rel="noopener noreferrer">{social.name}<span class="sr-only"> (nouvel onglet)</span></a>)}</nav>}
+    </section>
+    <section id="contact-message" class="studio-editor" data-contact-editor aria-labelledby="message-title" aria-hidden="true" inert tabindex="-1">
+      <div class="dialog-heading">
+        <h2 id="message-title" class="sr-only">Formulaire de contact</h2>
+        <button class="editor-return" type="button" data-close-contact>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 12H5m6-6-6 6 6 6" stroke="currentColor" stroke-width="1.8" /></svg>
+          Coordonnées
+        </button>
+      </div>
+      <form data-contact-form data-recipient={site.email} action={`mailto:${site.email}`} method="post" enctype="text/plain">
+        <div class="dialog-fields">
+          <label>Prénom*<input class="ct-input studio-input" name="prenom" autocomplete="given-name" required maxlength="100" /></label>
+          <label>Nom*<input class="ct-input studio-input" name="nom" autocomplete="family-name" required maxlength="100" /></label>
+          <label>E-mail*<input class="ct-input studio-input" type="email" name="email" autocomplete="email" required maxlength="254" /></label>
+          <label>Sujet<select class="ct-select studio-input" name="sujet"><option>Projet</option><option>Proposition de stage</option><option>Autre</option></select></label>
+          <label class="field-wide">Message*<textarea class="ct-textarea studio-input" name="message" required maxlength="5000" rows="4"></textarea></label>
+        </div>
+        <button class="ct-btn studio-button" type="submit">Envoyer <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" /></svg></button>
+        <p class="sr-only" data-form-status role="status"></p>
+      </form>
+    </section>
+  </div>
+</BaseLayout>
+<script>
+  import "../scripts/contact-form.js";
+  import "../scripts/contact-switch.js";
+</script>

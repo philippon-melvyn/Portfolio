@@ -1,0 +1,27 @@
+---
+import "../styles/menu-transition.css";
+---
+
+<script is:inline>
+  // Installer le fond de raccord avant le premier affichage de la page suivante.
+  try {
+    const key = "portfolio-menu-transition";
+    const raw = sessionStorage.getItem(key);
+    sessionStorage.removeItem(key);
+    const transition = raw && JSON.parse(raw);
+    if (
+      transition && transition.path === location.pathname + location.search &&
+      Number.isFinite(transition.expires) && transition.expires > Date.now() &&
+      transition.expires < Date.now() + 15000 &&
+      !matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      document.documentElement.dataset.menuArrival = "pending";
+      addEventListener("pagereveal", (event) => event.viewTransition?.skipTransition(), { once: true });
+      // Une ressource interrompue ne doit jamais laisser le visiteur bloqué.
+      setTimeout(() => { delete document.documentElement.dataset.menuArrival; }, 4000);
+    }
+  } catch { /* La navigation reste native si le stockage est indisponible. */ }
+</script>
+<script>
+  import "../scripts/menu-arrival.js";
+</script>

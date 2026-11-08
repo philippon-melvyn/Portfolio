@@ -1,0 +1,26 @@
+---
+import { Image } from "astro:assets";
+const {
+  src,
+  alt,
+  priority = false,
+  class: className,
+  sizes = "(max-width: 899px) 100vw, 61vw",
+  transitionName,
+} = Astro.props;
+---
+
+<Image
+  src={src}
+  alt={alt}
+  class={className}
+  inferSize
+  widths={[480, 878, 1440]}
+  sizes={sizes}
+  format="webp"
+  quality={85}
+  loading={priority ? "eager" : "lazy"}
+  decoding={priority ? "sync" : "async"}
+  fetchpriority={priority ? "high" : "auto"}
+  style={transitionName ? `view-transition-name: ${transitionName}` : undefined}
+/>

@@ -1,0 +1,15 @@
+html[data-menu-arrival]::before,
+.menu-route-curtain {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: #a33333;
+  pointer-events: auto;
+}
+html[data-menu-arrival]::before,
+.menu-route-curtain-arrival { z-index: 2147483647; }
+.menu-route-curtain-departure { z-index: 10; }
+@media (prefers-reduced-motion: reduce) {
+  html[data-menu-arrival]::before,
+  .menu-route-curtain { display: none; }
+}

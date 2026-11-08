@@ -1,21 +1,98 @@
 ---
-import '../styles/global.css';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCarousel from "../components/ProjectCarousel.astro";
+import KnowledgeCarousel from "../components/KnowledgeCarousel.astro";
+import { getProjects, getKnowledge } from "../lib/pocketbase.js";
+const [projects, knowledge] = await Promise.all([
+  getProjects(),
+  getKnowledge(),
+]);
 ---
 
-<!doctype html>
-<html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Page temporaire de vérification de l’installation Astro et Tailwind CSS." />
-    <title>Installation — Portfolio de Melvyn Philippon</title>
-  </head>
-  <body class="min-h-screen bg-slate-950 px-6 py-16 font-sans text-slate-100 sm:py-24">
-    <main class="mx-auto max-w-2xl rounded-2xl border border-slate-700 bg-slate-900 p-8 sm:p-12">
-      <p class="mb-4 text-sm font-semibold uppercase tracking-widest text-emerald-300">Portfolio de Melvyn Philippon</p>
-      <h1 class="text-3xl font-bold sm:text-5xl">Astro et Tailwind sont installés.</h1>
-      <p class="mt-6 leading-relaxed text-slate-300">Cette page temporaire permet de vérifier l’installation. Le développement du portfolio commencera après validation de la phase 1.</p>
-      <p class="mt-8 inline-block rounded-full bg-emerald-300 px-4 py-2 font-semibold text-slate-950">Phase 1 · Installation</p>
-    </main>
-  </body>
-</html>
+<BaseLayout>
+  <section class="split-main home-hero">
+    <div class="panel home-hero-copy">
+      <p class="heading-small max-w-sm">
+        Création numérique &amp; design graphique
+      </p>
+      <h1 class="heading-large home-name">
+        Melvyn
+        <br />
+        Philippon
+      </h1>
+      <div class="home-bio">
+        <h2 class="heading-medium">Qui suis-je ?</h2>
+        <div class="mt-14 space-y-6">
+          <p>
+            Je m’appelle Melvyn Philippon, j’ai 20 ans et je suis étudiant en
+            deuxième année de BUT MMI, parcours Création numérique, à
+            Montbéliard. Curieux et persévérant, j’aime explorer de nouvelles
+            idées et prendre le temps de les développer.
+          </p>
+          <p>
+            Passionné par le dessin, l’animation et les univers fantastiques, je
+            puise mon inspiration dans les mangas, les jeux vidéo et la
+            mythologie. Ces centres d’intérêt nourrissent mon imagination et mon
+            envie de créer des univers visuels personnels.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="bg-night" aria-hidden="true"></div>
+  </section>
+  <section class="split-main home-statement">
+    <div class="panel bg-night py-20 text-white">
+      <h2 class="heading-large max-w-3xl">Donner forme aux idées.</h2>
+      <p class="mt-20 max-w-lg">
+        De l’identité visuelle à la maquette web, j’imagine et conçois des
+        créations adaptées à votre projet. Mon objectif : traduire vos idées en
+        visuels cohérents, expressifs et pensés pour votre public.
+      </p>
+    </div>
+    <div class="bg-brick" aria-hidden="true"></div>
+  </section>
+  <ProjectCarousel projects={projects} />
+  <section class="split-main home-summary">
+    <div class="panel flex flex-col justify-center">
+      <div class="max-w-sm space-y-6">
+        <p>
+          Ces projets ont enrichi mes compétences en création, en développement
+          et en communication. Des savoir-faire complémentaires sur lesquels je
+          m’appuie pour concevoir des réalisations cohérentes et adaptées à
+          leurs objectifs.
+        </p>
+        <p>
+          Au fil des expériences, ma pratique s’est affinée : défendre mes
+          choix, m’adapter aux contraintes et collaborer avec des profils
+          différents. Cette diversité nourrit mon approche et renforce mon
+          autonomie.
+        </p>
+      </div>
+      <img
+        class="mt-16"
+        src="/images/line-summary.svg"
+        width="278"
+        height="2"
+        alt=""
+        aria-hidden="true"
+      />
+    </div>
+    <div class="bg-night" aria-hidden="true"></div>
+  </section>
+  <section
+    class="panel home-skills bg-brick text-white"
+    aria-labelledby="skills-title"
+  >
+    <h2 id="skills-title" class="heading-large max-w-4xl">
+      Mes compétences
+    </h2>
+    <p class="mt-14 max-w-xl">
+      De la conception visuelle à la réalisation web, mes compétences se
+      complètent pour répondre aux besoins de chaque projet.
+    </p>
+  </section>
+  <KnowledgeCarousel knowledge={knowledge} />
+</BaseLayout>
+<script>
+  import "../scripts/carousel.js";
+</script>

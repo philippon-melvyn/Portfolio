@@ -1,0 +1,29 @@
+---
+const {
+  href,
+  label,
+  light = false,
+  filled = false,
+  external = false,
+} = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={[
+    "button-link",
+    { "button-light": light, "button-filled": filled },
+  ]}
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener noreferrer" : undefined}
+>
+  <span>{label}</span>
+  <img
+    src={light || filled ? "/images/arrow-light.svg" : "/images/arrow-dark.svg"}
+    width="24"
+    height="24"
+    alt=""
+    aria-hidden="true"
+  />
+  {external && <span class="sr-only"> (nouvel onglet)</span>}
+</a>

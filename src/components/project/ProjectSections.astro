@@ -1,0 +1,25 @@
+---
+import TwoColumns from "./TwoColumns.astro";
+import FullWidth from "./FullWidth.astro";
+import { resolvedSectionLayout } from "../../lib/content.js";
+const { sections = [] } = Astro.props;
+for (const section of sections) {
+  if (
+    !["deux_colonnes", "pleine_largeur"].includes(
+      resolvedSectionLayout(section),
+    )
+  ) {
+    throw new Error(
+      `Disposition inconnue pour la section ${section.id} : « ${section.disposition} ». Choisir deux colonnes ou pleine largeur dans PocketBase.`,
+    );
+  }
+}
+---
+
+{sections.map((section) =>
+  resolvedSectionLayout(section) === "deux_colonnes" ? (
+    <TwoColumns section={section} />
+  ) : (
+    <FullWidth section={section} />
+  ),
+)}

@@ -1,0 +1,29 @@
+---
+import ArrowLink from "./ArrowLink.astro";
+import ProjectImage from "./ProjectImage.astro";
+import { imagesFor } from "../lib/pocketbase.js";
+import { plainText } from "../lib/content.js";
+const { project, index = 0, total = 1, eager = false } = Astro.props;
+const cover = imagesFor(project, "couverture")[0];
+---
+
+<article class="project-card">
+  <a
+    class="project-card-image"
+    href={`/projets/${project.slug}/`}
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    {cover && <ProjectImage src={cover} alt="" priority={eager} />}
+  </a>
+  <div class="project-card-body">
+    <h2 class="heading-large">
+      <a href={`/projets/${project.slug}/`}>{project.titre}</a>
+    </h2>
+    {project.introduction && <p>{plainText(project.introduction)}</p>}
+    <ArrowLink href={`/projets/${project.slug}/`} label="En savoir plus" />
+  </div>
+  <span class="project-number" aria-hidden="true">
+    {String(total - index).padStart(2, "0")}
+  </span>
+</article>

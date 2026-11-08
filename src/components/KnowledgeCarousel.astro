@@ -1,0 +1,72 @@
+---
+import EmptyState from "./EmptyState.astro";
+import { imagesFor } from "../lib/pocketbase.js";
+const { knowledge = [] } = Astro.props;
+---
+
+<section
+  aria-label="Mes savoirs : logiciels et technologies"
+  class="knowledge-carousel"
+  data-carousel
+>
+  {knowledge.length === 0 ? (
+    <div class="split-main knowledge-empty">
+      <div class="knowledge-art" aria-hidden="true"></div>
+      <div class="panel knowledge-content">
+        <h2 class="heading-medium">Mes savoirs</h2>
+        <EmptyState text="Mes logiciels, outils et technologies seront bientôt présentés ici." />
+      </div>
+    </div>
+  ) : (
+    <>
+      {knowledge.map((item, index) => {
+        const logo = imagesFor(item, "logo")[0];
+        return (
+          <article
+            data-slide
+            class="split-main"
+            aria-label={`${index + 1} sur ${knowledge.length}`}
+          >
+            <div class="knowledge-art">
+              {logo && (
+                <img
+                  src={logo}
+                  width="469"
+                  height="473"
+                  alt={`Logo ${item.nom}`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
+            </div>
+            <div class="panel knowledge-content">
+              <h2 class="heading-small">{item.nom}</h2>
+              <p class="whitespace-pre-line">{item.description}</p>
+            </div>
+          </article>
+        );
+      })}
+      {knowledge.length > 1 && (
+        <div class="knowledge-controls carousel-controls">
+          <button data-previous type="button" aria-label="Savoir précédent">
+            <img
+              src="/images/chevron.svg"
+              width="82"
+              height="82"
+              alt=""
+              class="rotate-180"
+            />
+          </button>
+          <span
+            data-carousel-status
+            aria-live="polite"
+            aria-atomic="true"
+          ></span>
+          <button data-next type="button" aria-label="Savoir suivant">
+            <img src="/images/chevron.svg" width="82" height="82" alt="" />
+          </button>
+        </div>
+      )}
+    </>
+  )}
+</section>

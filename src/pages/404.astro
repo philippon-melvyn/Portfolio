@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ArrowLink from "../components/ArrowLink.astro";
+---
+
+<BaseLayout title="Page introuvable" noindex footer={false}>
+  <div class="error-grid">
+    <div class="panel error-copy">
+      <p class="error-eyebrow">Erreur 404 — Page introuvable</p>
+      <p class="error-number" aria-hidden="true">
+        404.
+      </p>
+      <h1 class="heading-large">Page introuvable.</h1>
+      <p class="mt-8 max-w-sm">
+        La page que vous cherchez a peut-être changé d’adresse. Retrouvez mes
+        créations depuis l’accueil ou la page des projets.
+      </p>
+      <div class="mt-10">
+        <ArrowLink href="/" label="Retour à l’accueil" filled />
+      </div>
+      <a href="/projets/" class="text-link mt-8 inline-block">
+        Explorer les projets ↗
+      </a>
+      <p class="error-signature">Melvyn Philippon / Portfolio</p>
+    </div>
+    <div class="bg-brick" aria-hidden="true"></div>
+  </div>
+</BaseLayout>

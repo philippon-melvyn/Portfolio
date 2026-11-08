@@ -1,0 +1,257 @@
+---
+import { site } from "../data/site.js";
+---
+
+<footer class="column-footer" id="contact" aria-label="Pied de page">
+  <div class="column-footer-inner">
+    <div class="column-footer-grid">
+      <div class="column-footer-identity">
+        <h2 class="column-footer-name">
+          <span>Melvyn</span>
+          <span>Philippon</span>
+        </h2>
+        <a class="column-footer-email" href={`mailto:${site.email}`}>
+          {site.email}
+        </a>
+        <p>
+          Étudiant en BUT MMI,
+          <br />
+          parcours Création numérique.
+        </p>
+        {site.socials.length > 0 && (
+          <ul class="column-footer-socials">
+            {site.socials.map((social) => (
+              <li>
+                <a href={social.url} target="_blank" rel="noopener noreferrer">
+                  {social.name}
+                  <span class="sr-only"> (nouvel onglet)</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <nav aria-label="Pages du portfolio">
+        <h2>À découvrir</h2>
+        <ul>
+          <li>
+            <a href="/">Accueil</a>
+          </li>
+          <li>
+            <a href="/projets/">Mes projets</a>
+          </li>
+          <li>
+            <a href="/a-propos/">À propos</a>
+          </li>
+        </ul>
+      </nav>
+      <div>
+        <h2>Mes domaines</h2>
+        <ul>
+          <li>Identité visuelle</li>
+          <li>Design d’interfaces</li>
+          <li>Développement web</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Mon parcours</h2>
+        <ul>
+          <li>BUT MMI</li>
+          <li>Création numérique</li>
+          <li>Montbéliard</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Échangeons</h2>
+        <ul>
+          <li>
+            <a href="/contact/">Me contacter</a>
+          </li>
+          <li>
+            <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
+          </li>
+          <li>{site.location}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="column-footer-bottom">
+      <p>
+        © {new Date().getFullYear()} {site.name}
+      </p>
+      <p>Création numérique · Design graphique</p>
+      <div>
+        <a href="/mentions-legales/">Mentions légales</a>
+        <span aria-hidden="true"> / </span>
+        <a href="/confidentialite/">Confidentialité</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .column-footer {
+    background: #101113;
+    color: var(--color-paper);
+    padding: 44px clamp(24px, 3.472vw, 80px) 24px;
+  }
+  .column-footer-inner {
+    max-width: 1600px;
+    margin-inline: auto;
+  }
+  .column-footer-grid {
+    display: grid;
+    grid-template-columns: 1.45fr repeat(4, minmax(0, 1fr));
+  }
+  .column-footer-grid > * {
+    min-width: 0;
+    min-height: 270px;
+    padding: 20px clamp(20px, 2.3vw, 44px) 28px;
+    border-left: 1px solid #fafaf826;
+  }
+  .column-footer-grid > :first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+  .column-footer-grid > :last-child {
+    padding-right: 0;
+  }
+  .column-footer h2,
+  .column-footer li,
+  .column-footer-email,
+  .column-footer-bottom {
+    font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.65;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+  .column-footer h2 {
+    margin-bottom: 32px;
+    color: var(--color-paper);
+  }
+  .column-footer .column-footer-name {
+    padding-left: 14px;
+    border-left: 2px solid var(--color-brick);
+    font: 600 28px/1.05 var(--font-display);
+    letter-spacing: 0.02em;
+  }
+  .column-footer-name > span {
+    display: block;
+  }
+  .column-footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .column-footer li,
+  .column-footer-email {
+    color: #b3b2b0;
+  }
+  .column-footer a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    transition: color 160ms ease;
+  }
+  .column-footer a:hover {
+    color: white;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+  .column-footer-email {
+    min-height: 44px;
+  }
+  .column-footer-identity > p {
+    margin-top: 30px;
+    color: #b3b2b0;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .column-footer-socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    margin-top: 28px !important;
+  }
+  .column-footer-socials a {
+    font-size: 10px;
+  }
+  .column-footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    border-top: 1px solid #fafaf826;
+    padding-top: 24px;
+    color: #a5a4a2;
+    font-size: 10px;
+  }
+  .column-footer-bottom > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .column-footer-bottom a {
+    min-height: 44px;
+  }
+  @media (max-width: 1100px) {
+    .column-footer-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .column-footer-grid > * {
+      min-height: 0;
+      padding: 28px 24px;
+      border-top: 1px solid #fafaf826;
+    }
+    .column-footer-grid > :first-child {
+      grid-column: 1 / -1;
+      padding: 0 0 32px;
+      border-top: 0;
+    }
+    .column-footer-grid > :nth-child(even) {
+      border-left: 0;
+      padding-left: 0;
+    }
+    .column-footer-grid > :nth-child(odd):not(:first-child) {
+      padding-right: 0;
+    }
+    .column-footer h2 {
+      margin-bottom: 20px;
+    }
+  }
+  @media (max-width: 599px) {
+    .column-footer {
+      padding-top: 32px;
+    }
+    .column-footer-grid > * {
+      padding: 24px 16px;
+    }
+    .column-footer h2,
+    .column-footer li,
+    .column-footer-email {
+      font-size: 11px;
+    }
+    .column-footer a {
+      min-height: 44px;
+    }
+    .column-footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      font-size: 9px;
+    }
+    .column-footer-bottom > div {
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .column-footer a {
+      transition: none;
+    }
+  }
+</style>

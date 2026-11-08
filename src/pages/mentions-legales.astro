@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../data/site.js";
+---
+
+<BaseLayout title="Mentions légales" noindex>
+  <article class="legal-page panel">
+    <h1 class="heading-large">Mentions légales</h1>
+    <p class="legal-notice">
+      Informations à compléter avant la mise en ligne publique.
+    </p>
+    <h2 class="heading-medium">Éditeur du site</h2>
+    <p>
+      {site.name} — Portfolio individuel réalisé dans le cadre du BUT MMI,
+      parcours Création numérique.
+    </p>
+    <p>
+      Contact :{" "}
+      <a class="text-link" href={`mailto:${site.email}`}>
+        {site.email}
+      </a>
+      .
+    </p>
+    <p>
+      Statut de l’éditeur, coordonnées de publication et responsable de
+      publication : à compléter et vérifier.
+    </p>
+    <h2 class="heading-medium">Hébergement</h2>
+    <p>
+      Nom de l’hébergeur, raison sociale, adresse et coordonnées : à compléter
+      après le choix de l’hébergement.
+    </p>
+    <h2 class="heading-medium">Créations et crédits</h2>
+    <p>
+      Les projets présentés doivent préciser les contributions de chaque membre
+      de l’équipe. Les droits de diffusion et les crédits des photographies,
+      illustrations et autres médias doivent être vérifiés avant publication.
+    </p>
+    <p>
+      Typographies Inter et Barlow Condensed, distribuées sous licence SIL Open
+      Font License. Le portrait, la photographie d’architecture de Contact, le
+      logo et les icônes proviennent de la maquette Figma fournie par l’éditeur.
+      Les auteurs et les droits de diffusion de ces ressources restent à
+      préciser par l’éditeur.
+    </p>
+    <p>
+      <a class="text-link" href="/confidentialite/">
+        Consulter les informations de confidentialité ↗
+      </a>
+    </p>
+  </article>
+</BaseLayout>
