@@ -1,0 +1,27 @@
+﻿---
+import { Image } from "astro:assets";
+import ArrowLink from "./ArrowLink.astro";
+import texture from "../../public/images/bangsal-nam-9HMGyZJfrk8-unsplash.jpg";
+import "../styles/home-introduction.css";
+---
+
+<section class="home-introduction" data-home-introduction aria-labelledby="home-intro-title">
+  <div class="intro-stage">
+    <h1 id="home-intro-title" class="intro-name"><span class="intro-name-line"><span>Melvyn</span></span><span class="intro-name-line"><span>Philippon</span></span></h1>
+    <figure class="intro-texture" aria-hidden="true">
+      <Image src={texture} widths={[720, 1440, 2400, 2848]} width={2400} sizes="100vw" format="webp" quality={85} alt="" loading="eager" fetchpriority="high" />
+    </figure>
+  </div>
+  <div class="intro-zoom-space" data-intro-zoom-space aria-hidden="true"></div>
+  <div class="intro-biography" aria-labelledby="intro-biography-title">
+    <h2 id="intro-biography-title" data-home-reveal>Qui suis-je ?</h2>
+    <div class="intro-biography-copy">
+      <p data-home-reveal>Je m’appelle Melvyn Philippon, j’ai 20 ans et je suis étudiant en deuxième année de BUT MMI, parcours Création numérique, à Montbéliard. Curieux et persévérant, j’aime explorer de nouvelles idées et prendre le temps de les développer.</p>
+      <p data-home-reveal>Passionné par le dessin, l’animation et les univers fantastiques, je puise mon inspiration dans les mangas, les jeux vidéo et la mythologie. Ces centres d’intérêt nourrissent mon imagination et mon envie de créer des univers visuels personnels.</p>
+      <div class="intro-about-action"><ArrowLink href="/a-propos/" label="En savoir plus" filled /></div>
+    </div>
+  </div>
+</section>
+<script>
+  import "../scripts/home-introduction.js";
+</script>

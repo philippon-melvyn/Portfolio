@@ -1,5 +1,13 @@
 # Journal de réalisation
 
+## 9 novembre 2026 — Présentation animée de l’accueil
+
+Remplacement limité à la première rubrique de l’accueil par une séquence au scroll. Le nom complet apparaît d’abord ; le trait rouge se déploie, les mots s’écartent et leurs terminaisons s’effacent pour laisser M et P autour du portrait personnel. Les initiales et le trait disparaissent ensuite, laissant le portrait seul, puis celui-ci s’efface à son tour pour révéler les textes Qui suis-je existants. Fond clair, Barlow Condensed et rouge #a33333, sans image décorative supplémentaire.
+
+Animation directement liée à la progression du scroll, réversible, dans une zone sticky ; aucune interception de la molette. Les mesures des textes sont actualisées après chargement des polices et au redimensionnement. Une seule frame par mise à jour et absence d’écriture lorsque la progression n’a pas changé. Sans JavaScript ou avec mouvement réduit, la présentation reste statique et lisible. Les liens de biographie sont exclus du focus tant que ce contenu est masqué. Composition adaptée au mobile.
+
+Validation : compilation de dix pages et 34 tests réussis, dont étapes nom/initiales/portrait/biographie, réversibilité, regroupement des frames et repli accessible. Le reste de l’accueil et les pages approuvées sont conservés. L’aperçu de contrôle reste indisponible ; la composition et le rythme visuel nécessitent une vérification dans le navigateur du propriétaire.
+
 ## 8 novembre 2026 — Transition du menu vers la page choisie
 
 Le menu approuvé reste inchangé. Au clic sur un lien interne, un rideau rouge #a33333 monte sur le dialogue pendant 750 ms et reste en place jusqu’à la navigation. Un marqueur de destination temporaire dans sessionStorage permet de poser le même fond avant le premier affichage du document suivant. Après un court délai de décodage du visuel prioritaire (350 ms maximum), le rideau continue vers le haut en 1,05 seconde, avec une entrée discrète du contenu. Pas de changement de route côté client ni de remplacement des pages : la navigation reste native.
@@ -218,3 +226,71 @@ Quinze tests réussis, compilation de huit pages réussie et vérification HTTP 
 Remplacement du cumul scroll natif/aimantation/animation par un seul pilote requestAnimationFrame de 1,4 seconde : départ lent, accélération centrale et arrivée ralentie. Sortie et entrée du texte synchronisées sur le passage des images. Les événements successifs d’une impulsion ne redémarrent pas le mouvement ; une inversion repart de la position réelle. Le tactile conserve le déplacement natif avec recentrage en fin de geste. Les préférences de réduction du mouvement, le clavier, l’onglet masqué et les filtres ouverts restent pris en compte.
 
 Dix-neuf tests réussissent, incluant la courbe de mouvement, l’annulation et l’inversion, le délai de sept secondes, la reprise après molette et la synchronisation du texte. Compilation de neuf pages réussie avec les deux projets désormais publiés. Vérification HTTP : les commandes retirées ne sont plus présentes. Footer inchangé, empreinte SHA256 vérifiée. Le rendu des animations reste à valider dans un navigateur accessible ; les tests simulés ne constituent pas une validation visuelle.
+
+## 10 novembre 2026 — Texture rouge et zoom d’accueil
+
+À la demande du propriétaire, remplacement de la séquence prénom/nom et portrait par la texture rouge fournie, déjà disponible dans public/images/bangsal-nam-9HMGyZJfrk8-unsplash.jpg. Image optimisée en WebP responsive. Zoom lié au scroll depuis un cadre central vers le plein écran, puis image maintenue immobile par un conteneur sticky pendant que la présentation opaque défile normalement par-dessus. Aucun détournement de la molette. La présentation devient une section #111 : grand titre en haut à gauche, amorce grise, paragraphes décalés à droite et lien À propos. Le bloc Donner forme aux idées reprend cette disposition sur le même fond sombre. Sur mobile, le texte revient sur une colonne. Sans JavaScript ou en mouvement réduit, image et textes restent accessibles dans le flux.
+
+Référence consultée : https://www.brand-nw.com/ et captures fournies. 34 tests réussis, compilation de 10 pages réussie, contrôles HTTP de six pages principales, neuf liens internes et trente-sept ressources réussis. Tests du zoom réversible, du maintien après plein écran, de la mutualisation des frames et du mouvement réduit. La vérification visuelle dans un navigateur reste indisponible : le runtime node_repl nécessaire au skill Computer Use n’est pas exposé dans cette session. Aucun changement de données PocketBase, aucun commit, push ou déploiement.
+
+## 10 novembre 2026 — Rétablissement du nom avant le zoom
+
+Précision du propriétaire : conserver l’entrée prénom/nom avec le trait rouge et remplacer uniquement le portrait par la texture. Rétablissement de Melvyn Philippon sur fond clair, séparation vers les initiales et déploiement du trait rouge, révélation de la texture au centre, disparition des initiales puis zoom jusqu’au plein écran. La section sombre continue de défiler sur la texture immobile. Remplacement du lien à deux filets par le composant ArrowLink partagé, en variante rectangulaire rouge filled, sans modification des boutons globaux. Séquence réversible et contenu accessible sans animation. 34 tests réussis, compilation de 10 pages réussie et vérification HTTP des six pages principales, neuf liens internes et trente-sept ressources réussie. Vérification visuelle navigateur toujours indisponible. Aucun changement PocketBase, commit, push ou déploiement.
+
+## 10 novembre 2026 — Hero plus expressif et trait central
+
+À la demande du propriétaire, le trait rouge est désormais limité à l’intervalle entre les blocs M et P, avec une largeur calculée depuis leur écart animé. Retrait des segments extérieurs sans supprimer la liaison centrale. Hero enrichi à partir des captures fournies : typographie du nom agrandie, en-tête éditorial à filet fin, vignette de la texture rouge légendée, accroche Imaginer. Dessiner. Donner forme. et repères de formation et de lieu. Ces éléments s’effacent avant le zoom pour laisser la séquence existante se poursuivre. Adaptations mobile et écrans courts ; boutons partagés et suite de l’accueil conservés.
+
+Les deux tests de la séquence d’accueil passent et la compilation de dix pages réussit. Contrôle visuel dans le navigateur toujours indisponible dans cette session. Aucun changement PocketBase, commit, push ou déploiement.
+
+## 10 novembre 2026 — Accueil simplifié après référence Kubrick
+
+Le propriétaire rejette les textes décoratifs et demande de retirer la séquence initiales/trait rouge. Le hero contient désormais uniquement le vrai prénom et nom alignés à gauche sur deux lignes, avec la texture rouge à droite. Suppression des slogans, de l’édition, de la vignette et de sa légende, des repères de formation et du scroll hint. Suppression du sous-titre inventé dans la présentation ; le titre reste Qui suis-je ?. Entrée du nom par masques de lignes, puis retrait discret du nom pendant le zoom continu de la texture. Défilement normal de la présentation sombre conservé, boutons ArrowLink partagés conservés. Les titres et paragraphes de présentation apparaissent progressivement à l’entrée dans le viewport. Contenu lisible sans JavaScript, mouvement réduit respecté et état restauré au retour arrière.
+
+Référence demandée : https://kubrick.life/?ref=httpster.net. Récupération de la page publique et du HTML de sa première scène depuis ses ressources Readymag : conteneurs fixes, superpositions, transformations d’échelle, déplacements et opacités. Consultation de la présentation des créateurs sur Behance via la recherche. Le navigateur et la lecture des transitions animées ne sont pas accessibles dans cette session ; aucune inspection visuelle exhaustive des transitions n’est déclarée.
+
+Compilation de dix pages réussie, deux tests d’accueil réussis comprenant le zoom réversible, la mutualisation des frames, l’observateur d’apparition des textes et le mouvement réduit. Six pages, neuf liens internes et trente-sept ressources vérifiés via HTTP. Aucun changement PocketBase, commit, push ou déploiement.
+
+## 10 novembre 2026 — Glissement du hero et cartes projets en paysage
+
+À la demande du propriétaire, texture alignée à droite sur toute la hauteur du hero. L’image conserve une largeur et une hauteur constantes égales au viewport : seule sa translation horizontale passe de 50 % à zéro au scroll, sans agrandissement. Le nom reste à gauche et s’efface pendant cette translation ; la présentation sombre et ses apparitions de texte sont conservées.
+
+Démarcation par un fond clair chaud #e9e6df après Donner forme aux idées. Carrousel d’accueil recomposé en grandes cartes paysage, avec aperçus des cartes voisines, angles droits, image bord à bord et seul titre visible en bas à gauche sur un dégradé de contraste. Retrait du bouton Tous les projets, des catégories, des commandes et du compteur visibles. Cartes entièrement cliquables, effet d’image au survol, titre légèrement déplacé et focus clavier visible. Navigation tactile, clavier et transition vers les pages de projet conservées via le script partagé ; aucun changement de la page Projets.
+
+34 tests réussis dont vérification du rendu du carrousel sans bouton et de ses liens de projet ; compilation de dix pages réussie. Six pages principales, neuf liens internes et trente-sept ressources vérifiés via HTTP. Le contrôle visuel navigateur reste indisponible. Aucun changement PocketBase, commit, push ou déploiement.
+
+## 10 novembre 2026 — Séquence horizontale plein écran et bilan rouge
+
+À la demande du propriétaire, retrait intégral du titre Mes projets, des boutons, compteur et informations sous les images. Remplacement du carrousel d’accueil par une séquence dédiée : trois images de projets cliquables de 100vw sur 100svh, sans marges ni espaces, titre en bas à gauche ; quatrième panneau plein écran rouge utilisant --color-brick (#a33333) avec les deux paragraphes exacts du bilan. L’ancienne section verticale home-summary est supprimée pour éviter le doublon.
+
+Sur desktop, le scroll de page pilote la translation horizontale dans une scène sticky, puis le panneau rouge entre depuis la droite. Temps de lecture ménagé sur le panneau final avant la reprise verticale. Scroll réversible, molette horizontale de trackpad et touches gauche/droite/début/fin pris en charge ; le focus clavier amène le projet ciblé. Sur mobile, sans JavaScript et en mouvement réduit, défilement horizontal natif. Le script partagé de la page Projets reste inchangé et ne pilote plus cette section.
+
+35 tests réussis, incluant le passage des quatre panneaux, le retour arrière, la sortie du défilement horizontal, la navigation clavier et le mouvement réduit. Compilation de dix pages réussie. Contrôle explicite du HTML servi sur localhost:4321 et du HTML construit : trois cartes, panneau de bilan présent, aucun ancien titre, bouton, compteur ni ancien bilan vertical. Six pages, neuf liens internes et trente-six ressources vérifiés via HTTP. Contrôle visuel navigateur toujours indisponible. Aucun changement PocketBase, commit, push ou déploiement.
+
+## 10 novembre 2026 — Couvertures non recadrées et section claire
+
+Demande ciblée : améliorer le rendu des images de projets, mettre les noms en majuscules et distinguer Donner forme aux idées de la présentation précédente. Inspection des originaux publics : Bargo 2880 × 1370, La Cimade 670 × 564, Olyvia 1756 × 1766. Les images de l’accueil sont maintenant entières, centrées sur le rouge de la charte, sans recadrage cover ni agrandissement au-delà de leur taille native. Suppression du zoom au survol au profit d’un éclaircissement. ProjectImage accepte une qualité et des largeurs configurables ; la variante nativeSizing de l’accueil utilise les métadonnées pour limiter les variantes à la largeur réelle et adapter sizes à l’espace effectivement occupé. Qualité WebP 95 et variantes jusqu’à 2880 px pour les sources qui le permettent ; aucune résolution artificielle créée pour la petite image La Cimade. Titres de projets en majuscules via CSS.
+
+Donner forme aux idées passe sur fond blanc cassé #fafaf8, avec titre rouge de la charte, texte gris foncé et marges verticales équilibrées. Le panneau de bilan rouge et le défilement horizontal restent conservés.
+
+Compilation de dix pages réussie ; 35 tests réussis, puis test de construction réexécuté avec succès après le plafonnement des variantes. Contrôle des srcset : Bargo jusqu’à 2880, La Cimade jusqu’à 670, Olyvia jusqu’à 1756, sans dépassement de largeur native. Six pages, neuf liens et trente-six ressources vérifiés via HTTP. Contrôle visuel navigateur toujours indisponible. Aucun changement PocketBase, commit, push ou déploiement.
+
+## 10 novembre 2026 — Retour des couvertures bord à bord
+
+Précision du propriétaire : restaurer les images de projets sur toute la largeur et hauteur desktop. Retour à width/height 100 % et object-fit cover, sizes 100vw, avec les variantes haute qualité plafonnées à la résolution des sources conservées. Le titre Donner forme aux idées redevient noir #14161d sur le fond blanc cassé. Titres des projets en majuscules, scroll horizontal et bilan rouge conservés. Compilation de dix pages réussie.
+
+## 10 novembre 2026 — Slider par recouvrement
+
+Précision du propriétaire : les images doivent rester immobiles pendant que la suivante glisse par-dessus. Sur desktop, les trois projets et le panneau rouge sont maintenant superposés dans la scène sticky. Chaque panneau entrant se déplace de droite à gauche, puis reste fixe une fois arrivé ; la piste entière ne se translate plus. Le panneau de bilan rouge recouvre le troisième projet avec le même mouvement. Suppression du fond rouge derrière les images au profit d’un fond noir pour éliminer les filets rouges aux jonctions, sans bordure ni espace. Largeurs des panneaux ajustées à 100 % du conteneur pour éviter un décalage lié à la scrollbar. Clavier, focus, retour arrière, sortie de scène et fallback horizontal natif conservés.
+
+Test de comportement réussi, incluant une vérification à mi-transition : l’image sortante reste à zéro pendant que la suivante avance. Compilation de dix pages réussie. Vérification visuelle navigateur toujours indisponible. Aucun changement PocketBase, commit, push ou déploiement.
+
+## 11 novembre 2026 — Transition accélérée puis ralentie
+
+À la demande du propriétaire, suppression des contours, arrondis et ombres sur les couches d’image ; le focus clavier reste visible via le soulignement du titre au lieu d’un cadre autour de l’image. Fond derrière les panneaux unifié en noir. Le recouvrement utilise une courbe quintique : départ doux, accélération au centre et freinage à l’arrivée, avec vitesse et accélération nulles aux extrémités. Même comportement en sens inverse et panneau sortant toujours immobile. Test de la courbe et du scroll réussi, compilation de dix pages réussie. Contrôle visuel navigateur indisponible.
+
+## 11 novembre 2026 — Aimantation du slider à chaque impulsion
+
+À la demande du propriétaire, une impulsion verticale ou horizontale de molette déclenche maintenant un passage complet vers le panneau suivant ou précédent sur desktop. Animation de 1,05 seconde avec accélération et freinage, arrivée exacte sur une image entière. Les événements d’inertie d’une même rafale sont absorbés pour éviter de sauter plusieurs images ; une inversion peut repartir de la position courante. Aimantation à l’entrée dans la séquence, panneau rouge inclus, puis molette libre aux extrémités après la fin de la rafale. Annulation au changement de taille, de préférence et à la sortie de page ; mode natif mobile et mouvement réduit conservés.
+
+Deux tests ciblés réussissent, notamment exécution des frames jusqu’à l’arrivée, rafales, retour arrière, panneau rouge et sortie sans blocage. Compilation de dix pages réussie. Contrôle visuel navigateur toujours indisponible. Aucun changement PocketBase, commit, push ou déploiement.

@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import { Image, inferRemoteSize } from "astro:assets";
 const {
   src,
   alt,
@@ -7,18 +7,27 @@ const {
   class: className,
   sizes = "(max-width: 899px) 100vw, 61vw",
   transitionName,
+  widths = [480, 878, 1440],
+  quality = 85,
+  nativeSizing = false,
 } = Astro.props;
+const metadata = nativeSizing ? await inferRemoteSize(src) : null;
+const responsiveWidths = metadata
+  ? [...new Set([...widths.filter((width) => width <= metadata.width), metadata.width])].sort((a, b) => a - b)
+  : widths;
 ---
 
 <Image
   src={src}
   alt={alt}
   class={className}
-  inferSize
-  widths={[480, 878, 1440]}
+  inferSize={!metadata}
+  width={metadata?.width}
+  height={metadata?.height}
+  widths={responsiveWidths}
   sizes={sizes}
   format="webp"
-  quality={85}
+  quality={quality}
   loading={priority ? "eager" : "lazy"}
   decoding={priority ? "sync" : "async"}
   fetchpriority={priority ? "high" : "auto"}

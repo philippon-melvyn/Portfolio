@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import HomeIntroduction from "../components/HomeIntroduction.astro";
 import ProjectCarousel from "../components/ProjectCarousel.astro";
 import KnowledgeCarousel from "../components/KnowledgeCarousel.astro";
 import { getProjects, getKnowledge } from "../lib/pocketbase.js";
@@ -10,75 +11,16 @@ const [projects, knowledge] = await Promise.all([
 ---
 
 <BaseLayout>
-  <section class="split-main home-hero">
-    <div class="panel home-hero-copy">
-      <p class="heading-small max-w-sm">
-        Création numérique &amp; design graphique
-      </p>
-      <h1 class="heading-large home-name">
-        Melvyn
-        <br />
-        Philippon
-      </h1>
-      <div class="home-bio">
-        <h2 class="heading-medium">Qui suis-je ?</h2>
-        <div class="mt-14 space-y-6">
-          <p>
-            Je m’appelle Melvyn Philippon, j’ai 20 ans et je suis étudiant en
-            deuxième année de BUT MMI, parcours Création numérique, à
-            Montbéliard. Curieux et persévérant, j’aime explorer de nouvelles
-            idées et prendre le temps de les développer.
-          </p>
-          <p>
-            Passionné par le dessin, l’animation et les univers fantastiques, je
-            puise mon inspiration dans les mangas, les jeux vidéo et la
-            mythologie. Ces centres d’intérêt nourrissent mon imagination et mon
-            envie de créer des univers visuels personnels.
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="bg-night" aria-hidden="true"></div>
-  </section>
-  <section class="split-main home-statement">
-    <div class="panel bg-night py-20 text-white">
-      <h2 class="heading-large max-w-3xl">Donner forme aux idées.</h2>
-      <p class="mt-20 max-w-lg">
+  <HomeIntroduction />
+  <section class="home-statement" aria-labelledby="home-statement-title">
+      <h2 id="home-statement-title" data-home-reveal>Donner forme aux idées.</h2>
+      <p data-home-reveal>
         De l’identité visuelle à la maquette web, j’imagine et conçois des
         créations adaptées à votre projet. Mon objectif : traduire vos idées en
         visuels cohérents, expressifs et pensés pour votre public.
       </p>
-    </div>
-    <div class="bg-brick" aria-hidden="true"></div>
   </section>
   <ProjectCarousel projects={projects} />
-  <section class="split-main home-summary">
-    <div class="panel flex flex-col justify-center">
-      <div class="max-w-sm space-y-6">
-        <p>
-          Ces projets ont enrichi mes compétences en création, en développement
-          et en communication. Des savoir-faire complémentaires sur lesquels je
-          m’appuie pour concevoir des réalisations cohérentes et adaptées à
-          leurs objectifs.
-        </p>
-        <p>
-          Au fil des expériences, ma pratique s’est affinée : défendre mes
-          choix, m’adapter aux contraintes et collaborer avec des profils
-          différents. Cette diversité nourrit mon approche et renforce mon
-          autonomie.
-        </p>
-      </div>
-      <img
-        class="mt-16"
-        src="/images/line-summary.svg"
-        width="278"
-        height="2"
-        alt=""
-        aria-hidden="true"
-      />
-    </div>
-    <div class="bg-night" aria-hidden="true"></div>
-  </section>
   <section
     class="panel home-skills bg-brick text-white"
     aria-labelledby="skills-title"

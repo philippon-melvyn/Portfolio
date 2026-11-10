@@ -200,6 +200,19 @@ test(
     assert.ok(homeHtml.includes("home-project-gallery"));
     assert.ok(homeHtml.includes('data-project-axis="horizontal"'));
     assert.ok(homeHtml.includes("home-project-tile"));
+    const homeGallery = homeHtml.slice(
+      homeHtml.indexOf('<section class="home-project-gallery'),
+      homeHtml.indexOf('</section>', homeHtml.indexOf('<section class="home-project-gallery')),
+    );
+    assert.ok(homeGallery.includes('/projets/verification-automatique/'));
+    assert.ok(homeGallery.includes('home-project-verification-automatique'));
+    assert.ok(homeGallery.includes('Ces projets ont enrichi mes compétences'));
+    assert.ok(homeGallery.includes('Au fil des expériences'));
+    assert.ok(!homeGallery.includes('<button'));
+    assert.ok(!homeGallery.includes('Tous les projets'));
+    assert.ok(!homeGallery.includes('Mes projets'));
+    assert.ok(!homeHtml.includes('split-main home-summary'));
+    assert.ok(!homeGallery.includes('home-project-caption'));
     assert.ok(
       requests
         .filter((url) => url.pathname.includes("/Projets/"))
