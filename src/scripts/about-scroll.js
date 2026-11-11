@@ -30,8 +30,6 @@ if (root) {
         observer.unobserve(block);
         block.setAttribute("data-entered", "");
         if (sections.has(block)) {
-          if (block.id === "about-inspirations")
-            play(block, [{ backgroundColor: "#792a2d" }, { backgroundColor: "#101113" }], { duration: 1200, easing: "cubic-bezier(.22,1,.36,1)" });
           return;
         }
         const delay = delays.get(block) || 0;

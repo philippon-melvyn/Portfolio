@@ -21,6 +21,7 @@ test(
       publie: true,
       ordre: 1,
     };
+    const publicSkill = { id: "skill-public", titre: "Concevoir une interface de test", categorie: "technique ", publie: true };
     const project = {
       id: projectId,
       collectionName: "Projets",
@@ -95,6 +96,8 @@ test(
           ? [project, minimalProject]
           : collection === "savoirs"
             ? [publicKnowledge]
+            : collection === "competences"
+              ? [publicSkill]
             : [];
       response.writeHead(200, { "Content-Type": "application/json" });
       response.end(
@@ -208,8 +211,19 @@ test(
     );
     assert.ok(homeGallery.includes('/projets/verification-automatique/'));
     assert.ok(homeGallery.includes('home-project-verification-automatique'));
-    assert.ok(homeGallery.includes('Ces projets ont enrichi mes compétences'));
-    assert.ok(homeGallery.includes('Au fil des expériences'));
+    assert.ok(!homeGallery.includes('Ces projets ont enrichi mes compétences'));
+    assert.ok(homeHtml.includes('class="home-project-summary"'));
+    assert.ok(homeHtml.includes('Au fil des expériences'));
+    assert.ok(homeHtml.indexOf('class="home-project-summary"') > homeHtml.indexOf(homeGallery));
+    const expertise = homeHtml.slice(homeHtml.indexOf('<section class="expertise"'), homeHtml.indexOf('<footer'));
+    assert.ok(expertise.includes(publicSkill.titre));
+    assert.ok(expertise.includes(publicKnowledge.nom));
+    assert.ok(!expertise.includes('<img'));
+    assert.ok(!homeHtml.includes('href="tel:'));
+    assert.ok(!homeHtml.includes('>Accueil</a>'));
+    const footer = homeHtml.slice(homeHtml.indexOf('<footer'));
+    assert.ok(!footer.includes('Étudiant en BUT MMI,'));
+    assert.ok(!footer.includes('Création numérique · Design graphique'));
     assert.ok(!homeGallery.includes('<button'));
     assert.ok(!homeGallery.includes('Tous les projets'));
     assert.ok(!homeGallery.includes('Mes projets'));

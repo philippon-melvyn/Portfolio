@@ -7,7 +7,7 @@ const { projects = [] } = Astro.props;
 ---
 
 <section class="home-project-gallery" data-home-projects data-project-axis="horizontal" aria-label="Réalisations et parcours">
-  <div class="home-project-stage" data-home-project-stage tabindex="0" aria-label="Parcourir les projets et le bilan avec le défilement ou les flèches gauche et droite.">
+  <div class="home-project-stage" data-home-project-stage tabindex="0" aria-label="Parcourir les projets avec le défilement ou les flèches gauche et droite.">
     <ul class="home-project-track" data-home-project-track>
       {projects.map((project) => {
         const cover = imagesFor(project, "couverture")[0];
@@ -22,12 +22,6 @@ const { projects = [] } = Astro.props;
           </li>
         );
       })}
-      <li class="home-project-summary" data-home-project-panel>
-        <div class="home-project-summary-copy">
-          <p>Ces projets ont enrichi mes compétences en création, en développement et en communication. Des savoir-faire complémentaires sur lesquels je m’appuie pour concevoir des réalisations cohérentes et adaptées à leurs objectifs.</p>
-          <p>Au fil des expériences, ma pratique s’est affinée : défendre mes choix, m’adapter aux contraintes et collaborer avec des profils différents. Cette diversité nourrit mon approche et renforce mon autonomie.</p>
-        </div>
-      </li>
     </ul>
   </div>
 </section>

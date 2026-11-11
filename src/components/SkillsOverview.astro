@@ -1,0 +1,78 @@
+---
+import { asArray } from "../lib/content.js";
+import "../styles/skills-overview.css";
+const { skills = [], knowledge = [] } = Astro.props;
+const labels = {
+  technique: "Création & technique",
+  communication: "Communication",
+  organisation: "Organisation",
+  logiciel: "Logiciels",
+  langage: "Langages",
+  framework: "Frameworks",
+  cms: "CMS",
+  platforme: "Plateformes",
+  plateforme: "Plateformes",
+};
+function group(items, nameField, order) {
+  const groups = new Map();
+  for (const item of items) {
+    const name = item[nameField]?.trim();
+    if (!name) continue;
+    const category = asArray(item.categorie)[0]?.trim().toLowerCase() || "autres";
+    const label = labels[category] || (category === "autres" ? (nameField === "nom" ? "Autres outils" : "Autres savoir-faire") : category);
+    if (!groups.has(label)) groups.set(label, { label, category, names: new Set() });
+    groups.get(label).names.add(name);
+  }
+  return [...groups.values()].sort((a, b) => {
+    const rank = (key) => order.includes(key) ? order.indexOf(key) : order.length;
+    return rank(a.category) - rank(b.category);
+  });
+}
+const skillGroups = group(skills, "titre", ["technique", "communication", "organisation"]);
+const knowledgeGroups = group(knowledge, "nom", ["logiciel", "langage", "framework", "cms", "platforme", "plateforme"]);
+const tools = knowledgeGroups.flatMap((group) => [...group.names].map((name) => ({ name, category: group.label })))
+  .sort((a, b) => a.name.localeCompare(b.name, "fr"));
+---
+
+<section class="expertise" aria-labelledby="expertise-title">
+  <header class="expertise-heading">
+    <p class="expertise-kicker">01 / La pratique</p>
+    <h2 id="expertise-title">Mes compétences<span aria-hidden="true">.</span></h2>
+  </header>
+  <div class="expertise-skills">
+    {skillGroups.map((group, groupIndex) => (
+      <section class="expertise-group" aria-labelledby={`expertise-group-${groupIndex}`}>
+        <div class="expertise-group-label">
+          <span class="expertise-group-number" aria-hidden="true">{String(groupIndex + 1).padStart(2, "0")}</span>
+          <h3 id={`expertise-group-${groupIndex}`}>{group.label}</h3>
+          <span class="expertise-count">{String(group.names.size).padStart(2, "0")}</span>
+        </div>
+        <ul class="expertise-skill-list">
+          {[...group.names].map((name, index) => (
+            <li><span class="expertise-item-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span><span>{name}</span></li>
+          ))}
+        </ul>
+      </section>
+    ))}
+    {skillGroups.length === 0 && <p class="expertise-empty">Mes compétences seront bientôt présentées ici.</p>}
+  </div>
+  <section class="expertise-knowledge" aria-labelledby="expertise-knowledge-title" data-tool-carousel>
+    <div class="tool-carousel-stage" data-tool-stage>
+    <header class="expertise-heading">
+      <p class="expertise-kicker">Les outils</p>
+      <h2 id="expertise-knowledge-title">Savoirs & outils<span aria-hidden="true">.</span></h2>
+    </header>
+    {tools.length > 0 && <ul class="tool-scroll-list" data-tool-list>
+      {tools.map((tool) => (
+        <li class="tool-scroll-row" data-tool-row>
+            <span class="tool-scroll-name">{tool.name}</span>
+        </li>
+      ))}
+    </ul>}
+    {knowledgeGroups.length === 0 && <p class="expertise-empty">Mes savoirs et outils seront bientôt présentés ici.</p>}
+    </div>
+  </section>
+</section>
+<script>
+  import "../scripts/tool-directory.js";
+</script>

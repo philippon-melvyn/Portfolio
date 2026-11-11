@@ -54,9 +54,9 @@ test("À propos : animations distinctes, une seule frame de scroll et arrêt en 
   };
   runInNewContext(await readFile("src/scripts/about-scroll.js", "utf8"), { document: { querySelector: () => root }, window });
   observerCallback([section, ...blocks].map((target) => ({ target, isIntersecting: true })));
-  assert.equal(animations.length, 9);
+  assert.equal(animations.length, 8);
   assert.ok(animations.some((animation) => animation.keyframes[0].clipPath));
-  assert.ok(animations.some((animation) => animation.keyframes[0].backgroundColor));
+  assert.ok(!animations.some((animation) => animation.keyframes[0].backgroundColor), "Le fond reste stable pendant les apparitions");
   assert.ok(animations.some((animation) => animation.options.delay === 190));
   windowEvents.scroll();
   windowEvents.scroll();

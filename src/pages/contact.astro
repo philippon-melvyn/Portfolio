@@ -22,7 +22,7 @@ const cvUrl = safeLink(import.meta.env.CV_URL);
         <svg class="email-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" /></svg>
       </a>
       <div class="studio-coordinates">
-        <a class="coordinate-block" href={`tel:${site.phoneHref}`}><span class="block-label">Téléphone</span><span>{site.phone}</span></a>
+        <div class="coordinate-block"><span class="block-label">Téléphone</span><span>{site.phone}</span></div>
         <div class="coordinate-block"><span class="block-label">Localisation</span><span>{site.location}</span></div>
       </div>
       <div class="studio-actions">

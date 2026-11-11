@@ -2,11 +2,12 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import HomeIntroduction from "../components/HomeIntroduction.astro";
 import ProjectCarousel from "../components/ProjectCarousel.astro";
-import KnowledgeCarousel from "../components/KnowledgeCarousel.astro";
-import { getProjects, getKnowledge } from "../lib/pocketbase.js";
-const [projects, knowledge] = await Promise.all([
+import SkillsOverview from "../components/SkillsOverview.astro";
+import { getProjects, getKnowledge, getSkills } from "../lib/pocketbase.js";
+const [projects, knowledge, skills] = await Promise.all([
   getProjects(),
   getKnowledge(),
+  getSkills(),
 ]);
 ---
 
@@ -21,20 +22,11 @@ const [projects, knowledge] = await Promise.all([
       </p>
   </section>
   <ProjectCarousel projects={projects.slice(0, 3)} />
-  <section
-    class="panel home-skills bg-brick text-white"
-    aria-labelledby="skills-title"
-  >
-    <h2 id="skills-title" class="heading-large max-w-4xl">
-      Mes compétences
-    </h2>
-    <p class="mt-14 max-w-xl">
-      De la conception visuelle à la réalisation web, mes compétences se
-      complètent pour répondre aux besoins de chaque projet.
-    </p>
+  <section class="home-project-summary" aria-label="Au fil des projets">
+    <div class="home-project-summary-copy">
+      <p>Ces projets ont enrichi mes compétences en création, en développement et en communication. Des savoir-faire complémentaires sur lesquels je m’appuie pour concevoir des réalisations cohérentes et adaptées à leurs objectifs.</p>
+      <p>Au fil des expériences, ma pratique s’est affinée : défendre mes choix, m’adapter aux contraintes et collaborer avec des profils différents. Cette diversité nourrit mon approche et renforce mon autonomie.</p>
+    </div>
   </section>
-  <KnowledgeCarousel knowledge={knowledge} />
+  <SkillsOverview skills={skills} knowledge={knowledge} />
 </BaseLayout>
-<script>
-  import "../scripts/carousel.js";
-</script>

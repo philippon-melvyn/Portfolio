@@ -13,11 +13,6 @@ import { site } from "../data/site.js";
         <a class="column-footer-email" href={`mailto:${site.email}`}>
           {site.email}
         </a>
-        <p>
-          Étudiant en BUT MMI,
-          <br />
-          parcours Création numérique.
-        </p>
         {site.socials.length > 0 && (
           <ul class="column-footer-socials">
             {site.socials.map((social) => (
@@ -34,9 +29,6 @@ import { site } from "../data/site.js";
       <nav aria-label="Pages du portfolio">
         <h2>À découvrir</h2>
         <ul>
-          <li>
-            <a href="/">Accueil</a>
-          </li>
           <li>
             <a href="/projets/">Mes projets</a>
           </li>
@@ -68,7 +60,7 @@ import { site } from "../data/site.js";
             <a href="/contact/">Me contacter</a>
           </li>
           <li>
-            <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
+            {site.phone}
           </li>
           <li>{site.location}</li>
         </ul>
@@ -78,7 +70,6 @@ import { site } from "../data/site.js";
       <p>
         © {new Date().getFullYear()} {site.name}
       </p>
-      <p>Création numérique · Design graphique</p>
       <div>
         <a href="/mentions-legales/">Mentions légales</a>
         <span aria-hidden="true"> / </span>
@@ -163,12 +154,6 @@ import { site } from "../data/site.js";
   }
   .column-footer-email {
     min-height: 44px;
-  }
-  .column-footer-identity > p {
-    margin-top: 30px;
-    color: #b3b2b0;
-    font-size: 12px;
-    line-height: 1.7;
   }
   .column-footer-socials {
     display: flex;
