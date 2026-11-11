@@ -55,12 +55,6 @@ test("PocketBase : pagination, erreurs et relations publiques", async (t) => {
     api.getRecords("invalide"),
     /Réponse PocketBase invalide/,
   );
-  await api.getSections("testproject0001");
-  assert.equal(
-    requests.at(-1).searchParams.get("filter"),
-    'projet="testproject0001"',
-  );
-  assert.throws(() => api.getSections('" OR true'), /Identifiant/);
   assert.equal(
     api.fileUrl({ id: "test", collectionName: "savoirs" }, ""),
     null,

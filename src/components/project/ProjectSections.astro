@@ -1,25 +1,50 @@
----
-import TwoColumns from "./TwoColumns.astro";
-import FullWidth from "./FullWidth.astro";
-import { resolvedSectionLayout } from "../../lib/content.js";
-const { sections = [] } = Astro.props;
-for (const section of sections) {
-  if (
-    !["deux_colonnes", "pleine_largeur"].includes(
-      resolvedSectionLayout(section),
-    )
-  ) {
-    throw new Error(
-      `Disposition inconnue pour la section ${section.id} : « ${section.disposition} ». Choisir deux colonnes ou pleine largeur dans PocketBase.`,
-    );
+﻿---
+import ProjectImage from "../ProjectImage.astro";
+const { project, gallery = [] } = Astro.props;
+const fields = [
+  ["recherche", "Recherche"],
+  ["realisation", "Réalisation"],
+  ["choix_technique", "Choix techniques"],
+];
+const texts = fields.filter(([field]) => project[field]?.trim());
+const [lead, ...images] = gallery;
+// Keep the file order; place the process notes between groups of images.
+const entries = [];
+let textIndex = 0;
+images.forEach((src, index) => {
+  entries.push({ type: "image", src, index });
+  if ((index + 1) % 3 === 0 && texts[textIndex]) {
+    entries.push({ type: "text", field: texts[textIndex][0], title: texts[textIndex][1] });
+    textIndex += 1;
   }
-}
+});
+texts.slice(textIndex).forEach(([field, title]) => entries.push({ type: "text", field, title }));
+const layout = ["regular", "offset", "regular", "wide", "regular", "offset", "regular", "wide"];
 ---
 
-{sections.map((section) =>
-  resolvedSectionLayout(section) === "deux_colonnes" ? (
-    <TwoColumns section={section} />
-  ) : (
-    <FullWidth section={section} />
-  ),
+{lead && (
+  <figure class="project-lead-image">
+    <ProjectImage src={lead} sizes="100vw" widths={[480, 960, 1440, 1920, 2560]} alt={`${project.titre} — visuel 1 sur ${gallery.length}`} />
+  </figure>
+)}
+{entries.length > 0 && (
+  <section class="project-composition" aria-label={`Images et démarche du projet ${project.titre}`}>
+    <div class="project-image-grid">
+      {entries.map((entry) => entry.type === "image" ? (
+        <figure class:list={["project-gallery-image", `project-gallery-${layout[entry.index % layout.length]}`]}>
+          <ProjectImage
+            src={entry.src}
+            sizes={layout[entry.index % layout.length] === "wide" ? "(max-width: 699px) 100vw, (max-width: 1099px) 90vw, 62vw" : "(max-width: 699px) 100vw, (max-width: 1099px) 44vw, 30vw"}
+            widths={[480, 960, 1440, 1920]}
+            alt={`${project.titre} — visuel ${entry.index + 2} sur ${gallery.length}`}
+          />
+        </figure>
+      ) : (
+        <section class="project-process-note" aria-labelledby={`project-${entry.field}`}>
+          <h2 id={`project-${entry.field}`} class="project-label">{entry.title}</h2>
+          <p class="project-plain-text">{project[entry.field]}</p>
+        </section>
+      ))}
+    </div>
+  </section>
 )}

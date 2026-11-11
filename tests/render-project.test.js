@@ -9,7 +9,7 @@ import { resolve } from "node:path";
 // Données synthétiques réservées au test. Aucun enregistrement n’est créé dans PocketBase.
 // La construction de test est isolée dans .astro/verification/, jamais dans dist/.
 test(
-  "Astro : page dynamique, sections, images et champs facultatifs",
+  "Astro : contenu dans Projets, galerie, relations et champs facultatifs",
   { timeout: 60000 },
   async (t) => {
     const projectId = "testproject0001";
@@ -33,6 +33,15 @@ test(
       couverture_alt: "Couverture de test",
       introduction:
         "<p>Introduction <strong>formatée</strong></p><script>alert(1)</script>",
+      duree: "Trois semaines",
+      contexte: "<strong>Texte brut à échapper</strong>\nDeuxième ligne",
+      objectifs: "Objectifs de test",
+      role: "Conception de test",
+      equipe: "   ",
+      recherche: "Recherche de test",
+      realisation: "Réalisation de test",
+      choix_technique: "Choix technique de test",
+      galerie: ["cover-copy.webp", "gallery-a.webp", "gallery-a.webp", "gallery-b.webp", "gallery-b-copy.webp"],
       liens_libelle_1: "Prototype de test",
       liens_url_1: "https://example.org/prototype",
       liens_img_1: "link.webp",
@@ -46,64 +55,47 @@ test(
         competences: [],
       },
     };
-    const sections = [
-      {
-        id: "testsection0001",
-        collectionName: "sections_projet",
-        projet: projectId,
-        ordre: 1,
-        disposition: "deux colonnes",
-        titre: "Première section de test",
-        texte_gauche: "<strong>Texte brut à échapper</strong>",
-        texte_droite: "",
-        image_gauche: [],
-        image_droite: ["right-a.webp", "right-b.webp"],
-        description_images: "Galerie de test",
-      },
-      {
-        id: "testsection0002",
-        collectionName: "sections_projet",
-        projet: projectId,
-        ordre: 2,
-        disposition: "pleine largeur",
-        titre: "Deuxième section de test",
-        image_largeur: ["full-a.webp", "full-b.webp"],
-      },
-      {
-        id: "testsection0003",
-        collectionName: "sections_projet",
-        projet: projectId,
-        ordre: 3,
-        disposition: "deux colonnes",
-        titre: "",
-        texte_gauche: "",
-        texte_droite: "",
-        image_gauche: [],
-        image_droite: [],
-      },
-    ];
+    const minimalProject = {
+      id: "minimalproject1",
+      collectionName: "Projets",
+      titre: "Projet minimal",
+      slug: "projet-minimal",
+      publie: true,
+      domaines: [],
+      annee: 0,
+      introduction: null,
+      contexte: null,
+      objectifs: "   ",
+      galerie: [],
+      expand: {},
+    };
     const media = await readFile("public/images/portrait.webp");
+    const galleryA = await readFile("public/images/architecture-detail.webp");
+    const galleryB = await readFile("public/images/architecture-tower.webp");
+    const linkImage = await readFile("public/images/red-fabric.webp");
     const requests = [];
     const server = createServer((request, response) => {
       const url = new URL(request.url, "http://localhost");
+      requests.push(url);
       if (url.pathname.startsWith("/api/files/")) {
+        const filename = url.pathname.split("/").at(-1);
+        const image = filename === "gallery-a.webp" ? galleryA
+          : ["gallery-b.webp", "gallery-b-copy.webp"].includes(filename) ? galleryB
+          : filename === "link.webp" ? linkImage : media;
         response.writeHead(200, {
           "Content-Type": "image/webp",
-          "Content-Length": media.length,
+          "Content-Length": image.length,
         });
-        response.end(media);
+        response.end(image);
         return;
       }
-      requests.push(url);
       const collection = url.pathname.split("/")[3];
       const items =
         collection === "Projets"
-          ? [project]
-          : collection === "sections_projet"
-            ? sections
-            : collection === "savoirs"
-              ? [publicKnowledge]
-              : [];
+          ? [project, minimalProject]
+          : collection === "savoirs"
+            ? [publicKnowledge]
+            : [];
       response.writeHead(200, { "Content-Type": "application/json" });
       response.end(
         JSON.stringify({
@@ -152,16 +144,19 @@ test(
     assert.ok(
       html.includes("&lt;strong&gt;Texte brut à échapper&lt;/strong&gt;"),
     );
-    assert.ok(
-      html.indexOf("Première section de test") <
-        html.indexOf("Deuxième section de test"),
-    );
-    assert.equal(
-      (html.match(/class="case-section"/g) || []).length,
-      2,
-      "La section vide doit disparaître",
-    );
-    assert.ok(html.includes("Galerie de test — visuel 2 sur 2"));
+    for (const field of ["duree", "objectifs", "role", "recherche", "realisation", "choix_technique"]) {
+      assert.ok(html.includes(project[field]), field);
+    }
+    assert.ok(!html.includes('id="project-equipe"'));
+    assert.equal((html.match(/class="project-process-note"/g) || []).length, 3);
+    assert.ok(html.includes('class="project-opening"'));
+    assert.ok(html.includes('class="project-lead-image"'));
+    assert.ok(html.includes('class="project-image-grid"'));
+    assert.ok(html.indexOf('class="project-lead-image"') < html.indexOf('class="project-image-grid"'));
+    assert.ok(html.includes("visuel 2 sur 2"));
+    assert.ok(!html.includes("visuel 3 sur"));
+    assert.equal((html.match(/class="project-gallery-image /g) || []).length, 1, "Les fichiers identiques sont affichés une seule fois, même renommés");
+    assert.ok(requests.some((url) => url.pathname === "/api/files/Projets/testproject0001/gallery-a.webp"));
     assert.ok(html.includes("Savoir de test"));
     assert.ok(!html.includes("Savoir brouillon masqué"));
     assert.ok(!html.includes("Compétences mobilisées"));
@@ -170,6 +165,13 @@ test(
     assert.match(html, /srcset=/);
     assert.match(html, /width="1124" height="1231"/);
     assert.ok(html.includes("project-cover-verification-automatique"));
+    const minimalHtml = await readFile(resolve(directory, "projets/projet-minimal/index.html"), "utf8");
+    assert.ok(minimalHtml.includes("Projet minimal"));
+    assert.ok(minimalHtml.includes("project-opening-no-story"));
+    assert.ok(minimalHtml.includes("project-opening-no-cover"));
+    for (const className of ["project-story", "project-category", "project-facts", "project-composition", "project-lead-image", "project-credits", "project-resources"]) {
+      assert.ok(!minimalHtml.includes(`class="${className}"`), className);
+    }
     const galleryHtml = await readFile(
       resolve(directory, "projets/index.html"),
       "utf8",
@@ -215,16 +217,10 @@ test(
     assert.ok(!homeGallery.includes('home-project-caption'));
     assert.ok(
       requests
-        .filter((url) => url.pathname.includes("/Projets/"))
+        .filter((url) => url.pathname.includes("/api/collections/Projets/"))
         .every((url) => url.searchParams.get("filter") === "publie=true"),
     );
-    assert.ok(
-      requests
-        .filter((url) => url.pathname.includes("/sections_projet/"))
-        .every(
-          (url) => url.searchParams.get("filter") === `projet="${projectId}"`,
-        ),
-    );
+    assert.ok(!requests.some((url) => url.pathname.includes("/sections_projet/")));
     const sitemap = await readFile(resolve(directory, "sitemap.xml"), "utf8");
     assert.ok(
       sitemap.includes(

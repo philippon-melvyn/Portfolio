@@ -6,6 +6,9 @@ const env = loadEnv(process.env.NODE_ENV || "development", process.cwd(), "");
 const pocketbase = env.POCKETBASE_URL ? new URL(env.POCKETBASE_URL) : null;
 
 export default defineConfig({
+  redirects: {
+    "/projets/la-cimade": "/projets/lacimade/",
+  },
   image: {
     remotePatterns: pocketbase
       ? [

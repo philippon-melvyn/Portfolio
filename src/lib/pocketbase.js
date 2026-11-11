@@ -98,12 +98,6 @@ export function getKnowledge() {
   });
 }
 
-export function getSections(projectId) {
-  if (!/^[a-z0-9]{15}$/.test(projectId))
-    throw new Error("Identifiant de projet PocketBase invalide.");
-  return getRecords("sections_projet", { filter: `projet="${projectId}"` });
-}
-
 export function relatedRecords(project, field) {
   return asArray(project.expand?.[field])
     .filter((record) => record.publie === true)

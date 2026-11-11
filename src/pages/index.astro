@@ -20,7 +20,7 @@ const [projects, knowledge] = await Promise.all([
         visuels cohérents, expressifs et pensés pour votre public.
       </p>
   </section>
-  <ProjectCarousel projects={projects} />
+  <ProjectCarousel projects={projects.slice(0, 3)} />
   <section
     class="panel home-skills bg-brick text-white"
     aria-labelledby="skills-title"

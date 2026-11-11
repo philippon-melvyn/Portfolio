@@ -5,12 +5,13 @@ import ArrowLink from "../../components/ArrowLink.astro";
 import ProjectImage from "../../components/ProjectImage.astro";
 import {
   getProjects,
-  getSections,
   imagesFor,
   relatedRecords,
 } from "../../lib/pocketbase.js";
 import { asArray, editorHtml, plainText, safeLink } from "../../lib/content.js";
+import { projectMedia } from "../../lib/project-media.js";
 import "../../styles/project-navigation.css";
+import "../../styles/project-detail.css";
 export async function getStaticPaths() {
   const projects = await getProjects();
   return projects.map((project) => ({
@@ -19,67 +20,78 @@ export async function getStaticPaths() {
   }));
 }
 const { project } = Astro.props;
-const sections = await getSections(project.id);
-const cover = imagesFor(project, "couverture")[0];
+const { cover, gallery, linkImages } = await projectMedia(project);
 const knowledge = relatedRecords(project, "savoirs");
 const skills = relatedRecords(project, "competences");
+const domains = asArray(project.domaines).map((domain) => domain.trim()).filter(Boolean);
+const introduction = plainText(project.introduction ?? "").length > 0;
+const metadata = [
+  ["Année", project.annee || undefined],
+  ["Durée", project.duree],
+  ["Rôle", project.role],
+  ["Équipe", project.equipe],
+].filter(([, value]) => String(value ?? "").trim());
+const overview = [
+  ["contexte", "Contexte"],
+  ["objectifs", "Objectifs"],
+].filter(([field]) => project[field]?.trim());
+const hasStory = introduction || overview.length > 0;
 const links = [1, 2]
   .map((number) => ({
     label: project[`liens_libelle_${number}`]?.trim(),
     url: safeLink(project[`liens_url_${number}`]),
-    image: imagesFor(project, `liens_img_${number}`)[0],
+    image: linkImages[number - 1],
   }))
   .filter((link) => link.label && link.url);
 ---
 
 <BaseLayout
   title={project.titre}
-  description={plainText(project.introduction).slice(0, 180)}
+  description={plainText(project.introduction ?? "").slice(0, 180)}
   image={cover}
 >
-  <article>
-    <header class="project-hero split-reverse">
-      <div class="panel project-intro">
-        <h1 class="heading-large">{project.titre}</h1>
-        <dl class="project-meta">
-          <div>
-            <dt>Domaines</dt>
-            <dd>
-              {asArray(project.domaines).map((domain) => (
-                <span class="block">{domain.trim()}</span>
-              ))}
-            </dd>
-          </div>
-          {project.annee && (
-            <div>
-              <dt>Année</dt>
-              <dd>{project.annee}</dd>
-            </div>
-          )}
-        </dl>
-        {project.introduction && (
-          <div class="rich-text" set:html={editorHtml(project.introduction)} />
-        )}
+  <article class="project-detail" data-project-slug={project.slug}>
+    <header class:list={["project-opening", { "project-opening-no-cover": !cover, "project-opening-no-story": !hasStory }]}>
+      <div class="project-index">
+        <a class="project-back" href="/projets/">Projets{domains.length > 0 && <><span aria-hidden="true">/</span> {domains.join(" · ")}</>}</a>
+        <div class="project-identity">
+          <h1>{project.titre}</h1>
+          {domains.length > 0 && <p class="project-category">{domains.join(" / ")}</p>}
+        </div>
+        {metadata.length > 0 && <dl class="project-facts">
+          {metadata.map(([label, value]) => (
+            <div><dt>{label}</dt><dd>{value}</dd></div>
+          ))}
+        </dl>}
       </div>
-      {cover ? (
-        <ProjectImage
-          class="project-hero-image"
-          src={cover}
-          alt={project.couverture_alt || project.titre}
-          priority
-          transitionName={`project-cover-${project.slug}`}
-        />
-      ) : (
-        <div class="project-hero-placeholder" aria-hidden="true"></div>
+      {hasStory && <div class="project-story">
+        {introduction && <div class="project-introduction rich-text" set:html={editorHtml(project.introduction)} />}
+        {overview.map(([field, title]) => (
+          <section aria-labelledby={`project-${field}`}>
+            <h2 id={`project-${field}`} class="project-label">{title}</h2>
+            <p class="project-plain-text">{project[field]}</p>
+          </section>
+        ))}
+      </div>}
+      {cover && (
+        <div class="project-opening-cover">
+          <ProjectImage
+            src={cover}
+            alt={project.couverture_alt || project.titre}
+            sizes="(max-width: 699px) 100vw, (max-width: 1099px) 45vw, 34vw"
+            priority
+            transitionName={`project-cover-${project.slug}`}
+          />
+        </div>
       )}
     </header>
-    <ProjectSections sections={sections} />
+    <ProjectSections project={project} gallery={gallery} />
     {(knowledge.length > 0 || skills.length > 0) && (
-      <section class="project-related panel">
+      <section class="project-credits">
         {skills.length > 0 && (
           <div>
-            <h2 class="heading-medium">Compétences mobilisées</h2>
-            <ul class="skill-tags">
+            <h2 class="project-label">Compétences mobilisées</h2>
+            <ul class="project-credit-skills">
               {skills.map((skill) => (
                 <li>{skill.titre}</li>
               ))}
@@ -88,8 +100,8 @@ const links = [1, 2]
         )}
         {knowledge.length > 0 && (
           <div>
-            <h2 class="heading-medium">Savoirs utilisés</h2>
-            <ul class="knowledge-list">
+            <h2 class="project-label">Savoirs utilisés</h2>
+            <ul class="project-credit-tools">
               {knowledge.map((item) => {
                 const logo = imagesFor(item, "logo")[0];
                 return (
@@ -115,7 +127,7 @@ const links = [1, 2]
     {links.length > 0 && (
       <section
         aria-label="Découvrir les réalisations finales"
-        class="project-final-links"
+        class="project-resources"
       >
         {links.map((link) => (
           <div>
@@ -134,12 +146,16 @@ const links = [1, 2]
                 />
               </a>
             )}
-            <div class="panel">
+            <div class="project-resource-label">
               <ArrowLink href={link.url} label={link.label} external />
             </div>
           </div>
         ))}
       </section>
     )}
+    <div class="project-return"><a href="/projets/">Retour aux projets</a></div>
   </article>
 </BaseLayout>
+<script>
+  import "../../scripts/project-images.js";
+</script>

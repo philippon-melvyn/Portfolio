@@ -24,29 +24,23 @@ Le site exige des slugs uniques au format `mon-projet`, en minuscules sans accen
 
 Un lien final n’apparaît que si son libellé et son URL sont renseignés et valides. Son image est facultative. Les images vides ne créent pas de balise cassée.
 
-## `sections_projet`
+## Contenu dans Projets
 
-| Champ                                           | Type / cardinalité                                        |
-| ----------------------------------------------- | --------------------------------------------------------- |
-| `projet`                                        | Relation unique vers `Projets`, obligatoire               |
-| `ordre`                                         | Number                                                    |
-| `disposition`                                   | Select unique : **`deux colonnes`**, **`pleine largeur`** |
-| `titre`                                         | Text                                                      |
-| `texte_gauche`, `texte_droite`                  | **Text**, pas Editor                                      |
-| `image_gauche`, `image_droite`, `image_largeur` | File multiple, jusqu’à 10 fichiers                        |
-| `description_images`                            | Text                                                      |
+Mise à jour du 11 novembre 2026 : `sections_projet` a été supprimée. Les pages lisent tous les contenus directement dans chaque enregistrement `Projets`, sans requête vers l’ancienne collection.
 
-Les valeurs réelles de disposition contiennent des espaces. Le code les normalise en interne et accepte aussi les formes avec underscores du brief, sans modifier PocketBase.
+| Champ | Type | Utilisation |
+| --- | --- | --- |
+| `duree` | Text | Durée dans les métadonnées |
+| `contexte` | Text | Contexte du projet |
+| `objectifs` | Text | Objectifs |
+| `role` | Text | Rôle dans le projet |
+| `equipe` | Text | Équipe |
+| `recherche` | Text | Recherches |
+| `realisation` | Text | Réalisation |
+| `choix_technique` | Text | Choix techniques |
+| `galerie` | File multiple | Visuels dans leur ordre de saisie |
 
-Pour chaque projet : `filter=projet="identifiant"`, `sort=ordre,id`. Chaque section choisit son composant. Le nombre de sections est libre. Une disposition inconnue déclenche une erreur explicite pour éviter de perdre silencieusement du contenu.
-
-Si la disposition est vide et que seules les images `image_largeur` sont renseignées, la section utilise la pleine largeur. Ce cas non ambigu permet d’afficher les contenus Olyvia actuels sans modifier la base. Renseigner la disposition reste préférable.
-
-- Deux colonnes : textes et images gauche/droite ; une colonne entièrement vide disparaît. Le texte conserve ses sauts de ligne et s’affiche comme du texte échappé.
-- Pleine largeur : galerie `image_largeur` et titre facultatif.
-- Les savoirs ne sont jamais recopiés dans les sections.
-
-`description_images` sert d’alternative commune, complétée par l’indice du visuel en cas de galerie. Le schéma ne prévoit pas d’alternative individuelle par fichier : fournir une description commune pertinente. Le site utilise un libellé de secours si elle manque.
+Les textes détaillés sont échappés et conservent leurs sauts de ligne. Seule `introduction` utilise le rendu Editor assaini. Les champs vides ou composés d’espaces sont masqués. Les images de `galerie` utilisent l’enregistrement `Projets` pour construire leurs URL ; leur alternative reprend le titre et la position dans la galerie. Les compétences, savoirs et deux liens finaux restent lus dans les champs existants.
 
 ## `competences`
 
@@ -71,7 +65,6 @@ Proposition concrète à appliquer par le propriétaire dans PocketBase (non app
 | `Projets`         | `publie = true`        | Verrouillées / superuser uniquement (`null`) |
 | `competences`     | `publie = true`        | Verrouillées / superuser uniquement (`null`) |
 | `savoirs`         | `publie = true`        | Verrouillées / superuser uniquement (`null`) |
-| `sections_projet` | `projet.publie = true` | Verrouillées / superuser uniquement (`null`) |
 
 Les fichiers actuels sont non protégés : connaître leur URL peut permettre de les consulter indépendamment de la visibilité des enregistrements. Protéger des médias confidentiels demanderait un paramétrage des champs File et un flux d’accès adapté, hors modification autorisée à ce stade. Ne pas considérer un brouillon comme un stockage privé de fichiers.
 
@@ -81,7 +74,7 @@ Références : [règles API](https://pocketbase.io/docs/api-rules-and-filters/),
 
 1. Ajouter les compétences et savoirs, leurs illustrations/logos et leur état de publication.
 2. Ajouter les projets avec leur slug et relier leurs compétences et savoirs.
-3. Ajouter autant de sections que nécessaire en les reliant au bon projet et en renseignant `ordre`.
+3. Renseigner directement dans le projet la durée, les textes détaillés et les fichiers de `galerie`.
 4. Ajouter les liens finaux souhaités, puis publier le projet.
 5. Exécuter `bun run build`, vérifier avec `bun run preview`, puis déployer le résultat après validation.
 
