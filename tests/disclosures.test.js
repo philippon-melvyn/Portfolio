@@ -1,6 +1,6 @@
+import { pageScript } from "./helpers/page-scripts.js";
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import { runInNewContext } from "node:vm";
 
 async function disclosureEnvironment() {
@@ -43,7 +43,7 @@ async function disclosureEnvironment() {
   const header = menu("le menu");
   const filters = menu("les filtres");
   const listeners = {};
-  runInNewContext(await readFile("src/scripts/disclosures.js", "utf8"), {
+  runInNewContext(await pageScript("src/pages/projets/index.astro", "disclosures"), {
     document: {
       querySelectorAll: () => [header, filters],
       addEventListener(type, listener) {

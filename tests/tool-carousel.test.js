@@ -1,6 +1,6 @@
+import { pageScript } from "./helpers/page-scripts.js";
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import { runInNewContext } from "node:vm";
 
 test("Outils : zone fixe, apparition/disparition au scroll et retour réversible", async () => {
@@ -20,7 +20,7 @@ test("Outils : zone fixe, apparition/disparition au scroll et retour réversible
     setAttribute: (name) => attributes.add(name), removeAttribute: (name) => attributes.delete(name),
     style: style(styles),
   };
-  runInNewContext(await readFile("src/scripts/tool-directory.js", "utf8"), {
+  runInNewContext(await pageScript("src/pages/index.astro", "tool-directory"), {
     document: { querySelector: () => root },
     window: {
       innerHeight: 800,

@@ -2,19 +2,19 @@
 import { site } from "../data/site.js";
 ---
 
-<footer class="column-footer" id="contact" aria-label="Pied de page">
-  <div class="column-footer-inner">
-    <div class="column-footer-grid">
+<footer class="column-footer [background:#101113] [color:var(--color-paper)] p-[44px_clamp(24px,_3.472vw,_80px)_24px] [&_h2]:[font-family:ui-monospace,_'Cascadia_Code',_Consolas,_monospace] [&_h2]:text-[12px] [&_h2]:font-medium [&_h2]:leading-[1.65] [&_h2]:tracking-[0.025em] [&_h2]:uppercase [&_li]:[font-family:ui-monospace,_'Cascadia_Code',_Consolas,_monospace] [&_li]:text-[12px] [&_li]:font-medium [&_li]:leading-[1.65] [&_li]:tracking-[0.025em] [&_li]:uppercase [&_h2]:mb-8 [&_h2]:[color:var(--color-paper)] [&_.column-footer-name]:pl-3.5 [&_.column-footer-name]:[border-left:2px_solid_var(--color-brick)] [&_.column-footer-name]:[font:600_28px/1.05_var(--font-display)] [&_.column-footer-name]:tracking-[0.02em] [&_ul]:[list-style:none] [&_ul]:m-0 [&_ul]:p-0 [&_li]:[color:#b3b2b0] [&_a]:inline-flex [&_a]:items-center [&_a]:min-h-9 [&_a]:max-w-full [&_a]:[overflow-wrap:anywhere] [&_a]:[transition:color_160ms_ease] [&_a:hover]:[color:white] [&_a:hover]:[text-decoration:underline] [&_a:hover]:[text-underline-offset:5px] max-[1101px]:[&_h2]:mb-5 max-[600px]:pt-8 max-[600px]:[&_h2]:text-[11px] max-[600px]:[&_li]:text-[11px] max-[600px]:[&_a]:min-h-11 motion-reduce:[&_a]:[transition:none]" id="contact" aria-label="Pied de page">
+  <div class="column-footer-inner max-w-400 mx-auto">
+    <div class="column-footer-grid grid [grid-template-columns:1.45fr_repeat(4,_minmax(0,_1fr))] [&_>_*]:min-w-0 [&_>_*]:min-h-67.5 [&_>_*]:p-[20px_clamp(20px,_2.3vw,_44px)_28px] [&_>_*]:[border-left:1px_solid_#fafaf826] [&_>_:first-child]:pl-0 [&_>_:first-child]:[border-left:0] [&_>_:last-child]:pr-0 max-[1101px]:[grid-template-columns:repeat(2,_minmax(0,_1fr))] max-[1101px]:[&_>_*]:min-h-0 max-[1101px]:[&_>_*]:p-[28px_24px] max-[1101px]:[&_>_*]:[border-top:1px_solid_#fafaf826] max-[1101px]:[&_>_:first-child]:[grid-column:1_/_-1] max-[1101px]:[&_>_:first-child]:p-[0_0_32px] max-[1101px]:[&_>_:first-child]:[border-top:0] max-[1101px]:[&_>_:nth-child(even)]:[border-left:0] max-[1101px]:[&_>_:nth-child(even)]:pl-0 max-[1101px]:[&_>_:nth-child(odd):not(:first-child)]:pr-0 max-[600px]:[&_>_*]:p-[24px_16px]">
       <div class="column-footer-identity">
-        <h2 class="column-footer-name">
+        <h2 class="column-footer-name [&_>_span]:block">
           <span>Melvyn</span>
           <span>Philippon</span>
         </h2>
-        <a class="column-footer-email" href={`mailto:${site.email}`}>
+        <a class="column-footer-email [font-family:ui-monospace,_'Cascadia_Code',_Consolas,_monospace] text-[12px] font-medium leading-[1.65] tracking-[0.025em] uppercase [color:#b3b2b0] min-h-11 max-[600px]:text-[11px]" href={`mailto:${site.email}`}>
           {site.email}
         </a>
         {site.socials.length > 0 && (
-          <ul class="column-footer-socials">
+          <ul class="column-footer-socials flex flex-wrap gap-[4px_18px] mt-7! [&_a]:text-[10px]">
             {site.socials.map((social) => (
               <li>
                 <a href={social.url} target="_blank" rel="noopener noreferrer">
@@ -66,7 +66,7 @@ import { site } from "../data/site.js";
         </ul>
       </div>
     </div>
-    <div class="column-footer-bottom">
+    <div class="column-footer-bottom [font-family:ui-monospace,_'Cascadia_Code',_Consolas,_monospace] font-medium leading-[1.65] tracking-[0.025em] uppercase flex items-center justify-between flex-wrap gap-[12px_24px] [border-top:1px_solid_#fafaf826] pt-6 [color:#a5a4a2] text-[10px] [&_>_div]:flex [&_>_div]:items-center [&_>_div]:gap-3 [&_a]:min-h-11 max-[600px]:flex-col max-[600px]:items-start max-[600px]:gap-1 max-[600px]:text-[9px] max-[600px]:[&_>_div]:gap-2 max-[600px]:[&_>_div]:flex-wrap">
       <p>
         © {new Date().getFullYear()} {site.name}
       </p>
@@ -78,165 +78,3 @@ import { site } from "../data/site.js";
     </div>
   </div>
 </footer>
-
-<style>
-  .column-footer {
-    background: #101113;
-    color: var(--color-paper);
-    padding: 44px clamp(24px, 3.472vw, 80px) 24px;
-  }
-  .column-footer-inner {
-    max-width: 1600px;
-    margin-inline: auto;
-  }
-  .column-footer-grid {
-    display: grid;
-    grid-template-columns: 1.45fr repeat(4, minmax(0, 1fr));
-  }
-  .column-footer-grid > * {
-    min-width: 0;
-    min-height: 270px;
-    padding: 20px clamp(20px, 2.3vw, 44px) 28px;
-    border-left: 1px solid #fafaf826;
-  }
-  .column-footer-grid > :first-child {
-    padding-left: 0;
-    border-left: 0;
-  }
-  .column-footer-grid > :last-child {
-    padding-right: 0;
-  }
-  .column-footer h2,
-  .column-footer li,
-  .column-footer-email,
-  .column-footer-bottom {
-    font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 1.65;
-    letter-spacing: 0.025em;
-    text-transform: uppercase;
-  }
-  .column-footer h2 {
-    margin-bottom: 32px;
-    color: var(--color-paper);
-  }
-  .column-footer .column-footer-name {
-    padding-left: 14px;
-    border-left: 2px solid var(--color-brick);
-    font: 600 28px/1.05 var(--font-display);
-    letter-spacing: 0.02em;
-  }
-  .column-footer-name > span {
-    display: block;
-  }
-  .column-footer ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .column-footer li,
-  .column-footer-email {
-    color: #b3b2b0;
-  }
-  .column-footer a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 36px;
-    max-width: 100%;
-    overflow-wrap: anywhere;
-    transition: color 160ms ease;
-  }
-  .column-footer a:hover {
-    color: white;
-    text-decoration: underline;
-    text-underline-offset: 5px;
-  }
-  .column-footer-email {
-    min-height: 44px;
-  }
-  .column-footer-socials {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px 18px;
-    margin-top: 28px !important;
-  }
-  .column-footer-socials a {
-    font-size: 10px;
-  }
-  .column-footer-bottom {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px 24px;
-    border-top: 1px solid #fafaf826;
-    padding-top: 24px;
-    color: #a5a4a2;
-    font-size: 10px;
-  }
-  .column-footer-bottom > div {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .column-footer-bottom a {
-    min-height: 44px;
-  }
-  @media (max-width: 1100px) {
-    .column-footer-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .column-footer-grid > * {
-      min-height: 0;
-      padding: 28px 24px;
-      border-top: 1px solid #fafaf826;
-    }
-    .column-footer-grid > :first-child {
-      grid-column: 1 / -1;
-      padding: 0 0 32px;
-      border-top: 0;
-    }
-    .column-footer-grid > :nth-child(even) {
-      border-left: 0;
-      padding-left: 0;
-    }
-    .column-footer-grid > :nth-child(odd):not(:first-child) {
-      padding-right: 0;
-    }
-    .column-footer h2 {
-      margin-bottom: 20px;
-    }
-  }
-  @media (max-width: 599px) {
-    .column-footer {
-      padding-top: 32px;
-    }
-    .column-footer-grid > * {
-      padding: 24px 16px;
-    }
-    .column-footer h2,
-    .column-footer li,
-    .column-footer-email {
-      font-size: 11px;
-    }
-    .column-footer a {
-      min-height: 44px;
-    }
-    .column-footer-bottom {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 4px;
-      font-size: 9px;
-    }
-    .column-footer-bottom > div {
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .column-footer a {
-      transition: none;
-    }
-  }
-</style>

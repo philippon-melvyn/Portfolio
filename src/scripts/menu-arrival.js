@@ -5,7 +5,7 @@ if (html.dataset.menuArrival === "pending") {
     delete html.dataset.menuArrival;
   } else {
     const curtain = document.createElement("div");
-    curtain.className = "menu-route-curtain menu-route-curtain-arrival";
+    curtain.className = "menu-route-curtain menu-route-curtain-arrival [content:''] fixed inset-0 [background:#a33333] pointer-events-auto z-2147483647 motion-reduce:hidden";
     curtain.setAttribute("aria-hidden", "true");
     document.body.append(curtain);
     delete html.dataset.menuArrival;

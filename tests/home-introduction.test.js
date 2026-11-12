@@ -1,8 +1,8 @@
+import { pageScript, pageFunctions } from "./helpers/page-scripts.js";
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import { runInNewContext } from "node:vm";
-import { introState } from "../src/lib/home-introduction.js";
+const { introState } = await pageFunctions("src/pages/index.astro", "home-introduction", ["introState"]);
 
 test("Accueil : nom à gauche puis glissement de la texture sans zoom", () => {
   assert.equal(introState(0).nameOpacity, 1);
@@ -46,7 +46,7 @@ test("Accueil : retour du scroll, une frame par rafale, restauration et mouvemen
     querySelector: () => ({ offsetHeight: 1100, getBoundingClientRect: () => ({ width: 100 }) }),
   };
   const preference = { matches: false, addEventListener: (_event, callback) => { changePreference = callback; } };
-  const source = (await readFile("src/scripts/home-introduction.js", "utf8")).replace(/^\uFEFF?import .*;\r?\n/, "");
+  const source = (await pageScript("src/pages/index.astro", "home-introduction")).replace(/^\uFEFF?import .*;\r?\n/, "");
   runInNewContext(source, {
     introState,
     IntersectionObserver: class {

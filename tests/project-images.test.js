@@ -1,6 +1,6 @@
+import { pageScript } from "./helpers/page-scripts.js";
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import { runInNewContext } from "node:vm";
 
 test("Images projet : apparition unique, attente du chargement et mouvement réduit", async () => {
@@ -20,7 +20,7 @@ test("Images projet : apparition unique, attente du chargement et mouvement réd
     removeEventListener: () => loads.delete(complete),
   }));
   const preference = { matches: false, addEventListener: (_name, cb) => { onPreferenceChange = cb; } };
-  runInNewContext(await readFile("src/scripts/project-images.js", "utf8"), {
+  runInNewContext(await pageScript("src/pages/projets/[slug].astro", "project-images"), {
     document: { querySelector: () => ({ querySelectorAll: () => images }) },
     window: {
       matchMedia: () => preference,

@@ -142,23 +142,3 @@ export function safeLink(value) {
     return null;
   }
 }
-
-export function sectionLayout(value) {
-  // Valeurs réelles avec espaces ; compatibilité avec les libellés du brief.
-  return String(value || "")
-    .trim()
-    .replace(/\s+/g, "_");
-}
-
-export function resolvedSectionLayout(section) {
-  const layout = sectionLayout(section.disposition);
-  // Cas non ambigu : seules des images pleine largeur sont renseignées.
-  const hasColumns =
-    section.texte_gauche?.trim() ||
-    section.texte_droite?.trim() ||
-    asArray(section.image_gauche).length ||
-    asArray(section.image_droite).length;
-  return !layout && !hasColumns && asArray(section.image_largeur).length
-    ? "pleine_largeur"
-    : layout;
-}

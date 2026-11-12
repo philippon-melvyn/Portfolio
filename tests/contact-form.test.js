@@ -1,8 +1,8 @@
+import { pageScript, pageFunctions } from "./helpers/page-scripts.js";
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import { runInNewContext } from "node:vm";
-import { contactMailto } from "../src/lib/contact-form.js";
+const { contactMailto } = await pageFunctions("src/pages/contact.astro", "contact-form", ["contactMailto"]);
 
 test("Contact : changer de côté, rendre uniquement le panneau actif accessible et revenir par Échap", async () => {
   const node = () => ({
@@ -26,7 +26,7 @@ test("Contact : changer de côté, rendre uniquement le panneau actif accessible
       "[data-close-contact]": back,
     })[selector],
   };
-  const source = await readFile("src/scripts/contact-switch.js", "utf8");
+  const source = await pageScript("src/pages/contact.astro", "contact-switch");
   runInNewContext(source, { document: { querySelector: () => root } });
   open.listeners.click();
   assert.equal(root.dataset.contactView, "message");
@@ -87,7 +87,7 @@ test("Contact Figma : valider les champs puis ouvrir le brouillon dans la messag
   const status = {};
   const window = { location: { href: "" } };
   const source = (
-    await readFile("src/scripts/contact-form.js", "utf8")
+    await pageScript("src/pages/contact.astro", "contact-form")
   ).replace(/^import .*;\r?\n/, "");
   runInNewContext(source, {
     contactMailto,

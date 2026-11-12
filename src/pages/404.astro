@@ -4,13 +4,13 @@ import ArrowLink from "../components/ArrowLink.astro";
 ---
 
 <BaseLayout title="Page introuvable" noindex footer={false}>
-  <div class="error-grid">
-    <div class="panel error-copy">
-      <p class="error-eyebrow">Erreur 404 — Page introuvable</p>
-      <p class="error-number" aria-hidden="true">
+  <div class="error-grid grid [grid-template-columns:minmax(0,_52fr)_minmax(0,_48fr)] min-h-[calc(100vh_-_64px)] max-[900px]:[grid-template-columns:minmax(0,_1fr)] max-[900px]:[&_>_div[aria-hidden='true']]:hidden">
+    <div class="panel error-copy pl-[clamp(24px,_3.472vw,_80px)] pr-[clamp(24px,_3.472vw,_80px)] min-w-0 pt-21.25 pb-15 [&_.heading-large]:text-[clamp(40px,_5vw,_72px)] [&_.heading-large]:max-w-125 [&_.heading-large]:leading-[0.95]">
+      <p class="error-eyebrow text-[11px] uppercase tracking-[1px] flex items-center gap-3 before:[content:''] before:w-3 before:h-3 before:[background:var(--color-brick)]">Erreur 404 — Page introuvable</p>
+      <p class="error-number font-display font-semibold text-accent text-[96px] leading-[1] tracking-[-4px] [margin-block:24px_40px]" aria-hidden="true">
         404.
       </p>
-      <h1 class="heading-large">Page introuvable.</h1>
+      <h1 class="heading-large font-display font-semibold uppercase text-[clamp(42px,_5.6vw,_80px)] leading-[1.14] tracking-[-0.0357em] [overflow-wrap:break-word] max-[900px]:text-[clamp(40px,_7vw,_64px)] max-[600px]:tracking-[-0.035em]">Page introuvable.</h1>
       <p class="mt-8 max-w-sm">
         La page que vous cherchez a peut-être changé d’adresse. Retrouvez mes
         créations depuis l’accueil ou la page des projets.
@@ -18,10 +18,10 @@ import ArrowLink from "../components/ArrowLink.astro";
       <div class="mt-10">
         <ArrowLink href="/" label="Retour à l’accueil" filled />
       </div>
-      <a href="/projets/" class="text-link mt-8 inline-block">
+      <a href="/projets/" class="text-link mt-8 inline-block [text-decoration:underline] [text-underline-offset:5px] hover:[color:var(--color-brick)]">
         Explorer les projets ↗
       </a>
-      <p class="error-signature">Melvyn Philippon / Portfolio</p>
+      <p class="error-signature text-[10px] tracking-[1px] uppercase mt-15">Melvyn Philippon / Portfolio</p>
     </div>
     <div class="bg-brick" aria-hidden="true"></div>
   </div>

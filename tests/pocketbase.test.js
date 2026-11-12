@@ -5,8 +5,6 @@ import { once } from "node:events";
 import {
   editorHtml,
   safeLink,
-  sectionLayout,
-  resolvedSectionLayout,
 } from "../src/lib/content.js";
 
 test("PocketBase : pagination, erreurs et relations publiques", async (t) => {
@@ -94,19 +92,4 @@ test("Contenus Editor et URL : pas de script ou de protocole exécutable", () =>
     safeLink("https://example.org/prototype"),
     "https://example.org/prototype",
   );
-  assert.equal(sectionLayout("deux colonnes"), "deux_colonnes");
-  assert.equal(sectionLayout("pleine largeur"), "pleine_largeur");
-  assert.equal(
-    resolvedSectionLayout({ disposition: "", image_largeur: ["a.webp"] }),
-    "pleine_largeur",
-  );
-  assert.equal(
-    resolvedSectionLayout({
-      disposition: "",
-      image_largeur: ["a.webp"],
-      texte_gauche: "Texte",
-    }),
-    "",
-  );
-  assert.equal(resolvedSectionLayout({ disposition: "inconnue" }), "inconnue");
 });

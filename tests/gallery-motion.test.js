@@ -1,6 +1,7 @@
+import { pageFunctions } from "./helpers/page-scripts.js";
 import test from "node:test";
 import assert from "node:assert/strict";
-import { galleryEase, createGalleryMotion } from "../src/lib/gallery-motion.js";
+const { galleryEase, createGalleryMotion } = await pageFunctions("src/pages/projets/index.astro", "project-browser", ["galleryEase","createGalleryMotion"]);
 
 function motionEnvironment() {
   let value = 0;

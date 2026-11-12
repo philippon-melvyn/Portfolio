@@ -1,50 +1,46 @@
-# Portfolio de Melvyn Philippon
+﻿# Portfolio de Melvyn Philippon
 
-## Lancer le site
+## Développement
 
 ```sh
 bun install --frozen-lockfile
 bun run dev
 ```
 
-PocketBase doit répondre sur `http://127.0.0.1:8090`. Copier `.env.example` vers `.env` si nécessaire. Utiliser `bun run dev`, sans `--bun` : Astro utilise Node.js et le binding WebAssembly de Rolldown installé pour cet environnement Windows. Node.js >= 22.23.4 est requis.
+Node.js >= 22.23.4 est requis. Utiliser les commandes Bun sans `--bun` : Astro s’exécute avec Node.js et le binding WebAssembly de Rolldown prévu pour cet environnement Windows.
 
-## Référence visuelle
-
-La version actuelle reprend la maquette Figma d’origine **Desktop-apres**, page `725:603` du fichier `wpBtuvgjb9jYIQHbMeLlqI`. Les cinq écrans ont été consultés de nouveau le 8 novembre 2026 : Accueil, Projets, À propos, modèle de projet et Contact. Les refontes expérimentales et leurs scripts/styles ont été retirés. Aucun asset de capture d’écran n’est utilisé comme page du site.
-
-Le site utilise Astro, Tailwind CSS et JavaScript natif. Les couleurs, polices locales Barlow Condensed et Inter et colonnes 61/39 viennent de la maquette. Le header commun est désormais transparent et superposé au contenu, avec logo à gauche et menu hamburger à droite sur toutes les tailles d’écran. À la demande du propriétaire, le footer est sans portrait : cinq colonnes sur fond sombre, séparateurs fins et nom compact dans la première colonne. Les pages s’adaptent aux petits écrans.
+Copier `.env.example` vers `.env` si nécessaire. PocketBase doit répondre à `POCKETBASE_URL`, actuellement `http://127.0.0.1:8090`. Le site lit uniquement l’API publique ; il ne crée ni ne modifie de données. Voir [POCKETBASE.md](POCKETBASE.md) pour les champs et les règles d’accès.
 
 ## Organisation
 
-- `src/pages/` : pages et routes dynamiques des projets.
-- `src/layouts/BaseLayout.astro` : structure HTML, métadonnées et éléments communs.
-- `src/components/` : header, footer, boutons, carrousels et sections de projet.
-- `src/lib/pocketbase.js` : API publique, pagination, publication et relations.
-- `src/lib/content.js` : contenus Text/Editor, URL et dispositions de section.
-- `src/lib/contact-form.js` : préparation d’un lien e-mail depuis le formulaire.
-- `src/styles/global.css` et `contact-form.css` : styles de la maquette et adaptations mobiles.
-- `public/` : ressources locales et licences des polices.
+Le site utilise Astro, Tailwind CSS et JavaScript natif. La présentation validée le 11 novembre 2026 est conservée pendant la refactorisation décrite dans [REFACTOR.md](REFACTOR.md).
 
-Les projets et savoirs publiés sont lus dans PocketBase. Les sections sont filtrées par projet et triées par `ordre,id`. Leurs titres et leur nombre ne sont pas imposés par le code. Les compétences sont reliées au projet ; le bloc rouge de l’accueil reprend le texte de la maquette. Les compétences sont triées par titre, car cette collection n’expose pas de champ `ordre` dans la base actuelle. Voir `POCKETBASE.md`.
+- `src/pages/` : pages, routes et scripts locaux placés en bas des pages Astro.
+- `src/components/` : éléments réutilisables et fragments de présentation.
+- `src/scripts/` : menu plein écran, contraste du header et raccord de navigation, communs aux pages.
+- `src/lib/` : lecture PocketBase, traitement des contenus et calcul du contraste communs.
+- `src/styles/global.css` : entrée Tailwind, couleurs et polices uniquement. Les utilitaires de mise en page, états et variantes responsive sont directement dans les attributs `class` des fichiers Astro. Les keyframes et transitions natives sont définies dans les composants Astro concernés.
+- `src/assets/` : photographies sources traitées par Astro, sans copie brute inutile dans le dossier public.
+- `public/` : favicon blanc, logo, portrait de partage et polices WOFF2 avec leurs licences.
+- `tests/` : tests de comportement et de construction ; `tests/helpers/page-scripts.js` extrait les vrais scripts des pages.
 
-## Galerie des projets
+Les projets publiés sont triés par `ordre,id`. L’accueil présente les trois premiers ; la page Projets les présente tous. Les compétences sont triées par titre, car cette collection n’expose pas de champ `ordre` sur l’instance actuelle. Les contenus détaillés et la galerie sont lus directement dans `Projets` ; l’ancienne collection `sections_projet` n’est plus utilisée.
 
-La galerie verticale boucle dans les deux sens : après le dernier projet, le premier arrive par le bas. Le défilement automatique garde toujours ce sens, toutes les sept secondes. Les copies visuelles du raccord sont exclues de la navigation clavier et des lecteurs d’écran ; les filtres reconstruisent la boucle avec les seuls projets sélectionnés.
+## Navigation et animations
 
-`/projets/` reprend la composition du PDF « Desktop - 1 » fourni par le propriétaire : images défilantes verticalement à gauche, titre et texte du projet centré à droite. Le contenu de droite suit le projet actif. Le bouton rouge « Filtrer les projets » est visible et ouvre un panneau fermé au chargement, alimenté par les domaines PocketBase. Sur mobile, les informations passent sous la galerie. Les filtres utilisent un élément `details` natif, avec fermeture par Échap, clic extérieur ou choix d’une action. Le menu hamburger ouvre un `dialog` natif plein écran : navigation typographique en escalier sur toute la largeur, sans image, ouverture et fermeture animées. Le dialogue gère le focus et bloque l’accès à la page derrière ; le scroll est verrouillé jusqu’à sa fermeture. Le bouton Fermer, Échap et les liens permettent de sortir du menu. Les préférences de mouvement réduit sont respectées.
+Le logo permet de revenir à l’accueil. Le menu commun utilise un `dialog` natif, avec focus, fermeture par Échap et raccord animé entre les pages. Une navigation de secours reste disponible sans JavaScript. Le header adapte indépendamment le contraste du logo et du bouton de menu au fond visible.
 
-Les cartes rectangulaires verticales sont dans le carrousel horizontal de l’accueil, à l’emplacement de l’ancienne sélection de projets. Un même script natif gère les deux axes. La page Projets n’affiche plus de commandes Précédent/Suivant/Auto ni de barre de défilement. Elle avance automatiquement toutes les sept secondes et reprend sept secondes après une action à la molette. L’animation de 1,4 seconde utilise un seul pilote requestAnimationFrame, avec accélération puis ralentissement ; le texte sort et entre pendant le passage de l’image. Les impulsions d’une même molette ne redémarrent pas le mouvement.
+Le carrousel d’accueil suit le scroll vertical sur ordinateur et reste horizontal natif sur mobile. Le bilan rouge est une section séparée. Les noms des savoirs et outils apparaissent et disparaissent dans une zone fixe pilotée par le scroll.
 
-L’automatisme est suspendu hors écran, dans un onglet masqué, pendant la manipulation tactile, quand les filtres sont ouverts ou lors d’un focus clavier. Le mouvement réduit est respecté. Avec un seul projet publié, aucun contenu supplémentaire n’est simulé. La galerie verticale accepte la molette, le glissement et les flèches haut/bas ; le carrousel d’accueil conserve le défilement vertical normal de la page et ses commandes de navigation horizontale.
+La galerie Projets boucle verticalement dans les deux sens et avance automatiquement toutes les sept secondes, avec les animations et la synchronisation des textes conservées. L’automatisme est suspendu dans un onglet masqué, hors écran, pendant une manipulation tactile, dans les filtres ou pendant le focus clavier. La touche Espace permet de le mettre en pause et de le reprendre. Les copies de raccord sont retirées du parcours clavier et masquées aux lecteurs d’écran. Les filtres se ferment par Échap, clic extérieur ou sélection.
 
-La couverture utilise une transition native partagée entre la carte et la page du projet sur les navigateurs compatibles. Un fondu de départ sert de repli pour les autres navigateurs. Les liens HTML restent utilisables sans JavaScript. Le footer commun reste inchangé sur les autres pages.
+Les préférences de réduction du mouvement sont respectées. Les images hors écran sont différées ; les images d’entrée restent prioritaires. Leurs variantes ne dépassent pas leur résolution source et la qualité de compression est conservée. Les pages projet éliminent les fichiers identiques, y compris renommés, sans modifier PocketBase. La couverture garde la transition native partagée avec sa carte.
 
-## Contact et liens à compléter
+## Contact et configuration
 
-Le formulaire prépare un e-mail dans la messagerie du visiteur ; il ne transmet pas de message à un serveur et n’annonce pas un envoi réussi. Le visiteur doit envoyer le brouillon depuis sa messagerie. Sans JavaScript, le formulaire utilise son action `mailto:` native et les coordonnées directes restent accessibles.
+Le formulaire prépare un brouillon dans la messagerie du visiteur ; le message doit être envoyé depuis cette messagerie. Les coordonnées directes, notamment l’adresse e-mail, restent accessibles sans JavaScript. Le numéro de téléphone reste du texte simple.
 
-Configurer `CONTACT_EMAIL`, les URL sociales et `CV_URL` dans `.env`. Le CV reste désactivé tant que son URL HTTPS n’est pas fournie. Les profils sociaux sans URL sont affichés sans lien inventé. `SITE_URL` active les URL canoniques, le sitemap et l’indexation ; sans domaine configuré, le site reste non indexable.
+Configurer `CONTACT_EMAIL`, les URL sociales et `CV_URL` dans `.env`. Les réseaux sans URL et le lien de CV non renseigné restent masqués. `SITE_URL` active les URL canoniques et le sitemap ; sans ce domaine, `robots.txt` demande de ne pas indexer le site.
 
 ## Vérifications et production
 
@@ -54,6 +50,8 @@ bun run build
 bun run preview
 ```
 
-`dist/` contient le site statique. Une modification dans PocketBase nécessite une nouvelle compilation pour la production. Les tests ne modifient pas la base. La compilation et les contrôles HTTP passent ; le contrôle visuel dans un navigateur reste à effectuer, les outils de navigateur étant indisponibles dans cette session.
+`dist/` contient le site statique. Une modification de PocketBase nécessite une nouvelle compilation pour la production. Les tests utilisent des enregistrements synthétiques isolés et ne modifient pas la base.
 
-Aucune modification de schéma ou de contenu PocketBase, aucun ajout à l’index, commit, push ou déploiement effectué par Codex. Le propriétaire conserve la gestion de Git. Ne pas versionner `.env`, `node_modules/` ni `pb_data/` ; ce dernier était déjà suivi dans l’état initial et doit être retiré du suivi par le propriétaire en conservant sa copie locale.
+La validation HTML, les références ARIA, les ressources et les tests automatisés complètent les contrôles manuels ; ils ne constituent pas une certification RGAA. Les limites de vérification et les mesures avant/après sont consignées dans `REFACTOR.md`.
+
+Ne pas versionner `.env`, `node_modules/` ni `pb_data/`. Le propriétaire conserve la gestion de Git et du déploiement. Aucun commit, push ou déploiement n’est effectué par cette refactorisation.

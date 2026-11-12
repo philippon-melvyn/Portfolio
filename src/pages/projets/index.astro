@@ -1,33 +1,34 @@
 ---
+import ProjectTransitions from "../../components/ProjectTransitions.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ProjectImage from "../../components/ProjectImage.astro";
 import { getProjects, imagesFor } from "../../lib/pocketbase.js";
-import { projectDomains } from "../../lib/project-browser.js";
+const projectDomains = (value) => [...new Set([value].flat().filter(Boolean).map((item) => String(item).trim()).filter(Boolean))];
 import { plainText } from "../../lib/content.js";
-import "../../styles/project-browser.css";
-import "../../styles/project-navigation.css";
 const projects = await getProjects();
 const domains = [
   ...new Set(projects.flatMap((project) => projectDomains(project.domaines))),
 ];
 ---
+<ProjectTransitions />
 
 <BaseLayout
   title="Mes projets"
   description="Explorez mes réalisations en identité visuelle, direction artistique et conception numérique."
   footer={false}
-  bodyClass="projects-screen"
+  bodyClass="projects-screen [body&]:h-[100svh] [body&]:supports-[height:100dvh]:h-[100dvh] [body&]:overflow-hidden [body&]:[background:#101113] [body&]:[color:var(--color-paper)] [body&_main]:h-full [body&_main]:min-h-0 [body&_:focus-visible]:[outline-color:#ee8e87] [body&_:focus-visible]:[box-shadow:0_0_0_3px_#101113]"
 >
   <section
-    class="project-browser"
+    class="project-browser relative h-full min-h-0 [&.is-project-leaving]:opacity-0 [&.is-project-leaving]:[transform:translateY(-12px)] [&.is-project-leaving]:[transition:opacity_230ms,_transform_280ms] motion-reduce:[&.is-project-leaving]:[transition:none]"
     data-project-browser
     data-project-axis="vertical"
     aria-label="Galerie verticale des projets"
     aria-roledescription="carrousel"
   >
     <h1 class="sr-only">Mes projets</h1>
+    <p id="gallery-help" class="sr-only">Utilisez les flèches haut et bas pour parcourir les projets. La touche Espace permet de mettre le défilement automatique en pause ou de le reprendre.</p>
     <details
-      class="project-filter-drawer"
+      class="project-filter-drawer absolute z-20 bottom-6 right-[clamp(32px,_4.03vw,_80px)] [&_>_summary]:flex [&_>_summary]:items-center [&_>_summary]:gap-5 [&_>_summary]:min-h-11.5 [&_>_summary]:p-[12px_18px] [&_>_summary]:[background:var(--color-brick)] [&_>_summary]:[color:white] [&_>_summary]:[border:0] [&_>_summary]:[list-style:none] [&_>_summary]:text-[11px] [&_>_summary]:uppercase [&_>_summary::-webkit-details-marker]:hidden [&_>_summary_>_span]:text-[20px] [&_>_summary_>_span]:leading-[1] [&_>_summary_>_span]:[transition:transform_180ms] [&[open]_>_summary_>_span]:[transform:rotate(45deg)] max-[700px]:bottom-4.5 max-[700px]:right-5 max-[700px]:[&_>_summary]:min-h-10 max-[700px]:[&_>_summary]:p-[10px_12px] max-[700px]:[&_>_summary]:text-[10px] max-[700px]:[&_>_summary]:gap-3 motion-reduce:[&_>_summary_>_span]:[transition:none]"
       data-project-filters
       data-disclosure
       data-disclosure-label="les filtres"
@@ -36,10 +37,10 @@ const domains = [
       <summary>
         Filtrer les projets <span aria-hidden="true">＋</span>
       </summary>
-      <div class="project-filter-panel">
-        <h2 class="project-filter-label">Domaines</h2>
+      <div class="project-filter-panel absolute bottom-[calc(100%_+_12px)] right-0 w-[min(280px,_calc(100vw_-_40px))] max-h-[60svh] overflow-y-auto p-6 [background:#101113] [border:1px_solid_#fafaf833] [box-shadow:0_16px_50px_#0006]">
+        <h2 class="project-filter-label [color:#aaa8a4] [font:500_10px/1.4_var(--font-sans)] uppercase mb-4.5">Domaines</h2>
         <div
-          class="project-filters"
+          class="project-filters flex flex-col gap-2 [&_button]:flex [&_button]:items-center [&_button]:justify-between [&_button]:gap-4 [&_button]:w-full [&_button]:min-h-11 [&_button]:p-3 [&_button]:text-left [&_button]:[border:1px_solid_#fafaf826] [&_button]:rounded-none [&_button]:text-[11px] [&_button]:leading-[1.4] [&_button]:uppercase [&_button]:[color:#c2c0bc] [&_button_>_span]:text-[9px] [&_button_>_span]:[opacity:0.65] [&_button:hover]:[color:white] [&_button[aria-pressed='true']]:[background:var(--color-paper)] [&_button[aria-pressed='true']]:[color:var(--color-ink)]"
           role="group"
           aria-label="Filtrer les projets par domaine"
         >
@@ -74,7 +75,7 @@ const domains = [
         </div>
       </div>
     </details>
-    <div class="project-browser-content">
+    <div class="project-browser-content grid [grid-template-columns:53fr_47fr] [grid-template-rows:minmax(0,_1fr)] h-full min-h-0 max-[700px]:[grid-template-columns:1fr] max-[700px]:[grid-template-rows:minmax(0,_1fr)_auto]">
       <p
         class="sr-only"
         data-project-status
@@ -83,18 +84,19 @@ const domains = [
         aria-atomic="true"
       ></p>
       <div
-        class="project-viewport"
+        class="project-viewport [--slide-height:clamp(240px,_51dvh,_600px)] [grid-column:1] [grid-row:1_/_-1] min-h-0 h-full overflow-y-auto overflow-x-hidden p-[var(--gallery-inset,_calc((100dvh_-_var(--slide-height))_/_2))_28px] [scroll-snap-type:y_mandatory] [overscroll-behavior-y:contain] [&[data-animated-scroll='true']]:[scroll-snap-type:none] [&[data-animated-scroll='true']]:scroll-auto min-[700px]:[--slide-height:72dvh] max-[700px]:[--slide-height:clamp(180px,_38dvh,_380px)] max-[700px]:[grid-column:1] max-[700px]:[grid-row:1] max-[700px]:p-[var(--gallery-inset,_12px)_20px]"
         data-project-viewport
         tabindex="0"
+        aria-describedby="gallery-help"
         aria-label="Projets. Faites défiler vers le haut ou le bas, ou utilisez les flèches haut et bas."
       >
         {projects.length ? (
-          <ul class="project-track" id="project-track">
+          <ul class="project-track relative flex flex-col gap-3 w-full min-[700px]:gap-2" id="project-track">
             {projects.map((project, index) => {
               const cover = imagesFor(project, "couverture")[0];
               return (
                 <li
-                  class="project-tile"
+                  class="project-tile relative [flex:0_0_auto] w-full h-[var(--slide-height)] [scroll-snap-align:center] [opacity:0.55] [transition:transform_650ms_cubic-bezier(0.16,_1,_0.3,_1),_opacity_400ms] [&[data-current='true']]:opacity-100 [&_>_a]:block [&_>_a]:h-full min-[700px]:[&[data-current='true']_.project-tile-image]:[clip-path:inset(0)] [@media((hover:_hover)_and_(pointer:_fine))]:hover:opacity-100 [@media((hover:_hover)_and_(pointer:_fine))]:hover:z-1 [@media((hover:_hover)_and_(pointer:_fine))]:[&:hover_img]:[transform:scale(1.07)] motion-reduce:[&&]:[transition:none] motion-reduce:hover:transform-none motion-reduce:[&:hover_img]:transform-none"
                   data-project-tile
                   data-project-slug={project.slug}
                   data-project-domains={JSON.stringify(
@@ -102,8 +104,8 @@ const domains = [
                   )}
                   data-current={index === 0 ? "true" : "false"}
                 >
-                  <a href={`/projets/${project.slug}/`} data-project-link>
-                    <div class="project-tile-image">
+                  <a href={`/projets/${project.slug}/`} data-project-link aria-label={`Découvrir le projet ${project.titre}`}>
+                    <div class="project-tile-image h-full overflow-hidden [background:#242426] [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:[transition:transform_900ms_cubic-bezier(0.16,_1,_0.3,_1)] min-[700px]:[clip-path:inset(2%_0)] min-[700px]:[transition:clip-path_800ms_cubic-bezier(0.22,_1,_0.36,_1)] motion-reduce:[&_img]:[transition:none] motion-reduce:[&&]:[transition:none]">
                       {cover && (
                         <ProjectImage
                           src={cover}
@@ -121,17 +123,17 @@ const domains = [
             })}
           </ul>
         ) : (
-          <p class="project-browser-empty">
+          <p class="project-browser-empty p-7.5 [color:#aaa8a4] text-[14px]">
             Mes réalisations seront bientôt présentées ici.
           </p>
         )}
       </div>
-      <div class="project-details" data-project-details>
+      <div class="project-details [grid-column:2] [grid-row:1] self-center min-w-0 p-[110px_clamp(32px,_7.4vw,_140px)_60px] [&_article]:max-w-90 [&_h2]:mt-0 [&_h2]:[font:600_clamp(34px,_3.4vw,_52px)/1.1_var(--font-display)] [&_h2]:uppercase [&_h2]:tracking-[-0.035em] max-[1001px]:px-8 max-[700px]:[grid-column:1] max-[700px]:[grid-row:2] max-[700px]:h-65 max-[700px]:p-[20px_24px_84px] max-[700px]:[&_article]:max-w-none max-[700px]:[&_h2]:mt-0 max-[700px]:[&_h2]:text-[32px]" data-project-details>
         {projects.map((project, index) => (
           <article data-project-detail={project.slug} hidden={index > 0}>
             <h2>{project.titre}</h2>
             {project.introduction && (
-              <p class="project-detail-intro">
+              <p class="project-detail-intro mt-9 text-[14px] leading-[1.7] max-[1001px]:text-[13px] max-[1001px]:mt-6 max-[700px]:mt-3 max-[700px]:text-[12px] max-[700px]:leading-[1.6] max-[700px]:[display:-webkit-box] max-[700px]:[-webkit-line-clamp:3] max-[700px]:[-webkit-box-orient:vertical] max-[700px]:overflow-hidden">
                 {plainText(project.introduction)}
               </p>
             )}
@@ -142,5 +144,683 @@ const domains = [
   </section>
 </BaseLayout>
 <script>
-  import "../../scripts/project-browser.js";
+  // project-browser
+function galleryEase(value) {
+  const t = Math.max(0, Math.min(1, value));
+  return t < 0.5 ? 16 * t ** 5 : 1 - (-2 * t + 2) ** 5 / 2;
+}
+
+// Un seul pilote du scroll : aucune animation native ou aimantation CSS concurrente.
+function createGalleryMotion({
+  read,
+  write,
+  requestFrame,
+  cancelFrame,
+  now,
+}) {
+  let frame;
+  let generation = 0;
+  let running = false;
+  function cancel() {
+    generation += 1;
+    if (frame !== undefined) cancelFrame(frame);
+    frame = undefined;
+    running = false;
+  }
+  function to(
+    target,
+    { duration = 1400, onUpdate = () => {}, onComplete = () => {} } = {},
+  ) {
+    cancel();
+    const from = read();
+    const start = now();
+    const token = generation;
+    if (!duration || Math.abs(target - from) < 0.5) {
+      write(target);
+      onUpdate(1);
+      onComplete();
+      return;
+    }
+    running = true;
+    function step(time) {
+      if (token !== generation) return;
+      const progress = Math.min(1, Math.max(0, (time - start) / duration));
+      write(from + (target - from) * galleryEase(progress));
+      onUpdate(progress);
+      if (progress < 1) frame = requestFrame(step);
+      else {
+        frame = undefined;
+        running = false;
+        onComplete();
+      }
+    }
+    frame = requestFrame(step);
+  }
+  return {
+    to,
+    cancel,
+    get running() {
+      return running;
+    },
+  };
+}
+
+function filterProjects(items, domain) {
+  return items.filter(
+    (item) => domain === "all" || item.domains.includes(domain),
+  );
+}
+
+function nextProjectIndex(current, total, direction = 1) {
+  return total > 0 ? (((current + direction) % total) + total) % total : 0;
+}
+
+// Interactions
+const AUTO_DELAY = 7000;
+const MOVE_DURATION = 1400;
+
+document.querySelectorAll("[data-project-browser]").forEach((root) => {
+  const viewport = root.querySelector("[data-project-viewport]");
+  const cards = [...root.querySelectorAll("[data-project-tile]")].map(
+    (element) => ({
+      element,
+      domains: JSON.parse(element.dataset.projectDomains),
+    }),
+  );
+  const filters = [...root.querySelectorAll("[data-project-domain]")];
+  const status = root.querySelector("[data-project-status]");
+  const filterDrawer = root.querySelector("[data-project-filters]");
+  const details = [...root.querySelectorAll("[data-project-detail]")];
+  const detailPanel = root.querySelector("[data-project-details]");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const storageKey = "portfolio-project-gallery-vertical";
+  let visible = cards;
+  let domain = "all";
+  let current = 0;
+  let activeDetail;
+  let timer;
+  let settleTimer;
+  let paused = reducedMotion.matches;
+  let focused = false;
+  let dragging = false;
+  let navigating = false;
+  let scheduled = false;
+  let inView = !("IntersectionObserver" in window);
+  let motionDirection = 0;
+  let wheelDelta = 0;
+  let loopCopies = [];
+
+  // Deux bandes identiques entourent les originaux : le raccord reste hors champ.
+  function rebuildLoop() {
+    loopCopies.forEach((copy) => copy.remove());
+    loopCopies = [];
+    if (visible.length < 2) return;
+    const track = cards[0].element.parentElement;
+    for (const side of ["before", "after"]) {
+      const copies = visible.map(({ element }) => {
+        const copy = element.cloneNode(true);
+        copy.hidden = false;
+        copy.setAttribute("aria-hidden", "true");
+        copy.removeAttribute("data-project-tile");
+        for (const node of [copy, ...copy.querySelectorAll("*")]) {
+          node.removeAttribute("id");
+          node.style?.removeProperty("view-transition-name");
+          if (node.matches("a, button, [tabindex]")) node.tabIndex = -1;
+        }
+        copy.querySelectorAll("[data-project-link]").forEach(bindProjectLink);
+        loopCopies.push(copy);
+        return copy;
+      });
+      if (side === "before") track.prepend(...copies);
+      else track.append(...copies);
+    }
+  }
+  function loopSpan() {
+    return loopCopies.length
+      ? loopCopies[visible.length].offsetTop - visible[0].element.offsetTop
+      : 0;
+  }
+  function normalizeLoop() {
+    const span = loopSpan();
+    if (!span) return;
+    const start = visible[0].element.offsetTop;
+    const boundary = start - (visible[1].element.offsetTop - start) / 2;
+    const offset = viewport.scrollTop;
+    if (offset < boundary || offset >= boundary + span)
+      viewport.scrollTop = boundary + (((offset - boundary) % span) + span) % span;
+  }
+
+  const motion = createGalleryMotion({
+    read: () => viewport.scrollTop,
+    write: (value) => {
+      viewport.scrollTop = value;
+    },
+    requestFrame: (callback) => window.requestAnimationFrame(callback),
+    cancelFrame: (id) => window.cancelAnimationFrame(id),
+    now: () => window.performance.now(),
+  });
+  viewport.setAttribute("data-animated-scroll", "true");
+
+  function stopTimer() {
+    window.clearTimeout(timer);
+    timer = undefined;
+  }
+  function clearSettle() {
+    window.clearTimeout(settleTimer);
+    settleTimer = undefined;
+  }
+  function saveState() {
+    try {
+      sessionStorage.setItem(
+        storageKey,
+        JSON.stringify({ domain, offset: viewport.scrollTop, index: current }),
+      );
+    } catch {
+      /* Stockage facultatif. */
+    }
+  }
+  function canTravel() {
+    return (
+      visible.length > 1 && viewport.scrollHeight > viewport.clientHeight + 1
+    );
+  }
+  function scheduleAutoplay() {
+    stopTimer();
+    if (
+      paused ||
+      focused ||
+      dragging ||
+      navigating ||
+      reducedMotion.matches ||
+      document.hidden ||
+      !inView ||
+      filterDrawer?.open ||
+      !canTravel()
+    )
+      return;
+    timer = window.setTimeout(() => {
+      move(1, false);
+      scheduleAutoplay();
+    }, AUTO_DELAY);
+  }
+  function nearestIndex() {
+    if (!visible.length) return 0;
+    normalizeLoop();
+    const index = visible.reduce(
+      (best, card, i) =>
+        Math.abs(card.element.offsetTop - viewport.scrollTop) <
+        Math.abs(visible[best].element.offsetTop - viewport.scrollTop)
+          ? i
+          : best,
+      0,
+    );
+    const maximum = viewport.scrollHeight - viewport.clientHeight;
+    return maximum > 1 && viewport.scrollTop >= maximum - 2
+      ? visible.length - 1
+      : index;
+  }
+  function markCurrent() {
+    visible.forEach((card, index) =>
+      card.element.setAttribute("data-current", String(index === current)),
+    );
+    loopCopies.forEach((copy) =>
+      copy.setAttribute(
+        "data-current",
+        String(copy.dataset.projectSlug === visible[current]?.element.dataset.projectSlug),
+      ),
+    );
+  }
+  function cancelTextAnimations() {
+    details.forEach((detail) =>
+      detail.getAnimations?.().forEach((animation) => animation.cancel()),
+    );
+  }
+  function stopMotion() {
+    motion.cancel();
+    cancelTextAnimations();
+    current = nearestIndex();
+    showDetail(current);
+
+  }
+  function detailFor(index) {
+    return details.find(
+      (detail) =>
+        detail.dataset.projectDetail ===
+        visible[index]?.element.dataset.projectSlug,
+    );
+  }
+  function showDetail(index, animate = false, direction = 1) {
+    const target = detailFor(index);
+    const changed = target !== activeDetail;
+    details.forEach((detail) => {
+      detail.hidden = detail !== target;
+    });
+    activeDetail = target;
+    if (changed && animate && !reducedMotion.matches)
+      target?.animate?.(
+        [
+          { opacity: 0, transform: `translateY(${24 * direction}px)` },
+          { opacity: 1, transform: "translateY(0)" },
+        ],
+        { duration: 700, easing: "cubic-bezier(.16,1,.3,1)", fill: "both" },
+      );
+    markCurrent();
+  }
+  function textTransition(index, direction) {
+    const target = detailFor(index);
+    const old = activeDetail;
+    const snapshot = old && window.getComputedStyle?.(old);
+    const from = {
+      opacity: snapshot?.opacity || 1,
+      transform: snapshot?.transform || "translateY(0)",
+    };
+    cancelTextAnimations();
+    if (!target) return () => {};
+    if (target === old) {
+      target.hidden = false;
+      if (!reducedMotion.matches)
+        target.animate?.([from, { opacity: 1, transform: "translateY(0)" }], {
+          duration: 500,
+          easing: "ease-out",
+          fill: "both",
+        });
+      return () => {};
+    }
+    if (!reducedMotion.matches)
+      old?.animate?.(
+        [from, { opacity: 0, transform: `translateY(${-22 * direction}px)` }],
+        {
+          duration: 630,
+          easing: "cubic-bezier(.55,0,1,.45)",
+          fill: "forwards",
+        },
+      );
+    let switched = false;
+    return (progress) => {
+      if (switched || progress < 0.45) return;
+      switched = true;
+      showDetail(index, true, direction);
+    };
+  }
+  function measureCurrent() {
+    scheduled = false;
+    if (motion.running) return;
+    const old = current;
+    current = nearestIndex();
+
+    showDetail(current, true, current >= old ? 1 : -1);
+  }
+  function requestMeasure() {
+    if (!scheduled) {
+      scheduled = true;
+      window.requestAnimationFrame(measureCurrent);
+    }
+  }
+  function centerVerticalCards() {
+    if (!visible.length) return;
+    const height = visible[0].element.offsetHeight;
+    if (Number.isFinite(height))
+      viewport.style.setProperty(
+        "--gallery-inset",
+        `${Math.max(0, (viewport.clientHeight - height) / 2)}px`,
+      );
+  }
+  function manualInteraction() {
+    paused = false;
+    stopTimer();
+
+    scheduleAutoplay();
+  }
+  function goTo(index, manual = true, travelDirection = 0) {
+    if (!visible.length) return;
+    if (manual) manualInteraction();
+    clearSettle();
+    current = Math.max(0, Math.min(index, visible.length - 1));
+    normalizeLoop();
+    let destination = visible[current].element.offsetTop;
+    const span = loopSpan();
+    if (span && travelDirection) {
+      const candidates = [destination - span, destination, destination + span]
+        .filter((value) =>
+          (value - viewport.scrollTop) * travelDirection >= -0.5,
+        )
+        .sort((a, b) =>
+          Math.abs(a - viewport.scrollTop) - Math.abs(b - viewport.scrollTop),
+        );
+      destination = candidates[0] ?? destination;
+    }
+    const target = Math.max(
+      0,
+      Math.min(
+        destination,
+        viewport.scrollHeight - viewport.clientHeight,
+      ),
+    );
+    motionDirection = target >= viewport.scrollTop ? 1 : -1;
+    const syncText = textTransition(current, motionDirection);
+    motion.to(target, {
+      duration: reducedMotion.matches ? 0 : MOVE_DURATION,
+      onUpdate: syncText,
+      onComplete: () => {
+        normalizeLoop();
+        motionDirection = 0;
+        showDetail(current);
+
+        saveState();
+      },
+    });
+
+    if (manual && status)
+      status.textContent = `${current + 1} sur ${visible.length} : ${visible[current].element.querySelector("h2").textContent}.`;
+  }
+  function move(direction, manual = true) {
+    const index = nextProjectIndex(current, visible.length, direction);
+    goTo(index, manual, direction);
+  }
+  function applyFilter(value, announce = true) {
+    motion.cancel();
+    clearSettle();
+    stopTimer();
+    cancelTextAnimations();
+    domain = value;
+    visible = filterProjects(cards, domain);
+    const selected = new Set(visible);
+    cards.forEach((card) => {
+      card.element.hidden = !selected.has(card);
+    });
+    rebuildLoop();
+    filters.forEach((button) =>
+      button.setAttribute(
+        "aria-pressed",
+        String(button.dataset.projectDomain === domain),
+      ),
+    );
+    current = 0;
+    viewport.scrollTop = 0;
+    showDetail(current);
+    centerVerticalCards();
+    if (visible.length)
+      viewport.scrollTop = visible[0].element.offsetTop;
+
+    if (announce && status)
+      status.textContent = `${visible.length} projet${visible.length > 1 ? "s" : ""} affiché${visible.length > 1 ? "s" : ""}.`;
+    saveState();
+    scheduleAutoplay();
+  }
+  function settle() {
+    clearSettle();
+    if (dragging || motion.running || !visible.length) return;
+    settleTimer = window.setTimeout(() => {
+      goTo(nearestIndex(), false);
+      scheduleAutoplay();
+    }, 180);
+  }
+
+  filters.forEach((button) =>
+    button.addEventListener("click", () =>
+      applyFilter(button.dataset.projectDomain),
+    ),
+  );
+  filterDrawer?.addEventListener("toggle", () => {
+    if (filterDrawer.open) stopTimer();
+    else scheduleAutoplay();
+  });
+  viewport.addEventListener("pointerleave", scheduleAutoplay);
+  viewport.addEventListener(
+    "pointerdown",
+    () => {
+      dragging = true;
+      stopMotion();
+      clearSettle();
+      manualInteraction();
+    },
+    { passive: true },
+  );
+  function releasePointer() {
+    if (!dragging) return;
+    dragging = false;
+    settle();
+    scheduleAutoplay();
+  }
+  window.addEventListener("pointerup", releasePointer, { passive: true });
+  window.addEventListener("pointercancel", releasePointer, { passive: true });
+  viewport.addEventListener("focusin", (event) => {
+    focused = event.target?.matches
+      ? event.target.matches(":focus-visible")
+      : true;
+    if (focused) {
+      stopMotion();
+      stopTimer();
+
+    }
+  });
+  viewport.addEventListener("focusout", (event) => {
+    if (!viewport.contains(event.relatedTarget)) {
+      focused = false;
+      scheduleAutoplay();
+    }
+  });
+  detailPanel?.addEventListener("focusin", () => {
+    focused = true;
+    stopTimer();
+  });
+  detailPanel?.addEventListener("focusout", (event) => {
+    if (!detailPanel.contains(event.relatedTarget)) {
+      focused = false;
+      scheduleAutoplay();
+    }
+  });
+  viewport.addEventListener(
+    "scroll",
+    () => {
+      if (!motion.running) {
+        requestMeasure();
+        settle();
+      }
+    },
+    { passive: true },
+  );
+  root.addEventListener(
+      "wheel",
+      (event) => {
+        if (
+          event.ctrlKey ||
+          event.target.closest("[data-project-filters]") ||
+          !canTravel()
+        )
+          return;
+        event.preventDefault();
+        manualInteraction();
+        const delta =
+          event.deltaY *
+          (event.deltaMode === 1
+            ? 20
+            : event.deltaMode === 2
+              ? viewport.clientHeight
+              : 1);
+        if (!delta) return;
+        const direction = Math.sign(delta);
+        if (motion.running && direction === motionDirection) return;
+        if (Math.sign(wheelDelta) !== direction) wheelDelta = 0;
+        wheelDelta += delta;
+        if (Math.abs(wheelDelta) < 24) return;
+        wheelDelta = 0;
+        move(direction);
+      },
+      { passive: false },
+    );
+  viewport.addEventListener("keydown", (event) => {
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
+    if (event.key === " ") {
+      event.preventDefault();
+      paused = !paused;
+      scheduleAutoplay();
+      if (status) status.textContent = paused ? "Défilement automatique en pause." : "Défilement automatique activé.";
+      return;
+    }
+    const back = "ArrowUp";
+    const forward = "ArrowDown";
+    if (![back, forward, "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    if (event.key === "Home") goTo(0);
+    else if (event.key === "End") goTo(visible.length - 1);
+    else move(event.key === back ? -1 : 1);
+    if (event.target.closest("[data-project-link]"))
+      visible[current]?.element
+        .querySelector("a")
+        .focus({ preventScroll: true });
+  });
+  function bindProjectLink(link) {
+    link.addEventListener("click", (event) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      )
+        return;
+      navigating = true;
+      motion.cancel();
+      stopTimer();
+      clearSettle();
+      saveState();
+      if (reducedMotion.matches || "onpageswap" in window) return;
+      event.preventDefault();
+      root.classList.add("is-project-leaving");
+      window.setTimeout(() => window.location.assign(link.href), 240);
+    });
+  }
+  root.querySelectorAll("[data-project-link]").forEach(bindProjectLink);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      stopTimer();
+      stopMotion();
+    } else {
+      measureCurrent();
+      scheduleAutoplay();
+    }
+  });
+  reducedMotion.addEventListener("change", () => {
+    stopMotion();
+    paused = reducedMotion.matches;
+
+    scheduleAutoplay();
+  });
+  window.addEventListener("resize", () => {
+    stopMotion();
+    centerVerticalCards();
+    requestMeasure();
+    scheduleAutoplay();
+  });
+  window.addEventListener("pagehide", () => {
+    stopMotion();
+    stopTimer();
+    clearSettle();
+    saveState();
+  });
+  window.addEventListener("pageshow", () => {
+    navigating = false;
+    root.classList.remove("is-project-leaving");
+    requestMeasure();
+    scheduleAutoplay();
+  });
+
+  let saved;
+  try {
+    saved = JSON.parse(sessionStorage.getItem(storageKey) || "null");
+  } catch {
+    /* Stockage facultatif. */
+  }
+  if (filterDrawer) filterDrawer.hidden = !cards.length;
+  applyFilter(
+    filters.some((button) => button.dataset.projectDomain === saved?.domain)
+      ? saved.domain
+      : "all",
+    false,
+  );
+  if (Number.isInteger(saved?.index) && visible[saved.index])
+    viewport.scrollTop = visible[saved.index].element.offsetTop;
+  else if (saved && Number.isFinite(saved.offset) && saved.offset > 0)
+    viewport.scrollTop = saved.offset;
+  // Un changement de hauteur des cartes ne doit pas laisser le projet restauré décentré.
+  if (visible.length) {
+    current = nearestIndex();
+    viewport.scrollTop = visible[current].element.offsetTop;
+    showDetail(current);
+  }
+  if ("IntersectionObserver" in window) {
+    new window.IntersectionObserver(
+      (entries) => {
+        inView = entries[0].isIntersecting;
+        if (inView) scheduleAutoplay();
+        else {
+          stopTimer();
+          stopMotion();
+        }
+      },
+      { threshold: 0.15 },
+    ).observe(root);
+  }
+  if ("ResizeObserver" in window)
+    new window.ResizeObserver(() => {
+      centerVerticalCards();
+      requestMeasure();
+    }).observe(viewport, { box: "border-box" });
+  requestMeasure();
+  scheduleAutoplay();
+});
+</script>
+
+<script>
+  // disclosures
+const disclosures = [...document.querySelectorAll("[data-disclosure]")];
+
+disclosures.forEach((menu) => {
+  const trigger = menu.querySelector("summary");
+  function update() {
+    trigger.setAttribute("aria-expanded", String(menu.open));
+    trigger.setAttribute(
+      "aria-label",
+      `${menu.open ? "Fermer" : "Ouvrir"} ${menu.dataset.disclosureLabel}`,
+    );
+    if (menu.open)
+      disclosures.forEach((other) => {
+        if (other !== menu) other.open = false;
+      });
+  }
+  menu.addEventListener("toggle", update);
+  menu.addEventListener("focusout", (event) => {
+    if (event.relatedTarget && !menu.contains(event.relatedTarget))
+      menu.open = false;
+  });
+  update();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  disclosures.forEach((menu) => {
+    if (menu.open) {
+      menu.open = false;
+      menu.querySelector("summary").focus();
+    }
+  });
+});
+
+document.addEventListener("click", (event) => {
+  disclosures.forEach((menu) => {
+    if (!menu.open) return;
+    if (!menu.contains(event.target)) {
+      menu.open = false;
+      return;
+    }
+    const action = event.target.closest?.("a, [data-close-disclosure]");
+    if (action && menu.contains(action)) {
+      menu.open = false;
+      if (action.matches("[data-close-disclosure]"))
+        menu.querySelector("summary").focus();
+    }
+  });
+});
 </script>

@@ -1,13 +1,10 @@
+import { pageScript, pageFunctions, serverFunction } from "./helpers/page-scripts.js";
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import { runInNewContext } from "node:vm";
-import { createGalleryMotion } from "../src/lib/gallery-motion.js";
-import {
-  projectDomains,
-  filterProjects,
-  nextProjectIndex,
-} from "../src/lib/project-browser.js";
+const { createGalleryMotion } = await pageFunctions("src/pages/projets/index.astro", "project-browser", ["createGalleryMotion"]);
+const { projectDomains } = await serverFunction("src/pages/projets/index.astro", "projectDomains");
+const { filterProjects, nextProjectIndex } = await pageFunctions("src/pages/projets/index.astro", "project-browser", ["filterProjects", "nextProjectIndex"]);
 
 test("Galerie projets : domaines multiples et navigation circulaire", () => {
   assert.deepEqual(projectDomains([" Identité ", "Numérique", "Identité"]), [
@@ -31,8 +28,6 @@ test("Galerie projets : domaines multiples et navigation circulaire", () => {
 async function galleryEnvironment({
   count = 3,
   reduced = false,
-  axis = "horizontal",
-  controls = true,
 } = {}) {
   const element = (extra = {}) => ({
     hidden: false,
@@ -103,10 +98,6 @@ async function galleryEnvironment({
   const filters = ["all", "Numérique", "Identité"].map((domain) =>
     element({ dataset: { projectDomain: domain } }),
   );
-  const previous = element();
-  const next = element();
-  const autoplay = element();
-  const position = element();
   const status = element();
   const viewport = element({
     scrollLeft: 0,
@@ -144,27 +135,11 @@ async function galleryEnvironment({
   });
   const map = {
     "[data-project-viewport]": viewport,
-    "[data-project-previous]": previous,
-    "[data-project-next]": next,
-    "[data-project-autoplay]": autoplay,
-    "[data-project-position]": position,
     "[data-project-status]": status,
     "[data-project-filters]": element(),
-    "[data-project-controls]": element(),
     "[data-project-details]": element(),
   };
-  if (!controls)
-    [
-      "[data-project-previous]",
-      "[data-project-next]",
-      "[data-project-autoplay]",
-      "[data-project-controls]",
-      "[data-project-position]",
-    ].forEach((key) => {
-      map[key] = null;
-    });
   const root = element({
-    dataset: { projectAxis: axis },
     classList: {
       add: (value) => classes.add(value),
       remove: (value) => classes.delete(value),
@@ -217,7 +192,7 @@ async function galleryEnvironment({
   });
   const storage = new Map();
   const source = (
-    await readFile("src/scripts/project-browser.js", "utf8")
+    await pageScript("src/pages/projets/index.astro", "project-browser")
   ).replace(/^import .*;\r?\n/gm, "");
   runInNewContext(source, {
     filterProjects,
@@ -254,10 +229,6 @@ async function galleryEnvironment({
     details,
     filterDrawer: map["[data-project-filters]"],
     filters,
-    previous,
-    next,
-    autoplay,
-    position,
     status,
     viewport,
     timers,
@@ -280,16 +251,14 @@ test("Galerie projets : filtres, défilement automatique et pauses réelles", as
   const env = await galleryEnvironment();
   assert.equal(env.timers.size, 1);
   env.fireTimer();
-  assert.ok(env.viewport.scrollLeft > 0);
+  assert.ok(env.viewport.scrollTop > 0);
   env.viewport.emit("pointerenter");
-  assert.equal(env.timers.size, 0);
+  assert.equal(env.timers.size, 1);
   env.viewport.emit("pointerleave");
   assert.equal(env.timers.size, 1);
   env.viewport.emit("focusin");
   assert.equal(env.timers.size, 0);
-  assert.equal(env.autoplay.attributes["aria-pressed"], "true");
   env.viewport.emit("focusout", { relatedTarget: null });
-  env.autoplay.emit("click");
   assert.equal(env.timers.size, 1);
   env.document.hidden = true;
   env.document.emit("visibilitychange");
@@ -299,8 +268,7 @@ test("Galerie projets : filtres, défilement automatique et pauses réelles", as
   assert.equal(env.timers.size, 1);
   env.filters[2].emit("click");
   assert.equal(env.cards.filter((item) => !item.card.hidden).length, 1);
-  assert.equal(env.viewport.scrollLeft, 0);
-  assert.equal(env.autoplay.hidden, true);
+  assert.equal(env.viewport.scrollTop, 0);
   assert.equal(env.filters[2].attributes["aria-pressed"], "true");
   assert.equal(env.status.textContent, "1 projet affiché.");
   assert.equal(env.timers.size, 0);
@@ -309,12 +277,19 @@ test("Galerie projets : filtres, défilement automatique et pauses réelles", as
 test("Galerie projets : pas d’automatisme sans autre projet ou en mouvement réduit", async () => {
   const single = await galleryEnvironment({ count: 1 });
   assert.equal(single.timers.size, 0);
-  assert.equal(single.next.hidden, true);
   const reduced = await galleryEnvironment({ reduced: true });
   assert.equal(reduced.timers.size, 0);
-  assert.equal(reduced.autoplay.disabled, true);
-  reduced.next.emit("click");
-  assert.ok(reduced.viewport.scrollLeft > 0);
+  reduced.viewport.emit("keydown", { key: "ArrowDown", preventDefault() {}, target: { closest: () => null } });
+  assert.ok(reduced.viewport.scrollTop > 0);
+});
+
+test("Galerie : la touche Espace met en pause et reprend le défilement", async () => {
+  const env = await galleryEnvironment();
+  env.viewport.emit("keydown", { key: " ", preventDefault() {} });
+  assert.equal(env.timers.size, 0);
+  assert.match(env.status.textContent, /pause/);
+  env.viewport.emit("keydown", { key: " ", preventDefault() {} });
+  assert.equal(env.timers.size, 1);
 });
 
 test("Galerie projets : garder les clics modifiés et animer le repli de navigation", async () => {
@@ -342,7 +317,7 @@ test("Galerie projets : garder les clics modifiés et animer le repli de navigat
 });
 
 test("Galerie verticale : défilement haut/bas et texte du projet centré synchronisé", async () => {
-  const env = await galleryEnvironment({ axis: "vertical" });
+  const env = await galleryEnvironment({});
   assert.equal(env.details[0].hidden, false);
   env.fireTimer();
   assert.ok(env.viewport.scrollTop > 0);
@@ -375,7 +350,7 @@ test("Galerie verticale : défilement haut/bas et texte du projet centré synchr
   assert.equal(env.status.textContent, "1 projet affiché.");
 });
 
-test("Accueil : laisser la molette verticale faire défiler la page et suspendre l’auto dans les filtres", async () => {
+test("Galerie : la molette du viewport reste native et les filtres suspendent l’auto", async () => {
   const env = await galleryEnvironment();
   let prevented = false;
   env.viewport.emit("wheel", {
@@ -388,7 +363,6 @@ test("Accueil : laisser la molette verticale faire défiler la page et suspendre
   });
   assert.equal(prevented, false);
   assert.equal(env.viewport.scrollLeft, 0);
-  env.autoplay.emit("click");
   assert.equal(env.timers.size, 1);
   env.filterDrawer.open = true;
   env.filterDrawer.emit("toggle");
@@ -399,7 +373,7 @@ test("Accueil : laisser la molette verticale faire défiler la page et suspendre
 });
 
 test("Galerie verticale : auto toutes les sept secondes, sans commandes, et reprise après la molette", async () => {
-  const env = await galleryEnvironment({ axis: "vertical", controls: false });
+  const env = await galleryEnvironment({  });
   assert.equal([...env.timers.values()][0].delay, 7000);
   env.viewport.emit("pointerenter");
   assert.equal(
@@ -428,7 +402,7 @@ test("Galerie verticale : auto toutes les sept secondes, sans commandes, et repr
 });
 
 test("Texte synchronisé : garder l’ancien projet au départ et basculer à l’accélération", async () => {
-  const env = await galleryEnvironment({ axis: "vertical", controls: false });
+  const env = await galleryEnvironment({  });
   env.fireTimer(false);
   env.stepFrame(500);
   assert.equal(env.details[0].hidden, false);
@@ -441,7 +415,7 @@ test("Texte synchronisé : garder l’ancien projet au départ et basculer à l�
 });
 
 test("Boucle verticale : le premier arrive par le bas après le dernier, sur plusieurs tours", async () => {
-  const env = await galleryEnvironment({ axis: "vertical", controls: false, count: 2 });
+  const env = await galleryEnvironment({ count: 2 });
   for (let turn = 0; turn < 3; turn += 1) {
     env.fireTimer();
     assert.equal(env.details[1].hidden, false);
@@ -459,7 +433,7 @@ test("Boucle verticale : le premier arrive par le bas après le dernier, sur plu
 });
 
 test("Boucle verticale : retour vers le haut et reconstruction après filtrage", async () => {
-  const env = await galleryEnvironment({ axis: "vertical", controls: false });
+  const env = await galleryEnvironment({  });
   const firstOffset = env.viewport.scrollTop;
   env.viewport.emit("keydown", {
     key: "ArrowUp", preventDefault() {}, target: { closest: () => null },
@@ -481,7 +455,7 @@ test("Boucle verticale : retour vers le haut et reconstruction après filtrage",
 });
 
 test("Boucle verticale : inverser la molette pendant le raccord revient au dernier sans tour supplémentaire", async () => {
-  const env = await galleryEnvironment({ axis: "vertical", controls: false, count: 2 });
+  const env = await galleryEnvironment({ count: 2 });
   env.fireTimer();
   const lastOffset = env.viewport.scrollTop;
   env.fireTimer(false);

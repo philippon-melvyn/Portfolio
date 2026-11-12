@@ -10,7 +10,6 @@ const {
   image,
   noindex = false,
   footer = true,
-  header = true,
   bodyClass,
 } = Astro.props;
 const pageTitle = title
@@ -23,19 +22,20 @@ const shareImage =
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang="fr" class="[:where(&_*)]:[scrollbar-width:none] [:where(&_*)]:[-ms-overflow-style:none] [:where(&)_*::-webkit-scrollbar]:hidden [:where(&)_*::-webkit-scrollbar]:w-0 [:where(&)_*::-webkit-scrollbar]:h-0 scroll-smooth [scroll-padding-top:5rem] [:where(&_main)]:pt-0 [:where(&_main:focus)]:[outline:none] [:where(&_img)]:max-w-full [:where(&_button)]:[-webkit-tap-highlight-color:transparent] [:where(&_summary)]:[-webkit-tap-highlight-color:transparent] [:where(&_a)]:[-webkit-tap-highlight-color:transparent] [:where(&_button)]:cursor-pointer [:where(&_summary)]:cursor-pointer [:where(&_a)]:touch-manipulation [:where(&_button)]:touch-manipulation [:where(&_:focus-visible)]:[outline:3px_solid_var(--color-accent)] [:where(&_:focus-visible)]:[outline-offset:6px] [:where(&_:focus-visible)]:[box-shadow:0_0_0_4px_var(--color-paper)] [:where(&)_::selection]:[background:var(--color-brick)] [:where(&)_::selection]:[color:white] [:where(&_[hidden])]:hidden! motion-reduce:scroll-auto motion-reduce:[:where(&_*)]:[transition-duration:0s]! motion-reduce:[:where(&_*)]:[animation-duration:0s]! motion-reduce:[:where(&)_*::before]:[transition-duration:0s]! motion-reduce:[:where(&)_*::before]:[animation-duration:0s]! motion-reduce:[:where(&)_*::after]:[transition-duration:0s]! motion-reduce:[:where(&)_*::after]:[animation-duration:0s]! [&:has(body.contact-screen)]:h-full [&:has(body.contact-screen)]:overflow-hidden [&[data-menu-arrival]::before]:[content:''] [&[data-menu-arrival]::before]:fixed [&[data-menu-arrival]::before]:inset-0 [&[data-menu-arrival]::before]:[background:#a33333] [&[data-menu-arrival]::before]:pointer-events-auto [&[data-menu-arrival]::before]:z-2147483647 motion-reduce:[&[data-menu-arrival]::before]:hidden">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
     <MenuTransition />
     <meta name="description" content={description} />
     <title>{pageTitle}</title>
-    <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link
       rel="preload"
-      href="/fonts/barlow-condensed-600.ttf"
+      href="/fonts/barlow-condensed-600.woff2"
       as="font"
-      type="font/ttf"
+      type="font/woff2"
       crossorigin
     />
     {canonical && <link rel="canonical" href={canonical} />}
@@ -51,9 +51,9 @@ const shareImage =
       content={shareImage ? "summary_large_image" : "summary"}
     />
   </head>
-  <body class={bodyClass}>
-    {header && <Header />}
-    <main id="contenu" tabindex="-1" class:list={{ "without-header": !header }}>
+  <body class:list={["bg-paper font-sans text-ink m-0 text-[16px] font-medium leading-[1.55] max-[900px]:text-[16px] max-[900px]:leading-[1.5]", bodyClass]}>
+    <Header />
+    <main id="contenu" tabindex="-1">
       <slot />
     </main>
     {footer && <Footer />}

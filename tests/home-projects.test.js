@@ -1,6 +1,6 @@
-﻿import test from "node:test";
+import { pageScript } from "./helpers/page-scripts.js";
+import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import { runInNewContext } from "node:vm";
 
 async function setup() {
@@ -28,7 +28,7 @@ async function setup() {
     querySelectorAll: () => panels,
     getBoundingClientRect: () => ({ top: 1000 - scrollY }),
   };
-  runInNewContext(await readFile("src/scripts/home-projects.js", "utf8"), {
+  runInNewContext(await pageScript("src/pages/index.astro", "home-projects"), {
     document: { querySelector: () => root },
     window: {
       get scrollY() { return scrollY; },

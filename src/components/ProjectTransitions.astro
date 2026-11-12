@@ -1,4 +1,4 @@
-/* Transition native entre la carte et la couverture de la page projet. */
+<style is:global>
 @view-transition {
   navigation: auto;
 }
@@ -26,9 +26,9 @@
   @view-transition {
     navigation: none;
   }
-  ::view-transition-group(*),
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
+  ::view-transition-group(*), ::view-transition-old(root), ::view-transition-new(root) {
     animation: none;
   }
 }
+
+</style>

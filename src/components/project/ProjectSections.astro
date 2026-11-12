@@ -1,4 +1,4 @@
-﻿---
+---
 import ProjectImage from "../ProjectImage.astro";
 const { project, gallery = [] } = Astro.props;
 const fields = [
@@ -23,15 +23,15 @@ const layout = ["regular", "offset", "regular", "wide", "regular", "offset", "re
 ---
 
 {lead && (
-  <figure class="project-lead-image">
+  <figure class="project-lead-image m-0 h-[clamp(260px,_38vw,_700px)] max-h-[75svh] overflow-hidden [&_img]:block [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:[object-position:center]">
     <ProjectImage src={lead} sizes="100vw" widths={[480, 960, 1440, 1920, 2560]} alt={`${project.titre} — visuel 1 sur ${gallery.length}`} />
   </figure>
 )}
 {entries.length > 0 && (
-  <section class="project-composition" aria-label={`Images et démarche du projet ${project.titre}`}>
-    <div class="project-image-grid">
+  <section class="project-composition p-[clamp(48px,_7vw,_120px)_var(--project-space)]" aria-label={`Images et démarche du projet ${project.titre}`}>
+    <div class="project-image-grid grid [grid-template-columns:repeat(3,_minmax(0,_1fr))] gap-[clamp(24px,_3vw,_56px)] [align-items:start] min-[700px]:max-[1100px]:[grid-template-columns:repeat(2,_minmax(0,_1fr))] max-[700px]:[grid-template-columns:1fr] max-[700px]:gap-8">
       {entries.map((entry) => entry.type === "image" ? (
-        <figure class:list={["project-gallery-image", `project-gallery-${layout[entry.index % layout.length]}`]}>
+        <figure class:list={["project-gallery-image min-w-0 m-0 overflow-hidden [&_img]:block [&_img]:w-full [&_img]:h-auto [&.project-gallery-wide]:[grid-column:span_2] [&.project-gallery-offset]:pt-[clamp(40px,_7vw,_120px)] max-[700px]:[&.project-gallery-wide]:[grid-column:auto] max-[700px]:[&.project-gallery-offset]:pt-0 print:[&.project-gallery-offset]:pt-0", `project-gallery-${layout[entry.index % layout.length]}`]}>
           <ProjectImage
             src={entry.src}
             sizes={layout[entry.index % layout.length] === "wide" ? "(max-width: 699px) 100vw, (max-width: 1099px) 90vw, 62vw" : "(max-width: 699px) 100vw, (max-width: 1099px) 44vw, 30vw"}
@@ -40,9 +40,9 @@ const layout = ["regular", "offset", "regular", "wide", "regular", "offset", "re
           />
         </figure>
       ) : (
-        <section class="project-process-note" aria-labelledby={`project-${entry.field}`}>
-          <h2 id={`project-${entry.field}`} class="project-label">{entry.title}</h2>
-          <p class="project-plain-text">{project[entry.field]}</p>
+        <section class="project-process-note self-center min-w-0 p-[clamp(16px,_2vw,_40px)_0] text-[13px] leading-[1.8] [&_p]:max-w-[42ch] min-[1700px]:text-[15px] max-[700px]:p-[16px_0] max-[700px]:text-[14px]" aria-labelledby={`project-${entry.field}`}>
+          <h2 id={`project-${entry.field}`} class="project-label text-[10px] leading-[1.5] tracking-[.13em] uppercase [color:var(--project-muted)] mb-4 font-medium">{entry.title}</h2>
+          <p class="project-plain-text whitespace-pre-line [overflow-wrap:anywhere]">{project[entry.field]}</p>
         </section>
       ))}
     </div>

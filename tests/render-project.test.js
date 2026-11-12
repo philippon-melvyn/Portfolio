@@ -71,9 +71,9 @@ test(
       expand: {},
     };
     const media = await readFile("public/images/portrait.webp");
-    const galleryA = await readFile("public/images/architecture-detail.webp");
-    const galleryB = await readFile("public/images/architecture-tower.webp");
-    const linkImage = await readFile("public/images/red-fabric.webp");
+    const galleryA = await readFile("tests/fixtures/architecture-detail.webp");
+    const galleryB = await readFile("tests/fixtures/architecture-tower.webp");
+    const linkImage = await readFile("tests/fixtures/red-fabric.webp");
     const requests = [];
     const server = createServer((request, response) => {
       const url = new URL(request.url, "http://localhost");
@@ -151,11 +151,11 @@ test(
       assert.ok(html.includes(project[field]), field);
     }
     assert.ok(!html.includes('id="project-equipe"'));
-    assert.equal((html.match(/class="project-process-note"/g) || []).length, 3);
-    assert.ok(html.includes('class="project-opening"'));
-    assert.ok(html.includes('class="project-lead-image"'));
-    assert.ok(html.includes('class="project-image-grid"'));
-    assert.ok(html.indexOf('class="project-lead-image"') < html.indexOf('class="project-image-grid"'));
+    assert.equal((html.match(/class="project-process-note /g) || []).length, 3);
+    assert.ok(html.includes('class="project-opening '));
+    assert.ok(html.includes('class="project-lead-image '));
+    assert.ok(html.includes('class="project-image-grid '));
+    assert.ok(html.indexOf('class="project-lead-image ') < html.indexOf('class="project-image-grid '));
     assert.ok(html.includes("visuel 2 sur 2"));
     assert.ok(!html.includes("visuel 3 sur"));
     assert.equal((html.match(/class="project-gallery-image /g) || []).length, 1, "Les fichiers identiques sont affichés une seule fois, même renommés");
@@ -173,13 +173,13 @@ test(
     assert.ok(minimalHtml.includes("project-opening-no-story"));
     assert.ok(minimalHtml.includes("project-opening-no-cover"));
     for (const className of ["project-story", "project-category", "project-facts", "project-composition", "project-lead-image", "project-credits", "project-resources"]) {
-      assert.ok(!minimalHtml.includes(`class="${className}"`), className);
+      assert.ok(!new RegExp(`class="${className}(?:\\s|")`).test(minimalHtml), className);
     }
     const galleryHtml = await readFile(
       resolve(directory, "projets/index.html"),
       "utf8",
     );
-    assert.ok(galleryHtml.includes('class="projects-screen"'));
+    assert.ok(/class="[^"]*\bprojects-screen\b/.test(galleryHtml));
     assert.ok(galleryHtml.includes("data-project-browser"));
     assert.ok(galleryHtml.includes('data-project-axis="vertical"'));
     assert.ok(!galleryHtml.includes("data-project-autoplay"));
@@ -212,10 +212,10 @@ test(
     assert.ok(homeGallery.includes('/projets/verification-automatique/'));
     assert.ok(homeGallery.includes('home-project-verification-automatique'));
     assert.ok(!homeGallery.includes('Ces projets ont enrichi mes compétences'));
-    assert.ok(homeHtml.includes('class="home-project-summary"'));
+    assert.ok(homeHtml.includes('class="home-project-summary '));
     assert.ok(homeHtml.includes('Au fil des expériences'));
-    assert.ok(homeHtml.indexOf('class="home-project-summary"') > homeHtml.indexOf(homeGallery));
-    const expertise = homeHtml.slice(homeHtml.indexOf('<section class="expertise"'), homeHtml.indexOf('<footer'));
+    assert.ok(homeHtml.indexOf('class="home-project-summary ') > homeHtml.indexOf(homeGallery));
+    const expertise = homeHtml.slice(homeHtml.indexOf('<section class="expertise '), homeHtml.indexOf('<footer'));
     assert.ok(expertise.includes(publicSkill.titre));
     assert.ok(expertise.includes(publicKnowledge.nom));
     assert.ok(!expertise.includes('<img'));

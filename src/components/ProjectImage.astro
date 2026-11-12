@@ -11,19 +11,17 @@ const {
   quality = 85,
   nativeSizing = false,
 } = Astro.props;
-const metadata = nativeSizing ? await inferRemoteSize(src) : null;
-const responsiveWidths = metadata
-  ? [...new Set([...widths.filter((width) => width <= metadata.width), metadata.width])].sort((a, b) => a - b)
-  : widths;
+const metadata = await inferRemoteSize(src);
+const largest = nativeSizing ? metadata.width : Math.min(metadata.width, Math.max(...widths));
+const responsiveWidths = [...new Set([...widths.filter((width) => width <= largest), largest])].sort((a, b) => a - b);
 ---
 
 <Image
   src={src}
   alt={alt}
   class={className}
-  inferSize={!metadata}
-  width={metadata?.width}
-  height={metadata?.height}
+  width={metadata.width}
+  height={metadata.height}
   widths={responsiveWidths}
   sizes={sizes}
   format="webp"
