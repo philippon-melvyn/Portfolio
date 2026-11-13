@@ -3,13 +3,13 @@
 ## Développement
 
 ```sh
-bun install --frozen-lockfile
-bun run dev
+bun ci
+bun run --bun dev
 ```
 
-Node.js >= 22.23.4 est requis. Utiliser les commandes Bun sans `--bun` : Astro s’exécute avec Node.js et le binding WebAssembly de Rolldown prévu pour cet environnement Windows.
+Commandes et tests exécutés avec Bun (version de référence : `bun@1.4.2`). `bun run --bun build` utilise le runtime Bun, y compris sous Windows. Le binding WebAssembly de Rolldown existant reste conservé ; aucune dépendance supplémentaire n’est ajoutée.
 
-Copier `.env.example` vers `.env` si nécessaire. PocketBase doit répondre à `POCKETBASE_URL`, actuellement `http://127.0.0.1:8090`. Le site lit uniquement l’API publique ; il ne crée ni ne modifie de données. Voir [POCKETBASE.md](POCKETBASE.md) pour les champs et les règles d’accès.
+Copier `.env.example` vers `.env` si nécessaire. PocketBase doit répondre à `POCKETBASE_URL` (`https://pb.melvyn-philippon.fr` en production, ou une instance locale pour le développement). Le site lit uniquement l’API publique ; il ne crée ni ne modifie de données. Voir [POCKETBASE.md](POCKETBASE.md) pour les champs et les règles d’accès.
 
 ## Organisation
 
@@ -40,14 +40,15 @@ Les préférences de réduction du mouvement sont respectées. Les images hors �
 
 Le formulaire prépare un brouillon dans la messagerie du visiteur ; le message doit être envoyé depuis cette messagerie. Les coordonnées directes, notamment l’adresse e-mail, restent accessibles sans JavaScript. Le numéro de téléphone reste du texte simple.
 
-Configurer `CONTACT_EMAIL`, les URL sociales et `CV_URL` dans `.env`. Les réseaux sans URL et le lien de CV non renseigné restent masqués. `SITE_URL` active les URL canoniques et le sitemap ; sans ce domaine, `robots.txt` demande de ne pas indexer le site.
+Configurer `CONTACT_EMAIL`, les URL sociales et `CV_URL` dans `.env`. Les réseaux sans URL et le lien de CV non renseigné restent masqués. `SITE_URL` doit être l’origine HTTPS publique et est obligatoire pour construire le site. Elle alimente Astro, les URL canoniques, les cartes de partage et le sitemap. Une valeur vide n’est acceptée qu’en développement, où `robots.txt` bloque alors l’exploration. Le `.env` du VPS est indépendant du `.env` local.
 
 ## Vérifications et production
 
 ```sh
 bun run test
-bun run build
-bun run preview
+bun run --bun build
+bun run check:seo
+bun run --bun preview
 ```
 
 `dist/` contient le site statique. Une modification de PocketBase nécessite une nouvelle compilation pour la production. Les tests utilisent des enregistrements synthétiques isolés et ne modifient pas la base.
@@ -55,3 +56,9 @@ bun run preview
 La validation HTML, les références ARIA, les ressources et les tests automatisés complètent les contrôles manuels ; ils ne constituent pas une certification RGAA. Les limites de vérification et les mesures avant/après sont consignées dans `REFACTOR.md`.
 
 Ne pas versionner `.env`, `node_modules/` ni `pb_data/`. Le propriétaire conserve la gestion de Git et du déploiement. Aucun commit, push ou déploiement n’est effectué par cette refactorisation.
+
+## Référencement et serveur
+
+Voir [SEO.md](SEO.md) pour l’audit réalisé, les métadonnées et JSON-LD intégrés au layout Astro, les validations et les actions manuelles Apache/Search Console. [L’exemple Apache](docs/apache/portfolio.conf.example) reste séparé du site : il ne doit pas être copié en remplacement d’une configuration partagée. Le workflow prépare et vérifie un build de staging avant de remplacer `dist`. Aucun de ces changements n’a été déployé par Codex.
+
+Les corrections et vérifications des diagnostics Astro/Tailwind sont détaillées dans [DIAGNOSTICS.md](DIAGNOSTICS.md). Les règles de validation de l’éditeur restent actives.

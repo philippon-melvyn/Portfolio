@@ -4,7 +4,8 @@ export async function pageScript(page, name) {
   const source = await readFile(page, "utf8");
   const block = [...source.matchAll(/<script>([\s\S]*?)<\/script>/g)].find((match) => match[1].includes("// " + name + "\n"));
   if (!block) throw new Error("Script absent : " + name);
-  return block[1];
+  const helpers = await readFile("src/scripts/dom.js", "utf8");
+  return block[1].replace(/import \{ [^}]+ \} from "(?:\.\.\/)+scripts\/dom\.js";/g, helpers.replaceAll("export function", "function"));
 }
 
 export async function pageFunctions(page, name, exports) {

@@ -13,13 +13,13 @@ const domains = [
 <ProjectTransitions />
 
 <BaseLayout
-  title="Mes projets"
+  title="Projets de design graphique et numérique"
   description="Explorez mes réalisations en identité visuelle, direction artistique et conception numérique."
   footer={false}
-  bodyClass="projects-screen [body&]:h-[100svh] [body&]:supports-[height:100dvh]:h-[100dvh] [body&]:overflow-hidden [body&]:[background:#101113] [body&]:[color:var(--color-paper)] [body&_main]:h-full [body&_main]:min-h-0 [body&_:focus-visible]:[outline-color:#ee8e87] [body&_:focus-visible]:[box-shadow:0_0_0_3px_#101113]"
+  bodyClass="projects-screen [body&]:h-svh [body&]:supports-[height:100dvh]:h-dvh [body&]:overflow-hidden [body&]:[background:#101113] [body&]:text-paper [body&_main]:h-full [body&_main]:min-h-0 [body&_:focus-visible]:outline-[#ee8e87] [body&_:focus-visible]:[box-shadow:0_0_0_3px_#101113]"
 >
   <section
-    class="project-browser relative h-full min-h-0 [&.is-project-leaving]:opacity-0 [&.is-project-leaving]:[transform:translateY(-12px)] [&.is-project-leaving]:[transition:opacity_230ms,_transform_280ms] motion-reduce:[&.is-project-leaving]:[transition:none]"
+    class="project-browser relative h-full min-h-0 [&.is-project-leaving]:opacity-0 [&.is-project-leaving]:transform-[translateY(-12px)] [&.is-project-leaving]:[transition:opacity_230ms,transform_280ms] motion-reduce:[&.is-project-leaving]:[transition:none]"
     data-project-browser
     data-project-axis="vertical"
     aria-label="Galerie verticale des projets"
@@ -28,7 +28,7 @@ const domains = [
     <h1 class="sr-only">Mes projets</h1>
     <p id="gallery-help" class="sr-only">Utilisez les flèches haut et bas pour parcourir les projets. La touche Espace permet de mettre le défilement automatique en pause ou de le reprendre.</p>
     <details
-      class="project-filter-drawer absolute z-20 bottom-6 right-[clamp(32px,_4.03vw,_80px)] [&_>_summary]:flex [&_>_summary]:items-center [&_>_summary]:gap-5 [&_>_summary]:min-h-11.5 [&_>_summary]:p-[12px_18px] [&_>_summary]:[background:var(--color-brick)] [&_>_summary]:[color:white] [&_>_summary]:[border:0] [&_>_summary]:[list-style:none] [&_>_summary]:text-[11px] [&_>_summary]:uppercase [&_>_summary::-webkit-details-marker]:hidden [&_>_summary_>_span]:text-[20px] [&_>_summary_>_span]:leading-[1] [&_>_summary_>_span]:[transition:transform_180ms] [&[open]_>_summary_>_span]:[transform:rotate(45deg)] max-[700px]:bottom-4.5 max-[700px]:right-5 max-[700px]:[&_>_summary]:min-h-10 max-[700px]:[&_>_summary]:p-[10px_12px] max-[700px]:[&_>_summary]:text-[10px] max-[700px]:[&_>_summary]:gap-3 motion-reduce:[&_>_summary_>_span]:[transition:none]"
+      class="project-filter-drawer absolute z-20 bottom-6 right-[clamp(32px,4.03vw,80px)] [&_>_summary]:flex [&_>_summary]:items-center [&_>_summary]:gap-5 [&_>_summary]:min-h-11.5 [&_>_summary]:p-[12px_18px] [&_>_summary]:[background:var(--color-brick)] [&_>_summary]:text-[white] [&_>_summary]:[border:0] [&_>_summary]:[list-style:none] [&_>_summary]:text-[11px] [&_>_summary]:uppercase [&_>_summary::-webkit-details-marker]:hidden [&_>_summary_>_span]:text-[20px] [&_>_summary_>_span]:leading-none [&_>_summary_>_span]:[transition:transform_180ms] [&[open]_>_summary_>_span]:transform-[rotate(45deg)] max-[700px]:bottom-4.5 max-[700px]:right-5 max-[700px]:[&_>_summary]:min-h-10 max-[700px]:[&_>_summary]:p-[10px_12px] max-[700px]:[&_>_summary]:text-[10px] max-[700px]:[&_>_summary]:gap-3 motion-reduce:[&_>_summary_>_span]:[transition:none]"
       data-project-filters
       data-disclosure
       data-disclosure-label="les filtres"
@@ -37,10 +37,10 @@ const domains = [
       <summary>
         Filtrer les projets <span aria-hidden="true">＋</span>
       </summary>
-      <div class="project-filter-panel absolute bottom-[calc(100%_+_12px)] right-0 w-[min(280px,_calc(100vw_-_40px))] max-h-[60svh] overflow-y-auto p-6 [background:#101113] [border:1px_solid_#fafaf833] [box-shadow:0_16px_50px_#0006]">
-        <h2 class="project-filter-label [color:#aaa8a4] [font:500_10px/1.4_var(--font-sans)] uppercase mb-4.5">Domaines</h2>
+      <div class="project-filter-panel absolute bottom-[calc(100%+12px)] right-0 w-[min(280px,calc(100vw-40px))] max-h-[60svh] overflow-y-auto p-6 [background:#101113] [border:1px_solid_#fafaf833] [box-shadow:0_16px_50px_#0006]">
+        <h2 class="project-filter-label text-[#aaa8a4] [font:500_10px/1.4_var(--font-sans)] uppercase mb-4.5">Domaines</h2>
         <div
-          class="project-filters flex flex-col gap-2 [&_button]:flex [&_button]:items-center [&_button]:justify-between [&_button]:gap-4 [&_button]:w-full [&_button]:min-h-11 [&_button]:p-3 [&_button]:text-left [&_button]:[border:1px_solid_#fafaf826] [&_button]:rounded-none [&_button]:text-[11px] [&_button]:leading-[1.4] [&_button]:uppercase [&_button]:[color:#c2c0bc] [&_button_>_span]:text-[9px] [&_button_>_span]:[opacity:0.65] [&_button:hover]:[color:white] [&_button[aria-pressed='true']]:[background:var(--color-paper)] [&_button[aria-pressed='true']]:[color:var(--color-ink)]"
+          class="project-filters flex flex-col gap-2 [&_button]:flex [&_button]:items-center [&_button]:justify-between [&_button]:gap-4 [&_button]:w-full [&_button]:min-h-11 [&_button]:p-3 [&_button]:text-left [&_button]:[border:1px_solid_#fafaf826] [&_button]:rounded-none [&_button]:text-[11px] [&_button]:leading-[1.4] [&_button]:uppercase [&_button]:text-[#c2c0bc] [&_button_>_span]:text-[9px] [&_button_>_span]:opacity-[0.65] [&_button:hover]:text-[white] [&_button[aria-pressed='true']]:[background:var(--color-paper)] [&_button[aria-pressed='true']]:text-ink"
           role="group"
           aria-label="Filtrer les projets par domaine"
         >
@@ -75,7 +75,7 @@ const domains = [
         </div>
       </div>
     </details>
-    <div class="project-browser-content grid [grid-template-columns:53fr_47fr] [grid-template-rows:minmax(0,_1fr)] h-full min-h-0 max-[700px]:[grid-template-columns:1fr] max-[700px]:[grid-template-rows:minmax(0,_1fr)_auto]">
+    <div class="project-browser-content grid grid-cols-[53fr_47fr] grid-rows-[minmax(0,1fr)] h-full min-h-0 max-[700px]:grid-cols-[1fr] max-[700px]:grid-rows-[minmax(0,1fr)_auto]">
       <p
         class="sr-only"
         data-project-status
@@ -84,7 +84,7 @@ const domains = [
         aria-atomic="true"
       ></p>
       <div
-        class="project-viewport [--slide-height:clamp(240px,_51dvh,_600px)] [grid-column:1] [grid-row:1_/_-1] min-h-0 h-full overflow-y-auto overflow-x-hidden p-[var(--gallery-inset,_calc((100dvh_-_var(--slide-height))_/_2))_28px] [scroll-snap-type:y_mandatory] [overscroll-behavior-y:contain] [&[data-animated-scroll='true']]:[scroll-snap-type:none] [&[data-animated-scroll='true']]:scroll-auto min-[700px]:[--slide-height:72dvh] max-[700px]:[--slide-height:clamp(180px,_38dvh,_380px)] max-[700px]:[grid-column:1] max-[700px]:[grid-row:1] max-[700px]:p-[var(--gallery-inset,_12px)_20px]"
+        class="project-viewport [--slide-height:clamp(240px,51dvh,600px)] col-1 row-span-full min-h-0 h-full overflow-y-auto overflow-x-hidden p-[var(--gallery-inset,calc((100dvh-var(--slide-height))/2))_28px] [scroll-snap-type:y_mandatory] overscroll-y-contain data-[animated-scroll='true']:snap-none data-[animated-scroll='true']:scroll-auto min-[700px]:[--slide-height:72dvh] max-[700px]:[--slide-height:clamp(180px,38dvh,380px)] max-[700px]:col-1 max-[700px]:row-1 max-[700px]:p-[var(--gallery-inset,12px)_20px]"
         data-project-viewport
         tabindex="0"
         aria-describedby="gallery-help"
@@ -96,7 +96,7 @@ const domains = [
               const cover = imagesFor(project, "couverture")[0];
               return (
                 <li
-                  class="project-tile relative [flex:0_0_auto] w-full h-[var(--slide-height)] [scroll-snap-align:center] [opacity:0.55] [transition:transform_650ms_cubic-bezier(0.16,_1,_0.3,_1),_opacity_400ms] [&[data-current='true']]:opacity-100 [&_>_a]:block [&_>_a]:h-full min-[700px]:[&[data-current='true']_.project-tile-image]:[clip-path:inset(0)] [@media((hover:_hover)_and_(pointer:_fine))]:hover:opacity-100 [@media((hover:_hover)_and_(pointer:_fine))]:hover:z-1 [@media((hover:_hover)_and_(pointer:_fine))]:[&:hover_img]:[transform:scale(1.07)] motion-reduce:[&&]:[transition:none] motion-reduce:hover:transform-none motion-reduce:[&:hover_img]:transform-none"
+                  class="project-tile relative flex-[0_0_auto] w-full h-(--slide-height) snap-center opacity-[0.55] [transition:transform_650ms_cubic-bezier(0.16,1,0.3,1),opacity_400ms] data-[current='true']:opacity-100 [&_>_a]:block [&_>_a]:h-full min-[700px]:[&[data-current='true']_.project-tile-image]:[clip-path:inset(0)] [@media((hover:_hover)_and_(pointer:_fine))]:hover:opacity-100 [@media((hover:_hover)_and_(pointer:_fine))]:hover:z-1 [@media((hover:_hover)_and_(pointer:_fine))]:[&:hover_img]:transform-[scale(1.07)] motion-reduce:[&&]:[transition:none] motion-reduce:hover:transform-none motion-reduce:[&:hover_img]:transform-none"
                   data-project-tile
                   data-project-slug={project.slug}
                   data-project-domains={JSON.stringify(
@@ -105,12 +105,12 @@ const domains = [
                   data-current={index === 0 ? "true" : "false"}
                 >
                   <a href={`/projets/${project.slug}/`} data-project-link aria-label={`Découvrir le projet ${project.titre}`}>
-                    <div class="project-tile-image h-full overflow-hidden [background:#242426] [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:[transition:transform_900ms_cubic-bezier(0.16,_1,_0.3,_1)] min-[700px]:[clip-path:inset(2%_0)] min-[700px]:[transition:clip-path_800ms_cubic-bezier(0.22,_1,_0.36,_1)] motion-reduce:[&_img]:[transition:none] motion-reduce:[&&]:[transition:none]">
+                    <div class="project-tile-image h-full overflow-hidden [background:#242426] [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:[transition:transform_900ms_cubic-bezier(0.16,1,0.3,1)] min-[700px]:[clip-path:inset(2%_0)] min-[700px]:[transition:clip-path_800ms_cubic-bezier(0.22,1,0.36,1)] motion-reduce:[&_img]:[transition:none] motion-reduce:[&&]:[transition:none]">
                       {cover && (
                         <ProjectImage
                           src={cover}
                           alt={project.couverture_alt || project.titre}
-                          priority={index < 2}
+                          priority={index === 0}
                           sizes="(max-width: 699px) 90vw, 53vw"
                           transitionName={`project-cover-${project.slug}`}
                         />
@@ -123,12 +123,12 @@ const domains = [
             })}
           </ul>
         ) : (
-          <p class="project-browser-empty p-7.5 [color:#aaa8a4] text-[14px]">
+          <p class="project-browser-empty p-7.5 text-[#aaa8a4] text-[14px]">
             Mes réalisations seront bientôt présentées ici.
           </p>
         )}
       </div>
-      <div class="project-details [grid-column:2] [grid-row:1] self-center min-w-0 p-[110px_clamp(32px,_7.4vw,_140px)_60px] [&_article]:max-w-90 [&_h2]:mt-0 [&_h2]:[font:600_clamp(34px,_3.4vw,_52px)/1.1_var(--font-display)] [&_h2]:uppercase [&_h2]:tracking-[-0.035em] max-[1001px]:px-8 max-[700px]:[grid-column:1] max-[700px]:[grid-row:2] max-[700px]:h-65 max-[700px]:p-[20px_24px_84px] max-[700px]:[&_article]:max-w-none max-[700px]:[&_h2]:mt-0 max-[700px]:[&_h2]:text-[32px]" data-project-details>
+      <div class="project-details col-2 row-1 self-center min-w-0 p-[110px_clamp(32px,7.4vw,140px)_60px] [&_article]:max-w-90 [&_h2]:mt-0 [&_h2]:[font:600_clamp(34px,3.4vw,52px)/1.1_var(--font-display)] [&_h2]:uppercase [&_h2]:tracking-[-0.035em] max-[1001px]:px-8 max-[700px]:col-1 max-[700px]:row-2 max-[700px]:h-65 max-[700px]:p-[20px_24px_84px] max-[700px]:[&_article]:max-w-none max-[700px]:[&_h2]:mt-0 max-[700px]:[&_h2]:text-[32px]" data-project-details>
         {projects.map((project, index) => (
           <article data-project-detail={project.slug} hidden={index > 0}>
             <h2>{project.titre}</h2>
@@ -144,6 +144,7 @@ const domains = [
   </section>
 </BaseLayout>
 <script>
+import { htmlElement, htmlElements, contentElements, detailsElement, cloneElement, closestElement, containsTarget, matchesTarget } from "../../scripts/dom.js";
   // project-browser
 function galleryEase(value) {
   const t = Math.max(0, Math.min(1, value));
@@ -158,7 +159,7 @@ function createGalleryMotion({
   cancelFrame,
   now,
 }) {
-  let frame;
+  let frame = undefined;
   let generation = 0;
   let running = false;
   function cancel() {
@@ -169,7 +170,7 @@ function createGalleryMotion({
   }
   function to(
     target,
-    { duration = 1400, onUpdate = () => {}, onComplete = () => {} } = {},
+    { duration = 1400, onUpdate = (_progress = 0) => {}, onComplete = () => {} } = {},
   ) {
     cancel();
     const from = read();
@@ -219,27 +220,27 @@ function nextProjectIndex(current, total, direction = 1) {
 const AUTO_DELAY = 7000;
 const MOVE_DURATION = 1400;
 
-document.querySelectorAll("[data-project-browser]").forEach((root) => {
-  const viewport = root.querySelector("[data-project-viewport]");
-  const cards = [...root.querySelectorAll("[data-project-tile]")].map(
+htmlElements(document, "[data-project-browser]").forEach((root) => {
+  const viewport = htmlElement(root, "[data-project-viewport]");
+  const cards = [...htmlElements(root, "[data-project-tile]")].map(
     (element) => ({
       element,
       domains: JSON.parse(element.dataset.projectDomains),
     }),
   );
-  const filters = [...root.querySelectorAll("[data-project-domain]")];
-  const status = root.querySelector("[data-project-status]");
-  const filterDrawer = root.querySelector("[data-project-filters]");
-  const details = [...root.querySelectorAll("[data-project-detail]")];
-  const detailPanel = root.querySelector("[data-project-details]");
+  const filters = [...htmlElements(root, "[data-project-domain]")];
+  const status = htmlElement(root, "[data-project-status]");
+  const filterDrawer = detailsElement(root, "[data-project-filters]");
+  const details = [...htmlElements(root, "[data-project-detail]")];
+  const detailPanel = htmlElement(root, "[data-project-details]");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const storageKey = "portfolio-project-gallery-vertical";
   let visible = cards;
   let domain = "all";
   let current = 0;
-  let activeDetail;
-  let timer;
-  let settleTimer;
+  let activeDetail = undefined;
+  let timer = undefined;
+  let settleTimer = undefined;
   let paused = reducedMotion.matches;
   let focused = false;
   let dragging = false;
@@ -258,16 +259,16 @@ document.querySelectorAll("[data-project-browser]").forEach((root) => {
     const track = cards[0].element.parentElement;
     for (const side of ["before", "after"]) {
       const copies = visible.map(({ element }) => {
-        const copy = element.cloneNode(true);
+        const copy = cloneElement(element);
         copy.hidden = false;
         copy.setAttribute("aria-hidden", "true");
         copy.removeAttribute("data-project-tile");
-        for (const node of [copy, ...copy.querySelectorAll("*")]) {
+        for (const node of [copy, ...contentElements(copy)]) {
           node.removeAttribute("id");
           node.style?.removeProperty("view-transition-name");
           if (node.matches("a, button, [tabindex]")) node.tabIndex = -1;
         }
-        copy.querySelectorAll("[data-project-link]").forEach(bindProjectLink);
+        htmlElements(copy, "[data-project-link]").forEach(bindProjectLink);
         loopCopies.push(copy);
         return copy;
       });
@@ -511,7 +512,7 @@ document.querySelectorAll("[data-project-browser]").forEach((root) => {
     });
 
     if (manual && status)
-      status.textContent = `${current + 1} sur ${visible.length} : ${visible[current].element.querySelector("h2").textContent}.`;
+      status.textContent = `${current + 1} sur ${visible.length} : ${htmlElement(visible[current].element, "h2").textContent}.`;
   }
   function move(direction, manual = true) {
     const index = nextProjectIndex(current, visible.length, direction);
@@ -585,9 +586,7 @@ document.querySelectorAll("[data-project-browser]").forEach((root) => {
   window.addEventListener("pointerup", releasePointer, { passive: true });
   window.addEventListener("pointercancel", releasePointer, { passive: true });
   viewport.addEventListener("focusin", (event) => {
-    focused = event.target?.matches
-      ? event.target.matches(":focus-visible")
-      : true;
+    focused = matchesTarget(event.target, ":focus-visible", true);
     if (focused) {
       stopMotion();
       stopTimer();
@@ -595,7 +594,7 @@ document.querySelectorAll("[data-project-browser]").forEach((root) => {
     }
   });
   viewport.addEventListener("focusout", (event) => {
-    if (!viewport.contains(event.relatedTarget)) {
+    if (!containsTarget(viewport, event.relatedTarget)) {
       focused = false;
       scheduleAutoplay();
     }
@@ -605,7 +604,7 @@ document.querySelectorAll("[data-project-browser]").forEach((root) => {
     stopTimer();
   });
   detailPanel?.addEventListener("focusout", (event) => {
-    if (!detailPanel.contains(event.relatedTarget)) {
+    if (!containsTarget(detailPanel, event.relatedTarget)) {
       focused = false;
       scheduleAutoplay();
     }
@@ -625,7 +624,7 @@ document.querySelectorAll("[data-project-browser]").forEach((root) => {
       (event) => {
         if (
           event.ctrlKey ||
-          event.target.closest("[data-project-filters]") ||
+          closestElement(event.target, "[data-project-filters]") ||
           !canTravel()
         )
           return;
@@ -665,7 +664,7 @@ document.querySelectorAll("[data-project-browser]").forEach((root) => {
     if (event.key === "Home") goTo(0);
     else if (event.key === "End") goTo(visible.length - 1);
     else move(event.key === back ? -1 : 1);
-    if (event.target.closest("[data-project-link]"))
+    if (closestElement(event.target, "[data-project-link]"))
       visible[current]?.element
         .querySelector("a")
         .focus({ preventScroll: true });
@@ -686,13 +685,13 @@ document.querySelectorAll("[data-project-browser]").forEach((root) => {
       stopTimer();
       clearSettle();
       saveState();
-      if (reducedMotion.matches || "onpageswap" in window) return;
+      if (reducedMotion.matches || Reflect.has(window, "onpageswap")) return;
       event.preventDefault();
       root.classList.add("is-project-leaving");
       window.setTimeout(() => window.location.assign(link.href), 240);
     });
   }
-  root.querySelectorAll("[data-project-link]").forEach(bindProjectLink);
+  htmlElements(root, "[data-project-link]").forEach(bindProjectLink);
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
       stopTimer();
@@ -727,7 +726,7 @@ document.querySelectorAll("[data-project-browser]").forEach((root) => {
     scheduleAutoplay();
   });
 
-  let saved;
+  let saved = undefined;
   try {
     saved = JSON.parse(sessionStorage.getItem(storageKey) || "null");
   } catch {
@@ -774,11 +773,12 @@ document.querySelectorAll("[data-project-browser]").forEach((root) => {
 </script>
 
 <script>
+import { htmlElement, detailsElements, closestElement, containsTarget } from "../../scripts/dom.js";
   // disclosures
-const disclosures = [...document.querySelectorAll("[data-disclosure]")];
+const disclosures = detailsElements(document, "[data-disclosure]");
 
 disclosures.forEach((menu) => {
-  const trigger = menu.querySelector("summary");
+  const trigger = htmlElement(menu, "summary");
   function update() {
     trigger.setAttribute("aria-expanded", String(menu.open));
     trigger.setAttribute(
@@ -792,7 +792,7 @@ disclosures.forEach((menu) => {
   }
   menu.addEventListener("toggle", update);
   menu.addEventListener("focusout", (event) => {
-    if (event.relatedTarget && !menu.contains(event.relatedTarget))
+    if (event.relatedTarget && !containsTarget(menu, event.relatedTarget))
       menu.open = false;
   });
   update();
@@ -803,7 +803,7 @@ document.addEventListener("keydown", (event) => {
   disclosures.forEach((menu) => {
     if (menu.open) {
       menu.open = false;
-      menu.querySelector("summary").focus();
+      htmlElement(menu, "summary").focus();
     }
   });
 });
@@ -811,15 +811,15 @@ document.addEventListener("keydown", (event) => {
 document.addEventListener("click", (event) => {
   disclosures.forEach((menu) => {
     if (!menu.open) return;
-    if (!menu.contains(event.target)) {
+    if (!containsTarget(menu, event.target)) {
       menu.open = false;
       return;
     }
-    const action = event.target.closest?.("a, [data-close-disclosure]");
+    const action = closestElement(event.target, "a, [data-close-disclosure]");
     if (action && menu.contains(action)) {
       menu.open = false;
       if (action.matches("[data-close-disclosure]"))
-        menu.querySelector("summary").focus();
+        htmlElement(menu, "summary").focus();
     }
   });
 });

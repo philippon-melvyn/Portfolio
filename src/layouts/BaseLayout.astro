@@ -4,31 +4,61 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import MenuTransition from "../components/MenuTransition.astro";
 import { site } from "../data/site.js";
+import { getImage, inferRemoteSize } from "astro:assets";
+import portrait from "../../public/images/portrait.webp";
+import { conciseDescription, pageUrl, serializeJsonLd } from "../lib/seo.js";
 const {
   title,
   description = site.description,
   image,
+  imageAlt,
+  schema,
+  canonical: hasCanonical = true,
   noindex = false,
   footer = true,
   bodyClass,
 } = Astro.props;
 const pageTitle = title
   ? `${title} — ${site.name}`
-  : `${site.name} — Création numérique & design graphique`;
-const domain = import.meta.env.SITE_URL;
-const canonical = domain ? new URL(Astro.url.pathname, domain).href : null;
-const shareImage =
-  image || (domain ? new URL("/images/portrait.webp", domain).href : null);
+  : `${site.name} — Portfolio de design graphique et numérique`;
+const pageDescription = conciseDescription(description, site.description, 240);
+const domain = Astro.site?.origin;
+const canonical = hasCanonical ? pageUrl(Astro.url.pathname, domain) : undefined;
+const source = image || portrait;
+const dimensions = typeof source === "string" ? await inferRemoteSize(source) : source;
+const width = Math.min(1200, dimensions.width);
+const share = await getImage({ src: source, width, height: Math.round(width * dimensions.height / dimensions.width), format: "jpeg", quality: 80 });
+const shareImage = domain ? new URL(share.src, domain).href : undefined;
+const shareAlt = imageAlt || `Portrait de ${site.name}`;
+const person = domain && {
+  "@type": "Person", "@id": `${domain}/#person`, name: site.name,
+  url: pageUrl("/a-propos/", domain), image: pageUrl("/images/portrait.webp", domain),
+  ...(site.socials.length ? { sameAs: site.socials.map(({ url }) => url) } : {}),
+};
+const website = domain && {
+  "@type": "WebSite", "@id": `${domain}/#website`, url: `${domain}/`,
+  name: `Portfolio de ${site.name}`, inLanguage: "fr", publisher: { "@id": person["@id"] },
+};
+const structuredData = !noindex && domain && (
+  schema === "profile" ? [person, {
+    "@type": "ProfilePage", "@id": `${canonical}#profile`, url: canonical,
+    name: pageTitle, description: pageDescription, mainEntity: { "@id": person["@id"] }, inLanguage: "fr",
+  }] : schema === "project" ? [person, {
+    "@type": "CreativeWork", "@id": `${canonical}#project`, url: canonical,
+    name: title, description: pageDescription, image: shareImage, inLanguage: "fr",
+    contributor: { "@id": person["@id"] }, mainEntityOfPage: canonical,
+  }] : Astro.url.pathname === "/" ? [person, website] : null
+);
 ---
 
 <!doctype html>
-<html lang="fr" class="[:where(&_*)]:[scrollbar-width:none] [:where(&_*)]:[-ms-overflow-style:none] [:where(&)_*::-webkit-scrollbar]:hidden [:where(&)_*::-webkit-scrollbar]:w-0 [:where(&)_*::-webkit-scrollbar]:h-0 scroll-smooth [scroll-padding-top:5rem] [:where(&_main)]:pt-0 [:where(&_main:focus)]:[outline:none] [:where(&_img)]:max-w-full [:where(&_button)]:[-webkit-tap-highlight-color:transparent] [:where(&_summary)]:[-webkit-tap-highlight-color:transparent] [:where(&_a)]:[-webkit-tap-highlight-color:transparent] [:where(&_button)]:cursor-pointer [:where(&_summary)]:cursor-pointer [:where(&_a)]:touch-manipulation [:where(&_button)]:touch-manipulation [:where(&_:focus-visible)]:[outline:3px_solid_var(--color-accent)] [:where(&_:focus-visible)]:[outline-offset:6px] [:where(&_:focus-visible)]:[box-shadow:0_0_0_4px_var(--color-paper)] [:where(&)_::selection]:[background:var(--color-brick)] [:where(&)_::selection]:[color:white] [:where(&_[hidden])]:hidden! motion-reduce:scroll-auto motion-reduce:[:where(&_*)]:[transition-duration:0s]! motion-reduce:[:where(&_*)]:[animation-duration:0s]! motion-reduce:[:where(&)_*::before]:[transition-duration:0s]! motion-reduce:[:where(&)_*::before]:[animation-duration:0s]! motion-reduce:[:where(&)_*::after]:[transition-duration:0s]! motion-reduce:[:where(&)_*::after]:[animation-duration:0s]! [&:has(body.contact-screen)]:h-full [&:has(body.contact-screen)]:overflow-hidden [&[data-menu-arrival]::before]:[content:''] [&[data-menu-arrival]::before]:fixed [&[data-menu-arrival]::before]:inset-0 [&[data-menu-arrival]::before]:[background:#a33333] [&[data-menu-arrival]::before]:pointer-events-auto [&[data-menu-arrival]::before]:z-2147483647 motion-reduce:[&[data-menu-arrival]::before]:hidden">
+<html lang="fr" class="[:where(&_*)]:scrollbar-none [:where(&_*)]:[-ms-overflow-style:none] [:where(&)_*::-webkit-scrollbar]:hidden [:where(&)_*::-webkit-scrollbar]:w-0 [:where(&)_*::-webkit-scrollbar]:h-0 scroll-smooth scroll-pt-20 [:where(&_main)]:pt-0 [:where(&_main:focus)]:[outline:none] [:where(&_img)]:max-w-full [:where(&_button)]:[-webkit-tap-highlight-color:transparent] [:where(&_summary)]:[-webkit-tap-highlight-color:transparent] [:where(&_a)]:[-webkit-tap-highlight-color:transparent] [:where(&_button)]:cursor-pointer [:where(&_summary)]:cursor-pointer [:where(&_a)]:touch-manipulation [:where(&_button)]:touch-manipulation [:where(&_:focus-visible)]:[outline:3px_solid_var(--color-accent)] [:where(&_:focus-visible)]:outline-offset-[6px] [:where(&_:focus-visible)]:[box-shadow:0_0_0_4px_var(--color-paper)] [:where(&)_::selection]:[background:var(--color-brick)] [:where(&)_::selection]:text-[white] [:where(&_[hidden])]:hidden! motion-reduce:scroll-auto motion-reduce:[:where(&_*)]:duration-[0s]! motion-reduce:[:where(&_*)]:[animation-duration:0s]! motion-reduce:[:where(&)_*::before]:duration-[0s]! motion-reduce:[:where(&)_*::before]:[animation-duration:0s]! motion-reduce:[:where(&)_*::after]:duration-[0s]! motion-reduce:[:where(&)_*::after]:[animation-duration:0s]! [&:has(body.contact-screen)]:h-full [&:has(body.contact-screen)]:overflow-hidden [&[data-menu-arrival]::before]:[content:''] [&[data-menu-arrival]::before]:fixed [&[data-menu-arrival]::before]:inset-0 [&[data-menu-arrival]::before]:[background:#a33333] [&[data-menu-arrival]::before]:pointer-events-auto [&[data-menu-arrival]::before]:z-2147483647 motion-reduce:[&[data-menu-arrival]::before]:hidden">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no" />
     <MenuTransition />
-    <meta name="description" content={description} />
+    <meta name="description" content={pageDescription} />
     <title>{pageTitle}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link
@@ -39,19 +69,31 @@ const shareImage =
       crossorigin
     />
     {canonical && <link rel="canonical" href={canonical} />}
-    {noindex && <meta name="robots" content="noindex,follow" />}
+    {(noindex || !domain) && <meta name="robots" content="noindex,follow" />}
+    {structuredData && <script type="application/ld+json" is:inline set:html={serializeJsonLd({ "@context": "https://schema.org", "@graph": structuredData })} />}
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={`Portfolio de ${site.name}`} />
+    <meta property="og:description" content={pageDescription} />
     {canonical && <meta property="og:url" content={canonical} />}
     {shareImage && <meta property="og:image" content={shareImage} />}
+    {shareImage && <>
+      <meta property="og:image:type" content="image/jpeg" />
+      <meta property="og:image:width" content={String(share.options.width)} />
+      <meta property="og:image:height" content={String(share.options.height)} />
+      <meta property="og:image:alt" content={shareAlt} />
+      <meta name="twitter:image" content={shareImage} />
+      <meta name="twitter:image:alt" content={shareAlt} />
+    </>}
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
     <meta
       name="twitter:card"
       content={shareImage ? "summary_large_image" : "summary"}
     />
   </head>
-  <body class:list={["bg-paper font-sans text-ink m-0 text-[16px] font-medium leading-[1.55] max-[900px]:text-[16px] max-[900px]:leading-[1.5]", bodyClass]}>
+  <body class:list={["bg-paper font-sans text-ink m-0 text-[16px] font-medium leading-[1.55] max-[900px]:text-[16px] max-[900px]:leading-normal", bodyClass]}>
     <Header />
     <main id="contenu" tabindex="-1">
       <slot />

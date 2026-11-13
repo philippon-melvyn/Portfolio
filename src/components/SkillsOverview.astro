@@ -23,45 +23,45 @@ function groupSkills(items) {
   });
 }
 const skillGroups = groupSkills(skills);
-const tools = [...new Set(knowledge.map((item) => item.nom?.trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, "fr"));
+const tools = [...new Set(knowledge.map((item) => item.nom?.trim()).filter(Boolean))].sort((a, b) => String(a).localeCompare(String(b), "fr"));
 ---
 
-<section class="expertise [--expertise-muted:#7b7872] [background:#f4f1eb] [color:#302e2a] p-[clamp(88px,_10vw,_180px)_8vw] max-[1100px]:px-[6vw] max-[600px]:p-[80px_24px]" aria-labelledby="expertise-title">
-  <header class="expertise-heading mb-[clamp(48px,_6vw,_96px)] [&_h2]:[font:500_clamp(32px,_4.4vw,_76px)/1.1_var(--font-sans)] [&_h2]:tracking-[-.055em] [&_h2_>_span]:[color:var(--color-brick)] [[data-tool-ready]_&]:mb-0">
-    <p class="expertise-kicker mb-6 [color:var(--expertise-muted)] [font:500_10px/1.5_var(--font-sans)] tracking-[.13em] uppercase max-[600px]:mb-4.5">01 / La pratique</p>
+<section class="expertise [--expertise-muted:#7b7872] [background:#f4f1eb] text-[#302e2a] p-[clamp(88px,10vw,180px)_8vw] max-[1100px]:px-[6vw] max-[600px]:p-[80px_24px]" aria-labelledby="expertise-title">
+  <header class="expertise-heading mb-[clamp(48px,6vw,96px)] [&_h2]:[font:500_clamp(32px,4.4vw,76px)/1.1_var(--font-sans)] [&_h2]:tracking-[-.055em] [&_h2_>_span]:text-brick in-data-tool-ready:mb-0">
+    <p class="expertise-kicker mb-6 text-(--expertise-muted) [font:500_10px/1.5_var(--font-sans)] tracking-[.13em] uppercase max-[600px]:mb-4.5">01 / La pratique</p>
     <h2 id="expertise-title">Mes compétences<span aria-hidden="true">.</span></h2>
   </header>
   <div class="expertise-skills">
     {skillGroups.map((group, groupIndex) => (
-      <section class="expertise-group grid [grid-template-columns:minmax(0,_1fr)_minmax(0,_3fr)] gap-10 [padding-block:36px_48px] [border-top:1px_solid_#302e2a2b] max-[1100px]:[grid-template-columns:1fr] max-[1100px]:gap-6 max-[600px]:[padding-block:24px_32px]" aria-labelledby={`expertise-group-${groupIndex}`}>
-        <div class="expertise-group-label grid [grid-template-columns:24px_1fr_auto] gap-3 items-baseline pt-2.25 [&_h3]:text-[12px] [&_h3]:leading-[1.6] max-[1100px]:flex max-[1100px]:gap-4 max-[1100px]:[&_.expertise-count]:ml-auto">
-          <span class="expertise-group-number [color:var(--color-brick)] text-[10px]" aria-hidden="true">{String(groupIndex + 1).padStart(2, "0")}</span>
+      <section class="expertise-group grid grid-cols-[minmax(0,1fr)_minmax(0,3fr)] gap-10 py-[36px_48px] [border-top:1px_solid_#302e2a2b] max-[1100px]:grid-cols-[1fr] max-[1100px]:gap-6 max-[600px]:py-[24px_32px]" aria-labelledby={`expertise-group-${groupIndex}`}>
+        <div class="expertise-group-label grid grid-cols-[24px_1fr_auto] gap-3 items-baseline pt-2.25 [&_h3]:text-[12px] [&_h3]:leading-[1.6] max-[1100px]:flex max-[1100px]:gap-4 max-[1100px]:[&_.expertise-count]:ml-auto">
+          <span class="expertise-group-number text-brick text-[10px]" aria-hidden="true">{String(groupIndex + 1).padStart(2, "0")}</span>
           <h3 id={`expertise-group-${groupIndex}`}>{group.label}</h3>
-          <span class="expertise-count [color:var(--expertise-muted)] text-[10px] [font-variant-numeric:tabular-nums]">{String(group.names.size).padStart(2, "0")}</span>
+          <span class="expertise-count text-(--expertise-muted) text-[10px] [font-variant-numeric:tabular-nums]">{String(group.names.size).padStart(2, "0")}</span>
         </div>
-        <ul class="expertise-skill-list grid [grid-template-columns:repeat(2,_minmax(0,_1fr))] gap-[0_40px] [&_li]:flex [&_li]:gap-4 [&_li]:items-baseline [&_li]:p-[9px_0_14px] [&_li]:[font:500_clamp(16px,_1.3vw,_23px)/1.45_var(--font-sans)] [&_li]:tracking-[-.035em] [&_li_>_span:last-child]:[transition:color_250ms_ease,_transform_250ms_ease] [@media((hover:_hover)_and_(pointer:_fine))]:[&_li:hover_>_span:last-child]:[color:var(--color-brick)] [@media((hover:_hover)_and_(pointer:_fine))]:[&_li:hover_>_span:last-child]:[transform:translateX(5px)] max-[600px]:[grid-template-columns:1fr] max-[600px]:[&_li]:py-2.25 max-[600px]:[&_li]:text-[18px] motion-reduce:[&_li_>_span:last-child]:[transition:none] motion-reduce:[&_li:hover_>_span:last-child]:transform-none">
+        <ul class="expertise-skill-list grid grid-cols-2 gap-[0_40px] [&_li]:flex [&_li]:gap-4 [&_li]:items-baseline [&_li]:p-[9px_0_14px] [&_li]:[font:500_clamp(16px,1.3vw,23px)/1.45_var(--font-sans)] [&_li]:tracking-[-.035em] [&_li_>_span:last-child]:[transition:color_250ms_ease,transform_250ms_ease] [@media((hover:_hover)_and_(pointer:_fine))]:[&_li:hover_>_span:last-child]:text-brick [@media((hover:_hover)_and_(pointer:_fine))]:[&_li:hover_>_span:last-child]:transform-[translateX(5px)] max-[600px]:grid-cols-[1fr] max-[600px]:[&_li]:py-2.25 max-[600px]:[&_li]:text-[18px] motion-reduce:[&_li_>_span:last-child]:[transition:none] motion-reduce:[&_li:hover_>_span:last-child]:transform-none">
           {[...group.names].map((name, index) => (
-            <li><span class="expertise-item-index [flex:0_0_18px] [color:#a7a29a] text-[9px] tracking-[0] [font-variant-numeric:tabular-nums]" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span><span>{name}</span></li>
+            <li><span class="expertise-item-index flex-[0_0_18px] text-[#a7a29a] text-[9px] tracking-normal [font-variant-numeric:tabular-nums]" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span><span>{name}</span></li>
           ))}
         </ul>
       </section>
     ))}
-    {skillGroups.length === 0 && <p class="expertise-empty [color:var(--expertise-muted)] text-[14px]">Mes compétences seront bientôt présentées ici.</p>}
+    {skillGroups.length === 0 && <p class="expertise-empty text-(--expertise-muted) text-[14px]">Mes compétences seront bientôt présentées ici.</p>}
   </div>
-  <section class="expertise-knowledge mt-[clamp(64px,_8vw,_140px)] relative print:[&[data-tool-carousel][data-tool-ready]]:h-auto!" aria-labelledby="expertise-knowledge-title" data-tool-carousel>
-    <div class="tool-carousel-stage [[data-tool-carousel][data-tool-ready]_&]:sticky [[data-tool-carousel][data-tool-ready]_&]:top-0 [[data-tool-carousel][data-tool-ready]_&]:h-[100svh] [[data-tool-carousel][data-tool-ready]_&]:flex [[data-tool-carousel][data-tool-ready]_&]:flex-col [[data-tool-carousel][data-tool-ready]_&]:justify-center [[data-tool-carousel][data-tool-ready]_&]:gap-[clamp(48px,_8svh,_96px)] print:[[data-tool-carousel][data-tool-ready]_&]:static print:[[data-tool-carousel][data-tool-ready]_&]:h-auto print:[[data-tool-carousel][data-tool-ready]_&]:block" data-tool-stage>
-    <header class="expertise-heading mb-[clamp(48px,_6vw,_96px)] [&_h2]:[font:500_clamp(32px,_4.4vw,_76px)/1.1_var(--font-sans)] [&_h2]:tracking-[-.055em] [&_h2_>_span]:[color:var(--color-brick)] [[data-tool-ready]_&]:mb-0">
-      <p class="expertise-kicker mb-6 [color:var(--expertise-muted)] [font:500_10px/1.5_var(--font-sans)] tracking-[.13em] uppercase max-[600px]:mb-4.5">Les outils</p>
+  <section class="expertise-knowledge mt-[clamp(64px,8vw,140px)] relative print:[&[data-tool-carousel][data-tool-ready]]:h-auto!" aria-labelledby="expertise-knowledge-title" data-tool-carousel>
+    <div class="tool-carousel-stage [[data-tool-carousel][data-tool-ready]_&]:sticky [[data-tool-carousel][data-tool-ready]_&]:top-0 [[data-tool-carousel][data-tool-ready]_&]:h-svh [[data-tool-carousel][data-tool-ready]_&]:flex [[data-tool-carousel][data-tool-ready]_&]:flex-col [[data-tool-carousel][data-tool-ready]_&]:justify-center [[data-tool-carousel][data-tool-ready]_&]:gap-[clamp(48px,8svh,96px)] print:[[data-tool-carousel][data-tool-ready]_&]:static print:[[data-tool-carousel][data-tool-ready]_&]:h-auto print:[[data-tool-carousel][data-tool-ready]_&]:block" data-tool-stage>
+    <header class="expertise-heading mb-[clamp(48px,6vw,96px)] [&_h2]:[font:500_clamp(32px,4.4vw,76px)/1.1_var(--font-sans)] [&_h2]:tracking-[-.055em] [&_h2_>_span]:text-brick in-data-tool-ready:mb-0">
+      <p class="expertise-kicker mb-6 text-(--expertise-muted) [font:500_10px/1.5_var(--font-sans)] tracking-[.13em] uppercase max-[600px]:mb-4.5">Les outils</p>
       <h2 id="expertise-knowledge-title">Savoirs &amp; outils<span aria-hidden="true">.</span></h2>
     </header>
-    {tools.length > 0 && <ul class="tool-scroll-list m-0 p-0 [list-style:none] [[data-tool-ready]_&]:relative [[data-tool-ready]_&]:h-[clamp(180px,_32svh,_360px)] print:[[data-tool-ready]_&]:h-auto" data-tool-list>
+    {tools.length > 0 && <ul class="tool-scroll-list m-0 p-0 [list-style:none] in-data-tool-ready:relative in-data-tool-ready:h-[clamp(180px,32svh,360px)] print:in-data-tool-ready:h-auto" data-tool-list>
       {tools.map((tool) => (
-        <li class="tool-scroll-row p-[18px_0] [color:#302e2a] [[data-tool-ready]_&]:absolute [[data-tool-ready]_&]:inset-0 [[data-tool-ready]_&]:flex [[data-tool-ready]_&]:items-center [[data-tool-ready]_&]:p-0 [[data-tool-ready]_&]:opacity-0 print:[[data-tool-ready]_&]:static print:[[data-tool-ready]_&]:opacity-100! print:[[data-tool-ready]_&]:transform-none! print:[[data-tool-ready]_&]:py-3 motion-reduce:[transition:none]" data-tool-row>
-            <span class="tool-scroll-name [font:500_clamp(36px,_7vw,_120px)/1.08_var(--font-sans)] tracking-[-.065em] [overflow-wrap:anywhere] [[data-tool-ready]_&]:max-w-full">{tool}</span>
+        <li class="tool-scroll-row p-[18px_0] text-[#302e2a] in-data-tool-ready:absolute in-data-tool-ready:inset-0 in-data-tool-ready:flex in-data-tool-ready:items-center in-data-tool-ready:p-0 in-data-tool-ready:opacity-0 print:in-data-tool-ready:static print:in-data-tool-ready:opacity-100! print:in-data-tool-ready:transform-none! print:in-data-tool-ready:py-3 motion-reduce:[transition:none]" data-tool-row>
+            <span class="tool-scroll-name [font:500_clamp(36px,7vw,120px)/1.08_var(--font-sans)] tracking-[-.065em] wrap-anywhere in-data-tool-ready:max-w-full">{tool}</span>
         </li>
       ))}
     </ul>}
-    {tools.length === 0 && <p class="expertise-empty [color:var(--expertise-muted)] text-[14px]">Mes savoirs et outils seront bientôt présentés ici.</p>}
+    {tools.length === 0 && <p class="expertise-empty text-(--expertise-muted) text-[14px]">Mes savoirs et outils seront bientôt présentés ici.</p>}
     </div>
   </section>
 </section>

@@ -13,16 +13,16 @@ const [projects, knowledge, skills] = await Promise.all([
 
 <BaseLayout>
   <HomeIntroduction />
-  <section class="home-statement block relative [background:#fafaf8] [color:#14161d] p-[clamp(100px,_10vw,_180px)_6.5%] [&_h2]:max-w-310 [&_h2]:m-0 [&_h2]:[font:500_clamp(46px,_6vw,_110px)/1.05_var(--font-sans)] [&_h2]:tracking-[-.055em] [&_h2]:[text-wrap:pretty] [&_h2]:[color:#14161d] [&_p]:w-[43%] [&_p]:m-[clamp(70px,_8vw,_150px)_7%_0_auto] [&_p]:[color:#555550] [&_p]:text-[clamp(16px,_1.3vw,_24px)] [&_p]:leading-[1.55] [&_p]:tracking-[-.035em] max-[700px]:p-[90px_24px] max-[700px]:[&_p]:w-full max-[700px]:[&_p]:max-w-110 max-[700px]:[&_p]:m-[60px_0_0_auto] print:p-[40px_24px] print:[&_p]:w-full print:[&_p]:mt-10" aria-labelledby="home-statement-title">
-      <h2 id="home-statement-title" data-home-reveal class="[&[data-home-reveal][data-reveal-ready]]:opacity-0 [&[data-home-reveal][data-reveal-ready]]:[transform:translateY(36px)] [&[data-home-reveal][data-reveal-ready]]:[transition:opacity_900ms_ease,_transform_1100ms_cubic-bezier(.16,_1,_.3,_1)] [&[data-home-reveal][data-reveal-ready][data-reveal-ready='visible']]:opacity-100 [&[data-home-reveal][data-reveal-ready][data-reveal-ready='visible']]:transform-none motion-reduce:[&[data-home-reveal][data-reveal-ready]]:opacity-100 motion-reduce:[&[data-home-reveal][data-reveal-ready]]:transform-none motion-reduce:[&[data-home-reveal][data-reveal-ready]]:[transition:none] print:[&[data-home-reveal][data-reveal-ready]]:opacity-100 print:[&[data-home-reveal][data-reveal-ready]]:transform-none">Donner forme aux idées.</h2>
-      <p data-home-reveal class="[&[data-home-reveal][data-reveal-ready]]:opacity-0 [&[data-home-reveal][data-reveal-ready]]:[transform:translateY(36px)] [&[data-home-reveal][data-reveal-ready]]:[transition:opacity_900ms_ease,_transform_1100ms_cubic-bezier(.16,_1,_.3,_1)] [&[data-home-reveal][data-reveal-ready][data-reveal-ready='visible']]:opacity-100 [&[data-home-reveal][data-reveal-ready][data-reveal-ready='visible']]:transform-none motion-reduce:[&[data-home-reveal][data-reveal-ready]]:opacity-100 motion-reduce:[&[data-home-reveal][data-reveal-ready]]:transform-none motion-reduce:[&[data-home-reveal][data-reveal-ready]]:[transition:none] print:[&[data-home-reveal][data-reveal-ready]]:opacity-100 print:[&[data-home-reveal][data-reveal-ready]]:transform-none">
+  <section class="home-statement block relative [background:#fafaf8] text-ink p-[clamp(100px,10vw,180px)_6.5%] [&_h2]:max-w-310 [&_h2]:m-0 [&_h2]:[font:500_clamp(46px,6vw,110px)/1.05_var(--font-sans)] [&_h2]:tracking-[-.055em] [&_h2]:text-pretty [&_h2]:text-ink [&_p]:w-[43%] [&_p]:m-[clamp(70px,8vw,150px)_7%_0_auto] [&_p]:text-[#555550] [&_p]:text-[clamp(16px,1.3vw,24px)] [&_p]:leading-[1.55] [&_p]:tracking-[-.035em] max-[700px]:p-[90px_24px] max-[700px]:[&_p]:w-full max-[700px]:[&_p]:max-w-110 max-[700px]:[&_p]:m-[60px_0_0_auto] print:p-[40px_24px] print:[&_p]:w-full print:[&_p]:mt-10" aria-labelledby="home-statement-title">
+      <h2 id="home-statement-title" data-home-reveal class="[&[data-home-reveal][data-reveal-ready]]:opacity-0 [&[data-home-reveal][data-reveal-ready]]:transform-[translateY(36px)] [&[data-home-reveal][data-reveal-ready]]:[transition:opacity_900ms_ease,transform_1100ms_cubic-bezier(.16,1,.3,1)] [&[data-home-reveal][data-reveal-ready][data-reveal-ready='visible']]:opacity-100 [&[data-home-reveal][data-reveal-ready][data-reveal-ready='visible']]:transform-none motion-reduce:[&[data-home-reveal][data-reveal-ready]]:opacity-100 motion-reduce:[&[data-home-reveal][data-reveal-ready]]:transform-none motion-reduce:[&[data-home-reveal][data-reveal-ready]]:[transition:none] print:[&[data-home-reveal][data-reveal-ready]]:opacity-100 print:[&[data-home-reveal][data-reveal-ready]]:transform-none">Donner forme aux idées.</h2>
+      <p data-home-reveal class="[&[data-home-reveal][data-reveal-ready]]:opacity-0 [&[data-home-reveal][data-reveal-ready]]:transform-[translateY(36px)] [&[data-home-reveal][data-reveal-ready]]:[transition:opacity_900ms_ease,transform_1100ms_cubic-bezier(.16,1,.3,1)] [&[data-home-reveal][data-reveal-ready][data-reveal-ready='visible']]:opacity-100 [&[data-home-reveal][data-reveal-ready][data-reveal-ready='visible']]:transform-none motion-reduce:[&[data-home-reveal][data-reveal-ready]]:opacity-100 motion-reduce:[&[data-home-reveal][data-reveal-ready]]:transform-none motion-reduce:[&[data-home-reveal][data-reveal-ready]]:[transition:none] print:[&[data-home-reveal][data-reveal-ready]]:opacity-100 print:[&[data-home-reveal][data-reveal-ready]]:transform-none">
         De l’identité visuelle à la maquette web, j’imagine et conçois des
         créations adaptées à votre projet. Mon objectif : traduire vos idées en
         visuels cohérents, expressifs et pensés pour votre public.
       </p>
   </section>
   <ProjectCarousel projects={projects.slice(0, 3)} />
-  <section class="home-project-summary flex items-center min-h-[75svh] p-[clamp(88px,_12vw,_180px)_8vw] [background:var(--color-brick,_#a33333)] [color:#fafaf8] [&_p:first-child]:m-0 [&_p:first-child]:[font:500_clamp(19px,_1.55vw,_28px)/1.6_var(--font-sans)] [&_p:first-child]:tracking-[-.025em] [&_p_+_p]:m-[32px_0_0] [&_p_+_p]:[font:500_clamp(15px,_1.05vw,_18px)/1.75_var(--font-sans)] [&_p_+_p]:[color:#fafaf8cc] max-[900px]:min-h-0 max-[900px]:p-[88px_24px] print:h-auto" aria-label="Au fil des projets">
+  <section class="home-project-summary flex items-center min-h-[75svh] p-[clamp(88px,12vw,180px)_8vw] [background:var(--color-brick,#a33333)] text-paper [&_p:first-child]:m-0 [&_p:first-child]:[font:500_clamp(19px,1.55vw,28px)/1.6_var(--font-sans)] [&_p:first-child]:tracking-tight [&_p+p]:m-[32px_0_0] [&_p+p]:[font:500_clamp(15px,1.05vw,18px)/1.75_var(--font-sans)] [&_p+p]:text-[#fafaf8cc] max-[900px]:min-h-0 max-[900px]:p-[88px_24px] print:h-auto" aria-label="Au fil des projets">
     <div class="home-project-summary-copy w-[50%] max-w-160 max-[900px]:w-[72%] max-[600px]:w-full">
       <p>Ces projets ont enrichi mes compétences en création, en développement et en communication. Des savoir-faire complémentaires sur lesquels je m’appuie pour concevoir des réalisations cohérentes et adaptées à leurs objectifs.</p>
       <p>Au fil des expériences, ma pratique s’est affinée : défendre mes choix, m’adapter aux contraintes et collaborer avec des profils différents. Cette diversité nourrit mon approche et renforce mon autonomie.</p>
@@ -31,6 +31,7 @@ const [projects, knowledge, skills] = await Promise.all([
   <SkillsOverview skills={skills} knowledge={knowledge} />
 </BaseLayout>
 <script>
+import { htmlElement } from "../scripts/dom.js";
   // home-introduction
 function introState(progress) {
   const p = Math.max(0, Math.min(1, progress));
@@ -47,15 +48,15 @@ function introState(progress) {
 }
 
 // Interactions
-const root = document.querySelector("[data-home-introduction]");
+const root = htmlElement(document, "[data-home-introduction]");
 if (root) {
   const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const space = root.querySelector("[data-intro-zoom-space]");
+  const space = htmlElement(root, "[data-intro-zoom-space]");
   const texts = [...(document.querySelectorAll?.("[data-home-reveal]") || [])];
   const properties = ["slide", "name-opacity", "name-x", "shade"];
-  let frame;
-  let lastProgress;
-  let observer;
+  let frame = undefined;
+  let lastProgress = undefined;
+  let observer = undefined;
 
   function update(force = false) {
     frame = undefined;
@@ -117,18 +118,19 @@ if (root) {
 </script>
 
 <script>
+import { htmlElement, htmlElements, containsTarget } from "../scripts/dom.js";
   // home-projects
-const root = document.querySelector("[data-home-projects]");
+const root = htmlElement(document, "[data-home-projects]");
 if (root) {
-  const stage = root.querySelector("[data-home-project-stage]");
-  const track = root.querySelector("[data-home-project-track]");
-  const panels = [...root.querySelectorAll("[data-home-project-panel]")];
+  const stage = htmlElement(root, "[data-home-project-stage]");
+  const track = htmlElement(root, "[data-home-project-track]");
+  const panels = [...htmlElements(root, "[data-home-project-panel]")];
   const desktop = window.matchMedia("(min-width: 900px)");
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
   let enabled = false;
   let distance = 0;
   let position = 0;
-  let frame;
+  let frame = undefined;
 
   function update() {
     frame = undefined;
@@ -177,7 +179,7 @@ if (root) {
     goTo(target);
   });
   stage.addEventListener("focusin", (event) => {
-    const index = panels.findIndex((panel) => panel.contains(event.target));
+    const index = panels.findIndex((panel) => containsTarget(panel, event.target));
     if (index >= 0 && enabled) goTo(index);
   });
   // The browser owns the wheel: no forced destination, timer or gesture lock.
@@ -195,15 +197,16 @@ if (root) {
 </script>
 
 <script>
+import { htmlElement, htmlElements } from "../scripts/dom.js";
   // tool-directory
-const root = document.querySelector("[data-tool-carousel]");
+const root = htmlElement(document, "[data-tool-carousel]");
 if (root) {
-  const rows = [...root.querySelectorAll("[data-tool-row]")];
+  const rows = [...htmlElements(root, "[data-tool-row]")];
   const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
   let enabled = false;
   let step = 1;
   let distance = 0;
-  let frame;
+  let frame = undefined;
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
   function update() {

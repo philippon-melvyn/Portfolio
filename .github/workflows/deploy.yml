@@ -6,6 +6,10 @@ on:
       - main
   workflow_dispatch:
 
+concurrency:
+  group: portfolio-production
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -29,6 +33,25 @@ jobs:
 
             git pull origin main
             bun ci
-            bun run --bun build
 
-            curl --fail --output /dev/null https://portfolio.melvyn-philippon.fr/
+            # PocketBase or configuration errors must not erase the live dist.
+            bun run --bun build --outDir .astro/deploy-dist
+            bun run check:seo .astro/deploy-dist
+
+            # Promote only a complete, checked build; restore on a failed swap.
+            # All paths are relative to /var/www/portfolio/Portfolio above.
+            if [ -e .astro/deploy-previous ]; then
+              echo "Backup .astro/deploy-previous exists: inspect it before deploying."
+              exit 1
+            fi
+            if [ -d dist ]; then mv dist .astro/deploy-previous; fi
+            if ! mv .astro/deploy-dist dist; then
+              if [ -d .astro/deploy-previous ]; then mv .astro/deploy-previous dist; fi
+              exit 1
+            fi
+            if ! curl --fail --output /dev/null https://portfolio.melvyn-philippon.fr/; then
+              mv dist .astro/deploy-dist
+              if [ -d .astro/deploy-previous ]; then mv .astro/deploy-previous dist; fi
+              exit 1
+            fi
+            if [ -d .astro/deploy-previous ]; then rm -r -- .astro/deploy-previous; fi

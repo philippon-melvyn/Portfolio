@@ -1,0 +1,54 @@
+# EXAMPLE ONLY: merge into the portfolio VirtualHosts after inspecting apachectl -S.
+# Do not replace a shared configuration file or the PocketBase VirtualHost.
+<VirtualHost *:80>
+    ServerName portfolio.melvyn-philippon.fr
+
+    # Specific redirect first, to avoid an extra HTTP -> HTTPS -> new slug hop.
+    RedirectMatch 301 "^/projets/la-cimade/?$" "https://portfolio.melvyn-philippon.fr/projets/lacimade/"
+    Redirect permanent "/" "https://portfolio.melvyn-philippon.fr/"
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName portfolio.melvyn-philippon.fr
+    DocumentRoot /var/www/portfolio/Portfolio/dist
+
+    SSLEngine on
+    SSLCertificateFile /etc/letsencrypt/live/portfolio.melvyn-philippon.fr/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/portfolio.melvyn-philippon.fr/privkey.pem
+    # Preserve any existing Let's Encrypt TLS options and renewal configuration.
+
+    RedirectMatch 301 "^/projets/la-cimade/?$" "https://portfolio.melvyn-philippon.fr/projets/lacimade/"
+    ErrorDocument 404 /404.html
+
+    <Directory /var/www/portfolio/Portfolio/dist>
+        Require all granted
+        Options -Indexes -MultiViews
+        AllowOverride None
+        DirectoryIndex index.html
+        DirectorySlash On
+        FallbackResource disabled
+    </Directory>
+
+    # HTML and stable endpoints must be revalidated after each publication.
+    <IfModule mod_headers.c>
+        <FilesMatch "\.(html|xml|txt)$">
+            Header set Cache-Control "no-cache"
+        </FilesMatch>
+    </IfModule>
+
+    # Deflate is optional; these blocks act only when the module is enabled.
+    # Do not recompress already-compressed images or WOFF2 fonts.
+    <IfModule mod_deflate.c>
+        <IfModule mod_filter.c>
+            AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript text/javascript application/json application/ld+json application/xml image/svg+xml
+        </IfModule>
+    </IfModule>
+
+    # Only Astro's fingerprinted build assets get a long immutable cache.
+    # Unversioned /images and /fonts are deliberately excluded.
+    <IfModule mod_headers.c>
+        <LocationMatch "^/_astro/.*\.[^/]+$">
+            Header set Cache-Control "public, max-age=31536000, immutable"
+        </LocationMatch>
+    </IfModule>
+</VirtualHost>

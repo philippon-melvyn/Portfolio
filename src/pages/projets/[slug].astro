@@ -11,6 +11,7 @@ import {
 } from "../../lib/pocketbase.js";
 import { asArray, editorHtml, plainText, safeLink } from "../../lib/content.js";
 import { createHash } from "node:crypto";
+import { projectSeo } from "../../lib/seo.js";
 // PocketBase gives a renamed file to each upload, even for identical images.
 // Compare file contents while rendering, without modifying the records.
 async function projectMedia(project) {
@@ -26,12 +27,13 @@ async function projectMedia(project) {
   if (leadIndex > 0) gallery.unshift(...gallery.splice(leadIndex, 1));
   const linkImages = [1, 2].map((number) => imagesFor(project, `liens_img_${number}`)[0]);
   const urls = [...new Set([cover, ...gallery, ...linkImages].filter(Boolean))];
-  const fingerprints = new Map(await Promise.all(urls.map(async (url) => {
+  const fingerprints = new Map();
+  await Promise.all(urls.map(async (url) => {
     const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
     if (!response.ok) throw new Error(`Image du projet « ${project.titre} » : HTTP ${response.status}.`);
     const hash = createHash("sha256").update(Buffer.from(await response.arrayBuffer())).digest("hex");
-    return [url, hash];
-  })));
+    fingerprints.set(url, hash);
+  }));
   const seen = new Set();
   function unique(url) {
     if (!url) return undefined;
@@ -54,6 +56,7 @@ export async function getStaticPaths() {
   }));
 }
 const { project } = Astro.props;
+const seo = projectSeo(project);
 const { cover, gallery, linkImages } = await projectMedia(project);
 const knowledge = relatedRecords(project, "savoirs");
 const skills = relatedRecords(project, "competences");
@@ -81,35 +84,37 @@ const links = [1, 2]
 <ProjectTransitions />
 
 <BaseLayout
-  title={project.titre}
-  description={plainText(project.introduction ?? "").slice(0, 180)}
+  title={seo.title}
+  description={seo.description}
   image={cover}
+  imageAlt={cover ? project.couverture_alt || `Visuel du projet ${project.titre}` : undefined}
+  schema="project"
 >
-  <article class="project-detail [--project-background:#f4f1eb] [--project-text:#302e2a] [--project-muted:#77736b] [--project-space:clamp(24px,_3vw,_64px)] [background:var(--project-background)] [color:var(--project-text)] [&[data-project-slug='bargo']_.project-lead-image_img]:w-[102%] [&[data-project-slug='bargo']_.project-lead-image_img]:max-w-none [&[data-project-slug='bargo']_.project-lead-image_img]:ml-[-1%]" data-project-slug={project.slug}>
-    <header class:list={["project-opening grid [grid-template-columns:minmax(0,_29fr)_minmax(0,_37fr)_minmax(0,_34fr)] min-h-[100svh] min-[700px]:max-[1100px]:[grid-template-columns:minmax(0,_55fr)_minmax(0,_45fr)] max-[700px]:flex max-[700px]:flex-col max-[700px]:min-h-auto print:min-h-auto", { "project-opening-no-cover [&.project-opening-no-cover]:[grid-template-columns:minmax(0,_1fr)_minmax(0,_2fr)] [&_.project-story]:max-w-200 [&.project-opening-no-story]:block [&.project-opening-no-story]:min-h-auto [&.project-opening-no-story_.project-index]:pb-20 min-[700px]:max-[1100px]:[&.project-opening-no-cover]:[grid-template-columns:1fr_1fr] min-[700px]:max-[1100px]:[&_.project-story]:[grid-column:2] min-[700px]:max-[1100px]:[&_.project-story]:pt-27.5 max-[700px]:[&.project-opening-no-cover]:flex max-[700px]:[&.project-opening-no-cover]:flex-col max-[700px]:[&.project-opening-no-cover]:min-h-auto": !cover, "project-opening-no-story [&.project-opening-no-story]:[grid-template-columns:minmax(0,_40fr)_minmax(0,_60fr)] min-[700px]:max-[1100px]:[&_.project-opening-cover]:[grid-row:auto]": !hasStory }]}>
+  <article class="project-detail [--project-background:#f4f1eb] [--project-text:#302e2a] [--project-muted:#77736b] [--project-space:clamp(24px,3vw,64px)] [background:var(--project-background)] text-(--project-text) [&[data-project-slug='bargo']_.project-lead-image_img]:w-[102%] [&[data-project-slug='bargo']_.project-lead-image_img]:max-w-none [&[data-project-slug='bargo']_.project-lead-image_img]:ml-[-1%]" data-project-slug={project.slug}>
+    <header class:list={["project-opening grid grid-cols-[minmax(0,29fr)_minmax(0,37fr)_minmax(0,34fr)] min-h-svh min-[700px]:max-[1100px]:grid-cols-[minmax(0,55fr)_minmax(0,45fr)] max-[700px]:flex max-[700px]:flex-col max-[700px]:min-h-auto print:min-h-auto", { "project-opening-no-cover [&.project-opening-no-cover]:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] [&_.project-story]:max-w-200 [&.project-opening-no-story]:block [&.project-opening-no-story]:min-h-auto [&.project-opening-no-story_.project-index]:pb-20 min-[700px]:max-[1100px]:[&.project-opening-no-cover]:grid-cols-[1fr_1fr] min-[700px]:max-[1100px]:[&_.project-story]:col-2 min-[700px]:max-[1100px]:[&_.project-story]:pt-27.5 max-[700px]:[&.project-opening-no-cover]:flex max-[700px]:[&.project-opening-no-cover]:flex-col max-[700px]:[&.project-opening-no-cover]:min-h-auto": !cover, "project-opening-no-story [&.project-opening-no-story]:grid-cols-[minmax(0,40fr)_minmax(0,60fr)] min-[700px]:max-[1100px]:[&_.project-opening-cover]:row-auto": !hasStory }]}>
       <div class="project-index p-[116px_var(--project-space)_64px] min-[700px]:max-[1100px]:pt-27.5 max-[700px]:p-[104px_24px_40px] print:pt-6">
-        <a class="project-back text-[10px] leading-[1.5] tracking-[.13em] uppercase inline-block max-w-full [color:var(--project-muted)] [&_span]:px-2 hover:[color:var(--color-brick)]" href="/projets/">Projets{domains.length > 0 && <><span aria-hidden="true">/</span> {domains.join(" · ")}</>}</a>
-        <div class="project-identity mt-[clamp(64px,_12svh,_140px)] [&_h1]:[font:500_clamp(25px,_2.5vw,_44px)/1.15_var(--font-sans)] [&_h1]:tracking-[-.055em] [&_h1]:[overflow-wrap:anywhere] min-[700px]:max-[1100px]:mt-12 max-[700px]:mt-12 max-[700px]:[&_h1]:text-[36px]">
+        <a class="project-back text-[10px] leading-normal tracking-[.13em] uppercase inline-block max-w-full text-(--project-muted) [&_span]:px-2 hover:text-brick" href="/projets/">Projets{domains.length > 0 && <><span aria-hidden="true">/</span> {domains.join(" · ")}</>}</a>
+        <div class="project-identity mt-[clamp(64px,12svh,140px)] [&_h1]:[font:500_clamp(25px,2.5vw,44px)/1.15_var(--font-sans)] [&_h1]:tracking-[-.055em] [&_h1]:wrap-anywhere min-[700px]:max-[1100px]:mt-12 max-[700px]:mt-12 max-[700px]:[&_h1]:text-[36px]">
           <h1>{project.titre}</h1>
-          {domains.length > 0 && <p class="project-category mt-3 [color:var(--project-muted)] text-[12px]">{domains.join(" / ")}</p>}
+          {domains.length > 0 && <p class="project-category mt-3 text-(--project-muted) text-[12px]">{domains.join(" / ")}</p>}
         </div>
-        {metadata.length > 0 && <dl class="project-facts grid gap-7 mt-16 [&_dt]:text-[10px] [&_dt]:leading-[1.5] [&_dt]:tracking-[.13em] [&_dt]:uppercase [&_dt]:[color:var(--project-muted)] [&_dt]:mb-1.75 [&_dd]:text-[13px] [&_dd]:leading-[1.6] [&_dd]:whitespace-pre-line min-[700px]:max-[1100px]:[grid-template-columns:1fr_1fr] min-[700px]:max-[1100px]:mt-10 max-[700px]:[grid-template-columns:1fr_1fr] max-[700px]:mt-9 max-[700px]:gap-6">
+        {metadata.length > 0 && <dl class="project-facts grid gap-7 mt-16 [&_dt]:text-[10px] [&_dt]:leading-normal [&_dt]:tracking-[.13em] [&_dt]:uppercase [&_dt]:text-(--project-muted) [&_dt]:mb-1.75 [&_dd]:text-[13px] [&_dd]:leading-[1.6] [&_dd]:whitespace-pre-line min-[700px]:max-[1100px]:grid-cols-[1fr_1fr] min-[700px]:max-[1100px]:mt-10 max-[700px]:grid-cols-[1fr_1fr] max-[700px]:mt-9 max-[700px]:gap-6">
           {metadata.map(([label, value]) => (
             <div><dt>{label}</dt><dd>{value}</dd></div>
           ))}
         </dl>}
       </div>
-      {hasStory && <div class="project-story p-[116px_clamp(24px,_3.4vw,_72px)_64px_20px] text-[clamp(13px,_.95vw,_16px)] leading-[1.8] [&_>_*_+_*]:mt-8 [&_.rich-text_>_*_+_*]:mt-4.5 min-[700px]:max-[1100px]:[grid-column:1] min-[700px]:max-[1100px]:p-[0_var(--project-space)_48px] max-[700px]:p-[0_24px_48px] max-[700px]:text-[14px] print:pt-6">
+      {hasStory && <div class="project-story p-[116px_clamp(24px,3.4vw,72px)_64px_20px] text-[clamp(13px,.95vw,16px)] leading-[1.8] [&_>_*_+_*]:mt-8 [&_.rich-text_>_*_+_*]:mt-4.5 min-[700px]:max-[1100px]:col-1 min-[700px]:max-[1100px]:p-[0_var(--project-space)_48px] max-[700px]:p-[0_24px_48px] max-[700px]:text-[14px] print:pt-6">
         {introduction && <div class="project-introduction rich-text [&_>_*_+_*]:mt-6 [&_ul]:[list-style:disc] [&_ul]:pl-6 [&_ol]:[list-style:decimal] [&_ol]:pl-6" set:html={editorHtml(project.introduction)} />}
         {overview.map(([field, title]) => (
           <section aria-labelledby={`project-${field}`}>
-            <h2 id={`project-${field}`} class="project-label text-[10px] leading-[1.5] tracking-[.13em] uppercase [color:var(--project-muted)] mb-4 font-medium">{title}</h2>
-            <p class="project-plain-text whitespace-pre-line [overflow-wrap:anywhere]">{project[field]}</p>
+            <h2 id={`project-${field}`} class="project-label text-[10px] leading-normal tracking-[.13em] uppercase text-(--project-muted) mb-4 font-medium">{title}</h2>
+            <p class="project-plain-text whitespace-pre-line wrap-anywhere">{project[field]}</p>
           </section>
         ))}
       </div>}
       {cover && (
-        <div class="project-opening-cover relative min-w-0 [background:#e0dcd4] [&_img]:absolute [&_img]:inset-0 [&_img]:block [&_img]:w-full [&_img]:h-full [&_img]:object-cover min-[700px]:max-[1100px]:[grid-column:2] min-[700px]:max-[1100px]:[grid-row:1_/_span_2] max-[700px]:h-[70svh] max-[700px]:min-h-90 print:[&_img]:static print:[&_img]:h-auto">
+        <div class="project-opening-cover relative min-w-0 [background:#e0dcd4] [&_img]:absolute [&_img]:inset-0 [&_img]:block [&_img]:w-full [&_img]:h-full [&_img]:object-cover min-[700px]:max-[1100px]:col-2 min-[700px]:max-[1100px]:row-[1/span_2] max-[700px]:h-[70svh] max-[700px]:min-h-90 print:[&_img]:static print:[&_img]:h-auto">
           <ProjectImage
             src={cover}
             alt={project.couverture_alt || project.titre}
@@ -122,10 +127,10 @@ const links = [1, 2]
     </header>
     <ProjectSections project={project} gallery={gallery} />
     {(knowledge.length > 0 || skills.length > 0) && (
-      <section class="project-credits grid [grid-template-columns:1fr_1fr] gap-12 p-[64px_var(--project-space)] [border-top:1px_solid_#302e2a26] max-[700px]:[grid-template-columns:1fr] max-[700px]:py-10">
+      <section class="project-credits grid grid-cols-[1fr_1fr] gap-12 p-[64px_var(--project-space)] [border-top:1px_solid_#302e2a26] max-[700px]:grid-cols-[1fr] max-[700px]:py-10">
         {skills.length > 0 && (
           <div>
-            <h2 class="project-label text-[10px] leading-[1.5] tracking-[.13em] uppercase [color:var(--project-muted)] mb-4 font-medium">Compétences mobilisées</h2>
+            <h2 class="project-label text-[10px] leading-normal tracking-[.13em] uppercase text-(--project-muted) mb-4 font-medium">Compétences mobilisées</h2>
             <ul class="project-credit-skills flex flex-wrap gap-[8px_24px] text-[13px]">
               {skills.map((skill) => (
                 <li>{skill.titre}</li>
@@ -135,7 +140,7 @@ const links = [1, 2]
         )}
         {knowledge.length > 0 && (
           <div>
-            <h2 class="project-label text-[10px] leading-[1.5] tracking-[.13em] uppercase [color:var(--project-muted)] mb-4 font-medium">Savoirs utilisés</h2>
+            <h2 class="project-label text-[10px] leading-normal tracking-[.13em] uppercase text-(--project-muted) mb-4 font-medium">Savoirs utilisés</h2>
             <ul class="project-credit-tools flex flex-wrap gap-6 text-[13px] [&_li]:flex [&_li]:items-center [&_li]:gap-2.5 [&_img]:w-6.5 [&_img]:h-6.5 [&_img]:object-contain">
               {knowledge.map((item) => {
                 const logo = imagesFor(item, "logo")[0];
@@ -162,7 +167,7 @@ const links = [1, 2]
     {links.length > 0 && (
       <section
         aria-label="Découvrir les réalisations finales"
-        class="project-resources grid [grid-template-columns:repeat(auto-fit,_minmax(min(100%,_340px),_1fr))] gap-8 p-[24px_var(--project-space)_64px] [&_>_div]:min-w-0 [&_img]:block [&_img]:w-full [&_img]:h-auto max-[700px]:pb-6"
+        class="project-resources grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-8 p-[24px_var(--project-space)_64px] [&_>_div]:min-w-0 [&_img]:block [&_img]:w-full [&_img]:h-auto max-[700px]:pb-6"
       >
         {links.map((link) => (
           <div>
@@ -188,19 +193,20 @@ const links = [1, 2]
         ))}
       </section>
     )}
-    <div class="project-return p-[48px_var(--project-space)_64px] [&_a:hover]:[color:var(--color-brick)] [&_a]:text-[12px] [&_a]:uppercase [&_a]:tracking-[.1em] print:hidden"><a href="/projets/">Retour aux projets</a></div>
+    <div class="project-return p-[48px_var(--project-space)_64px] [&_a:hover]:text-brick [&_a]:text-[12px] [&_a]:uppercase [&_a]:tracking-widest print:hidden"><a href="/projets/">Retour aux projets</a></div>
   </article>
 </BaseLayout>
 <script>
+import { htmlElement, imageElements, animationSet, observedImage } from "../../scripts/dom.js";
   // project-images
-const root = document.querySelector(".project-detail");
+const root = htmlElement(document, ".project-detail");
 if (root && "IntersectionObserver" in window) {
   const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const images = [...root.querySelectorAll(".project-opening-cover img, .project-lead-image img, .project-gallery-image img, .project-resources > div > a img")];
+  const images = [...imageElements(root, ".project-opening-cover img, .project-lead-image img, .project-gallery-image img, .project-resources > div > a img")];
   const entered = new WeakSet();
-  const animations = new Set();
+  const animations = animationSet();
   const loading = new Map();
-  let observer;
+  let observer = undefined;
 
   function reveal(image) {
     if (preference.matches || entered.has(image) || !image.animate) return;
@@ -223,7 +229,8 @@ if (root && "IntersectionObserver" in window) {
     stop();
     if (preference.matches) return;
     observer = new window.IntersectionObserver((entries) => {
-      entries.forEach(({ target: image, isIntersecting }) => {
+      entries.forEach(({ target, isIntersecting }) => {
+        const image = observedImage(target);
         if (!isIntersecting) return;
         observer.unobserve(image);
         if (image.complete) reveal(image);
