@@ -29,23 +29,40 @@ jobs:
             export BUN_INSTALL="$HOME/.bun"
             export PATH="$BUN_INSTALL/bin:$PATH"
 
-            cd /var/www/portfolio/Portfolio
+            deploy_root=/var/www/portfolio/Portfolio
+            cd "$deploy_root"
+            mkdir -p .astro
 
-            git pull origin main
-            bun ci
+            # Never read the old VPS .git database: it contains corrupt objects.
+            # A fresh clone also isolates each build from stale server sources.
+            deploy_source=$(mktemp -d "$deploy_root/.astro/deploy-source.XXXXXX")
+            cleanup_source() {
+              case "$deploy_source" in
+                "$deploy_root"/.astro/deploy-source.*) rm -rf -- "$deploy_source" ;;
+              esac
+            }
+            trap cleanup_source EXIT
+            git clone --depth 1 --single-branch --branch main \
+              https://github.com/philippon-melvyn/Portfolio.git "$deploy_source"
+            git -C "$deploy_source" fsck --full
 
-            # Keep Bun for installation and commands; let Astro use its Node shebang.
-            # Forcing Bun's runtime can fail in the Linux native bundler.
-            if ! command -v node >/dev/null 2>&1; then
-              echo "Node.js >=22.23.4 is required by Astro on the VPS."
+            # Keep server configuration private; never overwrite it or pb_data.
+            for config in .env .env.local .env.production .env.production.local; do
+              if [ -f "$deploy_root/$config" ]; then
+                cp -- "$deploy_root/$config" "$deploy_source/$config"
+              fi
+            done
+            (
+              cd "$deploy_source"
+              bun ci
+              bun run --bun build --outDir .astro/deploy-dist
+              bun run check:seo .astro/deploy-dist
+            )
+
+            if [ ! -f "$deploy_source/.astro/deploy-dist/index.html" ]; then
+              echo "Build output is incomplete; the live site has not been changed."
               exit 1
             fi
-            node --version
-            bun --version
-
-            # PocketBase or configuration errors must not erase the live dist.
-            bun run build --outDir .astro/deploy-dist
-            bun run check:seo .astro/deploy-dist
 
             # Promote only a complete, checked build; restore on a failed swap.
             # All paths are relative to /var/www/portfolio/Portfolio above.
@@ -54,12 +71,12 @@ jobs:
               exit 1
             fi
             if [ -d dist ]; then mv dist .astro/deploy-previous; fi
-            if ! mv .astro/deploy-dist dist; then
+            if ! mv "$deploy_source/.astro/deploy-dist" dist; then
               if [ -d .astro/deploy-previous ]; then mv .astro/deploy-previous dist; fi
               exit 1
             fi
             if ! curl --fail --output /dev/null https://portfolio.melvyn-philippon.fr/; then
-              mv dist .astro/deploy-dist
+              mv dist "$deploy_source/.astro/deploy-dist"
               if [ -d .astro/deploy-previous ]; then mv .astro/deploy-previous dist; fi
               exit 1
             fi

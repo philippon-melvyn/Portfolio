@@ -9,7 +9,7 @@ bun run --bun dev
 
 Commandes et tests exécutés avec Bun (version de référence : `bun@1.4.2`). `bun run --bun build` utilise le runtime Bun, y compris sous Windows. Le binding WebAssembly de Rolldown existant reste conservé ; aucune dépendance supplémentaire n’est ajoutée.
 
-Sur le VPS, le déploiement utilise `bun run build` sans `--bun` : Bun lance la commande et Astro utilise Node.js selon son exécutable. Node.js doit respecter la version minimale indiquée dans `package.json` (`22.23.4`). Ce contournement évite de forcer le runtime Bun lors de la compilation Linux ; il ne change ni le JavaScript livré au navigateur ni les animations.
+Sur le VPS, le déploiement clone `main` dans un répertoire temporaire neuf, vérifie ses objets Git, reprend les fichiers `.env` du serveur sans les afficher, puis lance `bun ci`, `bun run --bun build` et l’audit SEO. Il ne dépend plus du dépôt `.git` corrompu présent dans le répertoire du site. Seul le `dist` validé est publié ; les fichiers de configuration et les données PocketBase du serveur restent en place.
 
 Copier `.env.example` vers `.env` si nécessaire. PocketBase doit répondre à `POCKETBASE_URL` (`https://pb.melvyn-philippon.fr` en production, ou une instance locale pour le développement). Le site lit uniquement l’API publique ; il ne crée ni ne modifie de données. Voir [POCKETBASE.md](POCKETBASE.md) pour les champs et les règles d’accès.
 
