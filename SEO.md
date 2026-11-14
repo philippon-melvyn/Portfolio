@@ -74,7 +74,7 @@ Cette commande prépare des suppressions dans l’index Git ; elle n’a **pas**
 
 ## Déploiement préparé, non exécuté
 
-Le workflow `.github/workflows/deploy.yml` continue d’utiliser `bun ci` et `bun run --bun build`, sur `main`. Il construit désormais dans `.astro/deploy-dist`, lance l’audit sur ce répertoire, puis seulement remplace `dist`. Un échec de configuration, de récupération ou d’audit laisse donc le répertoire publié en place. Un échec de promotion ou du contrôle HTTP déclenche une tentative de restauration de l’ancien `dist`.
+Le workflow `.github/workflows/deploy.yml` utilise `bun ci` et `bun run build`, sur `main`. Le runtime Bun n’est plus forcé pour Astro : son exécutable utilise Node.js, requis sur le VPS, afin de contourner l’erreur de parsing observée pendant la compilation Linux. Il construit dans `.astro/deploy-dist`, lance l’audit sur ce répertoire, puis seulement remplace `dist`. Un échec de configuration, de récupération ou d’audit laisse donc le répertoire publié en place. Un échec de promotion ou du contrôle HTTP déclenche une tentative de restauration de l’ancien `dist`.
 
 La concurrence GitHub est limitée à un déploiement du portfolio à la fois. La promotion emploie deux renommages de répertoires : elle peut créer une très brève fenêtre sans `dist` et **n’est pas une publication atomique par lien symbolique**. Le workflow n’a pas été exécuté sur le VPS. Sa syntaxe YAML et shell a été contrôlée localement ; sa commande de compilation dans le répertoire temporaire et l’audit associé ont été exécutés avec succès. Si `.astro/deploy-previous` subsiste après une interruption, l’inspecter et décider de restaurer/conserver son contenu avant de relancer : le workflow refuse de l’écraser.
 

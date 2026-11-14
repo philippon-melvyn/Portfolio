@@ -34,8 +34,17 @@ jobs:
             git pull origin main
             bun ci
 
+            # Keep Bun for installation and commands; let Astro use its Node shebang.
+            # Forcing Bun's runtime can fail in the Linux native bundler.
+            if ! command -v node >/dev/null 2>&1; then
+              echo "Node.js >=22.23.4 is required by Astro on the VPS."
+              exit 1
+            fi
+            node --version
+            bun --version
+
             # PocketBase or configuration errors must not erase the live dist.
-            bun run --bun build --outDir .astro/deploy-dist
+            bun run build --outDir .astro/deploy-dist
             bun run check:seo .astro/deploy-dist
 
             # Promote only a complete, checked build; restore on a failed swap.
