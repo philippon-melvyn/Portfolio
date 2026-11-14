@@ -12,43 +12,36 @@ const method = [
 ---
 
 <BaseLayout title="À propos : parcours et création numérique" description="Découvrez le parcours de Melvyn Philippon en BUT MMI, ses inspirations et sa façon de travailler en création numérique." schema="profile">
-  <div class="about-story [--about-paper:var(--color-paper,#fafaf8)] [--about-ink:var(--color-ink,#14161d)] [--about-red:var(--color-brick,#a33333)] [--about-muted:#72726d] [background:var(--about-paper)] text-(--about-ink) [&_section]:scroll-mt-22 motion-reduce:**:[transition:none]!" data-about-story>
+  <div class="about-story [--about-paper:var(--color-paper,var(--color-paper))] [--about-ink:var(--color-ink,var(--color-ink))] [--about-red:var(--color-brick,var(--color-brick))] [--about-muted:var(--color-muted)] [background:var(--about-paper)] text-(--about-ink) [&_section]:scroll-mt-22 motion-reduce:**:[transition:none]!" data-about-story>
     <section class="about-introduction pt-30 max-[800px]:pt-28" id="about-profil" aria-labelledby="profil-title" data-about-section>
       <div class="about-wrap w-full px-[max(24px,6.5%)]">
-        <div class="about-hero-top text-(--about-muted)" data-about-reveal>
-          <p class="about-label [font:500_10px/1.6_var(--font-sans)] tracking-[.12em] uppercase">À propos</p>
-        </div>
         <div class="about-hero-grid grid grid-cols-[minmax(0,61fr)_minmax(0,39fr)] gap-[clamp(40px,5vw,90px)] pt-12 max-[1100px]:gap-8 max-[800px]:grid-cols-[1fr] max-[800px]:gap-12">
           <div class="about-hero-copy min-w-0">
             <h1 id="profil-title" class="about-hero-title text-(--about-red) [font:600_clamp(70px,10vw,184px)/.91_var(--font-display)] tracking-[-.035em] uppercase max-[800px]:text-[clamp(70px,13vw,104px)] max-[500px]:text-[clamp(64px,16vw,80px)]" data-about-reveal data-about-effect="lines">
               <span class="about-motion-line block overflow-clip pb-[.12em] mb-[-.12em]"><span class="about-line-content block origin-[left_bottom]">Melvyn</span></span>
               <span class="about-motion-line block overflow-clip pb-[.12em] mb-[-.12em]"><span class="about-line-content block origin-[left_bottom]">Philippon.</span></span>
             </h1>
-            <div class="about-biography max-w-130 w-[85%] mt-[clamp(48px,6vw,100px)] text-[#555550] text-[clamp(16px,1.3vw,24px)] leading-[1.55] tracking-[-.035em] [&_.about-bio-lead]:text-(--about-ink) [&_.about-bio-lead]:mb-7 [&_p+p]:mt-6 max-[1100px]:w-full max-[800px]:max-w-120 max-[800px]:mt-10" data-about-reveal>
+            <div class="about-biography max-w-130 w-[85%] mt-[clamp(48px,6vw,100px)] text-muted text-[clamp(16px,1.3vw,24px)] leading-[1.55] tracking-[-.035em] [&_.about-bio-lead]:text-(--about-ink) [&_.about-bio-lead]:mb-7 [&_p+p]:mt-6 max-[1100px]:w-full max-[800px]:max-w-120 max-[800px]:mt-10" data-about-reveal>
               <p class="about-bio-lead">Étudiant en création numérique.</p>
               <p>Curieux et créatif, j’aime dessiner, explorer de nouveaux univers et imaginer ce que je pourrais en faire à ma manière.</p>
               <p>Persévérant, je prends le temps d’essayer, d’ajuster et d’apprendre, en restant ouvert aux regards des autres.</p>
             </div>
           </div>
           <figure class="about-portrait [align-self:start] m-0 [&_img]:block [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:object-[center_55%] [&_figcaption]:mt-4 [&_figcaption]:text-(--about-muted) [&_figcaption]:text-[10px] max-[800px]:w-[70%] max-[800px]:[justify-self:end] max-[500px]:w-full" data-about-reveal data-about-effect="portrait">
-            <div class="about-portrait-frame h-[min(76svh,800px)] min-h-110 overflow-hidden [background:#d5d1c9] max-[800px]:h-auto max-[800px]:min-h-0 max-[800px]:aspect-4/5">
+            <div class="about-portrait-frame h-[min(76svh,800px)] min-h-110 overflow-hidden [background:color-mix(in_srgb,var(--color-ink)_10%,transparent)] max-[800px]:h-auto max-[800px]:min-h-0 max-[800px]:aspect-4/5">
               <Image src={portrait} widths={[400, 640, 960, 1124]} width={960} sizes="(min-width: 900px) 38vw, (min-width: 600px) 62vw, 85vw" format="webp" alt="Portrait de Melvyn Philippon" loading="eager" fetchpriority="high" />
             </div>
-            <figcaption>20 ans · Chenebier, France</figcaption>
           </figure>
         </div>
-        <nav class="about-chapters flex flex-wrap gap-8 mt-18 py-6 [border-top:1px_solid_#14161d26] [&_a]:text-[10px] [&_a]:uppercase [&_a]:tracking-[.08em] [&_a]:text-(--about-muted) [&_a:hover]:text-(--about-red) max-[800px]:mt-12 max-[800px]:gap-[16px_24px]" aria-label="Dans cette page" data-about-reveal>
-          <a href="#about-parcours">Le parcours</a><a href="#about-inspirations">Les inspirations</a><a href="#about-methode">La méthode</a>
-        </nav>
       </div>
     </section>
 
     <section id="about-parcours" class="about-journey py-[clamp(88px,10vw,180px)]" aria-labelledby="parcours-title" data-about-section>
       <div class="about-wrap about-journey-layout w-full px-[max(24px,6.5%)] grid grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] gap-[10%] max-[800px]:grid-cols-[1fr] max-[800px]:gap-12">
         <div class="about-journey-heading [&_h2]:mt-8 [&_h2]:[font:500_clamp(36px,4.2vw,76px)/1.05_var(--font-sans)] [&_h2]:tracking-[-.055em]" data-about-reveal>
-          <h2 id="parcours-title">Mon parcours.</h2>
+          <h2 id="parcours-title">Mon parcours, jusqu’ici.</h2>
         </div>
-        <ol class="about-timeline [&_li]:grid [&_li]:grid-cols-[100px_minmax(0,1fr)] [&_li]:gap-6 [&_li]:py-8 [&_li]:[border-top:1px_solid_#14161d26] [&_li:last-child]:[border-bottom:1px_solid_#14161d26] [&_h3]:[font:500_clamp(20px,1.8vw,30px)/1.2_var(--font-sans)] [&_h3]:tracking-[-.035em] [&_li_p]:mt-3 [&_li_p]:text-(--about-muted) [&_li_p]:text-[13px] [&_li_p]:leading-[1.7] max-[1100px]:[&_li]:grid-cols-[1fr] max-[1100px]:[&_li]:gap-4 max-[800px]:[&_li]:grid-cols-[100px_minmax(0,1fr)] max-[500px]:[&_li]:grid-cols-[1fr] max-[500px]:[&_li]:gap-3">
+        <ol class="about-timeline [&_li]:grid [&_li]:grid-cols-[100px_minmax(0,1fr)] [&_li]:gap-6 [&_li]:py-8 [&_li]:[border-top:1px_solid_color-mix(in_srgb,var(--color-ink)_15%,transparent)] [&_li:last-child]:[border-bottom:1px_solid_color-mix(in_srgb,var(--color-ink)_15%,transparent)] [&_h3]:[font:500_clamp(20px,1.8vw,30px)/1.2_var(--font-sans)] [&_h3]:tracking-[-.035em] [&_li_p]:mt-3 [&_li_p]:text-(--about-muted) [&_li_p]:text-[13px] [&_li_p]:leading-[1.7] max-[1100px]:[&_li]:grid-cols-[1fr] max-[1100px]:[&_li]:gap-4 max-[800px]:[&_li]:grid-cols-[100px_minmax(0,1fr)] max-[500px]:[&_li]:grid-cols-[1fr] max-[500px]:[&_li]:gap-3">
           <li data-about-reveal>
             <span class="about-date text-(--about-muted) text-[10px] pt-1.75">2022 — 2024</span>
             <div><h3>Bac STI2D</h3><p>Innovation technologique et éco-conception.</p></div>
@@ -61,12 +54,12 @@ const method = [
       </div>
     </section>
 
-    <section id="about-inspirations" class="about-inspirations py-[clamp(100px,11vw,200px)] [background:#111] text-[#f7f7f5] [&_.about-label]:text-[#b8b8b8]" aria-labelledby="inspirations-title" data-about-section>
+    <section id="about-inspirations" class="about-inspirations py-[clamp(100px,11vw,200px)] [background:var(--color-ink)] text-paper [&_.about-label]:text-soft" aria-labelledby="inspirations-title" data-about-section>
       <div class="about-wrap w-full px-[max(24px,6.5%)]">
         <h2 id="inspirations-title" class="about-statement mt-10.5 [font:500_clamp(46px,6vw,110px)/1.05_var(--font-sans)] tracking-[-.055em] [translate:var(--about-drift,0px)_0]" data-about-reveal data-about-effect="lines">
           <span class="about-motion-line block overflow-clip pb-[.12em] mb-[-.12em]"><span class="about-line-content block origin-[left_bottom]">Mes inspirations.</span></span>
         </h2>
-        <div class="about-inspirations-copy w-[43%] m-[clamp(70px,8vw,150px)_7%_0_auto] text-[#b8b8b8] text-[clamp(16px,1.3vw,24px)] leading-[1.55] tracking-[-.035em] [&_p+p]:mt-7.5 max-[800px]:w-[75%] max-[800px]:mt-16 max-[800px]:mr-0 max-[500px]:w-full">
+        <div class="about-inspirations-copy w-[43%] m-[clamp(70px,8vw,150px)_7%_0_auto] text-soft text-[clamp(16px,1.3vw,24px)] leading-[1.55] tracking-[-.035em] [&_p+p]:mt-7.5 max-[800px]:w-[75%] max-[800px]:mt-16 max-[800px]:mr-0 max-[500px]:w-full">
           <p data-about-reveal>Le manga, l’animation et les jeux vidéo nourrissent mon imagination par leurs ambiances, leurs personnages et leur manière de raconter des histoires. La mythologie et le folklore fantastique m’attirent pour la richesse de leurs univers.</p>
           <p data-about-reveal>À travers le dessin, je prolonge ces découvertes et explore mes propres idées, avec l’envie de créer des visuels qui racontent quelque chose.</p>
         </div>
@@ -76,7 +69,6 @@ const method = [
     <section id="about-methode" class="about-method py-[clamp(100px,10vw,180px)]" aria-labelledby="methode-title" data-about-section>
       <div class="about-wrap about-method-layout w-full px-[max(24px,6.5%)] grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-[10%] max-[1100px]:gap-[7%] max-[800px]:grid-cols-[1fr] max-[800px]:gap-12">
         <div class="about-method-heading sticky top-27.5 [align-self:start] max-[800px]:static print:static">
-          <p class="about-label [font:500_10px/1.6_var(--font-sans)] tracking-[.12em] uppercase" data-about-reveal>La méthode</p>
           <h2 id="methode-title" class="about-method-title mt-9 [font:500_clamp(36px,4.4vw,76px)/1.08_var(--font-sans)] tracking-[-.055em]" data-about-reveal data-about-effect="lines">
             <span class="about-motion-line block overflow-clip pb-[.12em] mb-[-.12em]"><span class="about-line-content block origin-[left_bottom]">Essayer.</span></span>
             <span class="about-motion-line block overflow-clip pb-[.12em] mb-[-.12em]"><span class="about-line-content block origin-[left_bottom]">Ajuster.</span></span>
@@ -84,7 +76,7 @@ const method = [
           </h2>
           <p class="about-method-note max-w-[30ch] mt-9 text-(--about-muted) text-[14px] leading-[1.7]" data-about-reveal>En équipe, je privilégie l’écoute, les échanges et les retours pour faire avancer le projet.</p>
         </div>
-        <ol class="about-method-list [&_>_li]:[border-top:1px_solid_#14161d26] [&_>_li:last-child]:[border-bottom:1px_solid_#14161d26]">
+        <ol class="about-method-list [&_>_li]:[border-top:1px_solid_color-mix(in_srgb,var(--color-ink)_15%,transparent)] [&_>_li:last-child]:[border-bottom:1px_solid_color-mix(in_srgb,var(--color-ink)_15%,transparent)]">
           {method.map((step, index) => <li data-about-reveal>
             <details class="about-method-step [&_summary]:grid [&_summary]:grid-cols-[24px_minmax(0,1fr)_24px] [&_summary]:gap-5 [&_summary]:items-baseline [&_summary]:py-7 [&_summary]:[list-style:none] [&_summary::-webkit-details-marker]:hidden [&_h3]:[font:500_clamp(24px,2.4vw,40px)/1.2_var(--font-sans)] [&_h3]:tracking-[-.045em] [&_h3]:[transition:color_250ms_ease] [&[open]_h3]:text-(--about-red) [&[open]_.about-step-toggle]:transform-[rotate(45deg)] [&_>_p]:max-w-[42ch] [&_>_p]:m-[0_44px] [&_>_p]:pb-8 [&_>_p]:text-(--about-muted) [&_>_p]:text-[14px] [&_>_p]:leading-[1.7] [&_summary:hover_h3]:text-(--about-red) max-[500px]:[&_summary]:gap-3 max-[500px]:[&_summary]:py-6 max-[500px]:[&_h3]:text-[27px] max-[500px]:[&_>_p]:mx-[36px_0] max-[500px]:[&_>_p]:text-[13px]" open={index === 0}>
               <summary><span class="about-step-number text-(--about-muted) text-[10px]" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span><h3>{step.title}</h3><span class="about-step-toggle self-center [font:400_24px/1_var(--font-sans)] [transition:transform_250ms_ease]" aria-hidden="true">+</span></summary>
@@ -147,7 +139,6 @@ if (root) {
             { clipPath: "inset(0 0 100% 0)", transform: "scale(1.06)" },
             { clipPath: "inset(0)", transform: "scale(1)" },
           ], { duration: 1100, easing: "cubic-bezier(.76,0,.24,1)" });
-          play(htmlElement(block, "figcaption"), [{ opacity: 0 }, { opacity: 1 }], { delay: 450 });
         } else {
           play(block, [
             { opacity: 0, transform: "translateY(26px)" },

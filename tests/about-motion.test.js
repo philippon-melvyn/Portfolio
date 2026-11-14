@@ -24,10 +24,9 @@ test("À propos : animations distinctes, une seule frame de scroll et arrêt en 
   }
   const lines = [node(), node()];
   const image = node();
-  const caption = node();
   const blocks = [
     node({ dataset: { aboutEffect: "lines" }, querySelectorAll: () => lines }),
-    node({ dataset: { aboutEffect: "portrait" }, querySelector: (selector) => selector === "img" ? image : caption }),
+    node({ dataset: { aboutEffect: "portrait" }, querySelector: (selector) => selector === "img" ? image : null }),
     node(),
   ];
   const section = node({ id: "about-inspirations", querySelectorAll: () => blocks });
@@ -52,10 +51,10 @@ test("À propos : animations distinctes, une seule frame de scroll et arrêt en 
   };
   runInNewContext(await pageScript("src/pages/a-propos.astro", "about-scroll"), { document: { querySelector: () => root }, window });
   observerCallback([section, ...blocks].map((target) => ({ target, isIntersecting: true })));
-  assert.equal(animations.length, 5);
+  assert.equal(animations.length, 4);
   assert.ok(animations.some((animation) => animation.keyframes[0].clipPath));
   assert.ok(!animations.some((animation) => animation.keyframes[0].backgroundColor), "Le fond reste stable pendant les apparitions");
-  assert.ok(animations.some((animation) => animation.options.delay === 450));
+  assert.ok(animations.some((animation) => animation.options.duration === 1100));
   windowEvents.scroll();
   windowEvents.scroll();
   assert.equal(frames.size, 1, "Les impulsions de scroll partagent une seule frame");

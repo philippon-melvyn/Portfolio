@@ -16,19 +16,19 @@ const domains = [
   title="Projets de design graphique et numérique"
   description="Explorez mes réalisations en identité visuelle, direction artistique et conception numérique."
   footer={false}
-  bodyClass="projects-screen [body&]:h-svh [body&]:supports-[height:100dvh]:h-dvh [body&]:overflow-hidden [body&]:[background:#101113] [body&]:text-paper [body&_main]:h-full [body&_main]:min-h-0 [body&_:focus-visible]:outline-[#ee8e87] [body&_:focus-visible]:[box-shadow:0_0_0_3px_#101113]"
+  bodyClass="projects-screen [body&]:h-svh [body&]:supports-[height:100dvh]:h-dvh [body&]:overflow-hidden [body&]:[background:var(--color-ink)] [body&]:text-paper [body&_main]:h-full [body&_main]:min-h-0 max-[900px]:[body&]:h-auto max-[900px]:[body&]:min-h-svh max-[900px]:[body&]:overflow-x-clip max-[900px]:[body&]:overflow-y-auto max-[900px]:[body&_main]:h-auto [body&_:focus-visible]:outline-paper [body&_:focus-visible]:[box-shadow:0_0_0_3px_var(--color-ink)]"
 >
   <section
-    class="project-browser relative h-full min-h-0 [&.is-project-leaving]:opacity-0 [&.is-project-leaving]:transform-[translateY(-12px)] [&.is-project-leaving]:[transition:opacity_230ms,transform_280ms] motion-reduce:[&.is-project-leaving]:[transition:none]"
+    class="project-browser relative h-full min-h-0 max-[900px]:flex max-[900px]:flex-col max-[900px]:h-auto max-[900px]:pt-22 [&.is-project-leaving]:opacity-0 [&.is-project-leaving]:transform-[translateY(-12px)] [&.is-project-leaving]:[transition:opacity_230ms,transform_280ms] motion-reduce:[&.is-project-leaving]:[transition:none]"
     data-project-browser
     data-project-axis="vertical"
-    aria-label="Galerie verticale des projets"
+    aria-label="Galerie des projets"
     aria-roledescription="carrousel"
   >
     <h1 class="sr-only">Mes projets</h1>
-    <p id="gallery-help" class="sr-only">Utilisez les flèches haut et bas pour parcourir les projets. La touche Espace permet de mettre le défilement automatique en pause ou de le reprendre.</p>
+    <p id="gallery-help" class="sr-only"><span class="max-[900px]:hidden">Utilisez les flèches haut et bas pour parcourir les projets. La touche Espace permet de mettre le défilement automatique en pause ou de le reprendre.</span><span class="min-[900px]:hidden">Glissez vers la gauche ou la droite, ou utilisez les flèches gauche et droite pour parcourir les projets.</span></p>
     <details
-      class="project-filter-drawer absolute z-20 bottom-6 right-[clamp(32px,4.03vw,80px)] [&_>_summary]:flex [&_>_summary]:items-center [&_>_summary]:gap-5 [&_>_summary]:min-h-11.5 [&_>_summary]:p-[12px_18px] [&_>_summary]:[background:var(--color-brick)] [&_>_summary]:text-[white] [&_>_summary]:[border:0] [&_>_summary]:[list-style:none] [&_>_summary]:text-[11px] [&_>_summary]:uppercase [&_>_summary::-webkit-details-marker]:hidden [&_>_summary_>_span]:text-[20px] [&_>_summary_>_span]:leading-none [&_>_summary_>_span]:[transition:transform_180ms] [&[open]_>_summary_>_span]:transform-[rotate(45deg)] max-[700px]:bottom-4.5 max-[700px]:right-5 max-[700px]:[&_>_summary]:min-h-10 max-[700px]:[&_>_summary]:p-[10px_12px] max-[700px]:[&_>_summary]:text-[10px] max-[700px]:[&_>_summary]:gap-3 motion-reduce:[&_>_summary_>_span]:[transition:none]"
+      class="project-filter-drawer absolute z-20 bottom-6 right-[clamp(32px,4.03vw,80px)] [&_>_summary]:flex [&_>_summary]:items-center [&_>_summary]:gap-5 [&_>_summary]:min-h-11.5 [&_>_summary]:p-[12px_18px] [&_>_summary]:[background:var(--color-brick)] [&_>_summary]:text-paper [&_>_summary]:[border:0] [&_>_summary]:[list-style:none] [&_>_summary]:text-[11px] [&_>_summary]:uppercase [&_>_summary::-webkit-details-marker]:hidden [&_>_summary_>_span]:text-[20px] [&_>_summary_>_span]:leading-none [&_>_summary_>_span]:[transition:transform_180ms] [&[open]_>_summary_>_span]:transform-[rotate(45deg)] max-[900px]:relative max-[900px]:order-2 max-[900px]:self-end max-[900px]:bottom-auto max-[900px]:right-auto max-[900px]:mx-5 max-[900px]:mb-6 max-[900px]:[&_>_summary]:min-h-11 max-[900px]:[&_>_summary]:p-[10px_12px] max-[900px]:[&_>_summary]:text-[10px] max-[900px]:[&_>_summary]:gap-3 motion-reduce:[&_>_summary_>_span]:[transition:none]"
       data-project-filters
       data-disclosure
       data-disclosure-label="les filtres"
@@ -37,10 +37,10 @@ const domains = [
       <summary>
         Filtrer les projets <span aria-hidden="true">＋</span>
       </summary>
-      <div class="project-filter-panel absolute bottom-[calc(100%+12px)] right-0 w-[min(280px,calc(100vw-40px))] max-h-[60svh] overflow-y-auto p-6 [background:#101113] [border:1px_solid_#fafaf833] [box-shadow:0_16px_50px_#0006]">
-        <h2 class="project-filter-label text-[#aaa8a4] [font:500_10px/1.4_var(--font-sans)] uppercase mb-4.5">Domaines</h2>
+      <div class="project-filter-panel absolute bottom-[calc(100%+12px)] right-0 w-[min(280px,calc(100vw-40px))] max-h-[60svh] overflow-y-auto p-6 [background:var(--color-ink)] [border:1px_solid_color-mix(in_srgb,var(--color-paper)_20%,transparent)] [box-shadow:0_16px_50px_color-mix(in_srgb,var(--color-ink)_40%,transparent)]">
+        <h2 class="project-filter-label text-soft [font:500_10px/1.4_var(--font-sans)] uppercase mb-4.5">Domaines</h2>
         <div
-          class="project-filters flex flex-col gap-2 [&_button]:flex [&_button]:items-center [&_button]:justify-between [&_button]:gap-4 [&_button]:w-full [&_button]:min-h-11 [&_button]:p-3 [&_button]:text-left [&_button]:[border:1px_solid_#fafaf826] [&_button]:rounded-none [&_button]:text-[11px] [&_button]:leading-[1.4] [&_button]:uppercase [&_button]:text-[#c2c0bc] [&_button_>_span]:text-[9px] [&_button_>_span]:opacity-[0.65] [&_button:hover]:text-[white] [&_button[aria-pressed='true']]:[background:var(--color-paper)] [&_button[aria-pressed='true']]:text-ink"
+          class="project-filters flex flex-col gap-2 [&_button]:flex [&_button]:items-center [&_button]:justify-between [&_button]:gap-4 [&_button]:w-full [&_button]:min-h-11 [&_button]:p-3 [&_button]:text-left [&_button]:[border:1px_solid_color-mix(in_srgb,var(--color-paper)_15%,transparent)] [&_button]:rounded-none [&_button]:text-[11px] [&_button]:leading-[1.4] [&_button]:uppercase [&_button]:text-soft [&_button_>_span]:text-[9px] [&_button_>_span]:opacity-[0.65] [&_button:hover]:text-paper [&_button[aria-pressed='true']]:[background:var(--color-paper)] [&_button[aria-pressed='true']]:text-ink"
           role="group"
           aria-label="Filtrer les projets par domaine"
         >
@@ -75,7 +75,7 @@ const domains = [
         </div>
       </div>
     </details>
-    <div class="project-browser-content grid grid-cols-[53fr_47fr] grid-rows-[minmax(0,1fr)] h-full min-h-0 max-[700px]:grid-cols-[1fr] max-[700px]:grid-rows-[minmax(0,1fr)_auto]">
+    <div class="project-browser-content grid grid-cols-[53fr_47fr] grid-rows-[minmax(0,1fr)] h-full min-h-0 max-[900px]:block max-[900px]:h-auto">
       <p
         class="sr-only"
         data-project-status
@@ -84,19 +84,19 @@ const domains = [
         aria-atomic="true"
       ></p>
       <div
-        class="project-viewport [--slide-height:clamp(240px,51dvh,600px)] col-1 row-span-full min-h-0 h-full overflow-y-auto overflow-x-hidden p-[var(--gallery-inset,calc((100dvh-var(--slide-height))/2))_28px] [scroll-snap-type:y_mandatory] overscroll-y-contain data-[animated-scroll='true']:snap-none data-[animated-scroll='true']:scroll-auto min-[700px]:[--slide-height:72dvh] max-[700px]:[--slide-height:clamp(180px,38dvh,380px)] max-[700px]:col-1 max-[700px]:row-1 max-[700px]:p-[var(--gallery-inset,12px)_20px]"
+        class="project-viewport [--slide-height:clamp(240px,51dvh,600px)] col-1 row-span-full min-h-0 h-full overflow-y-auto overflow-x-hidden p-[var(--gallery-inset,calc((100dvh-var(--slide-height))/2))_28px] [scroll-snap-type:y_mandatory] overscroll-y-contain data-[animated-scroll='true']:snap-none data-[animated-scroll='true']:scroll-auto min-[900px]:[--slide-height:72dvh] max-[900px]:[--slide-height:clamp(180px,38dvh,380px)] max-[900px]:col-1 max-[900px]:row-1 max-[900px]:p-[0_20px] max-[900px]:h-[clamp(260px,60svh,560px)] max-[900px]:overflow-x-auto max-[900px]:overflow-y-hidden max-[900px]:snap-x max-[900px]:snap-mandatory max-[900px]:scroll-px-5 max-[900px]:overscroll-x-contain max-[900px]:overscroll-y-auto"
         data-project-viewport
         tabindex="0"
         aria-describedby="gallery-help"
-        aria-label="Projets. Faites défiler vers le haut ou le bas, ou utilisez les flèches haut et bas."
+        aria-label="Parcourir les projets"
       >
         {projects.length ? (
-          <ul class="project-track relative flex flex-col gap-3 w-full min-[700px]:gap-2" id="project-track">
+          <ul class="project-track relative flex flex-col gap-3 w-full min-[900px]:gap-2 max-[900px]:flex-row max-[900px]:w-max max-[900px]:h-full" id="project-track">
             {projects.map((project, index) => {
               const cover = imagesFor(project, "couverture")[0];
               return (
                 <li
-                  class="project-tile relative flex-[0_0_auto] w-full h-(--slide-height) snap-center opacity-[0.55] [transition:transform_650ms_cubic-bezier(0.16,1,0.3,1),opacity_400ms] data-[current='true']:opacity-100 [&_>_a]:block [&_>_a]:h-full min-[700px]:[&[data-current='true']_.project-tile-image]:[clip-path:inset(0)] [@media((hover:_hover)_and_(pointer:_fine))]:hover:opacity-100 [@media((hover:_hover)_and_(pointer:_fine))]:hover:z-1 [@media((hover:_hover)_and_(pointer:_fine))]:[&:hover_img]:transform-[scale(1.07)] motion-reduce:[&&]:[transition:none] motion-reduce:hover:transform-none motion-reduce:[&:hover_img]:transform-none"
+                  class="project-tile relative flex-[0_0_auto] w-full h-(--slide-height) snap-center max-[900px]:w-[calc(100vw-64px)] max-[900px]:h-full max-[900px]:snap-start opacity-[0.55] [transition:transform_650ms_cubic-bezier(0.16,1,0.3,1),opacity_400ms] data-[current='true']:opacity-100 [&_>_a]:block [&_>_a]:h-full min-[900px]:[&[data-current='true']_.project-tile-image]:[clip-path:inset(0)] [@media((hover:_hover)_and_(pointer:_fine))]:hover:opacity-100 [@media((hover:_hover)_and_(pointer:_fine))]:hover:z-1 [@media((hover:_hover)_and_(pointer:_fine))]:[&:hover_img]:transform-[scale(1.07)] motion-reduce:[&&]:[transition:none] motion-reduce:hover:transform-none motion-reduce:[&:hover_img]:transform-none"
                   data-project-tile
                   data-project-slug={project.slug}
                   data-project-domains={JSON.stringify(
@@ -105,13 +105,13 @@ const domains = [
                   data-current={index === 0 ? "true" : "false"}
                 >
                   <a href={`/projets/${project.slug}/`} data-project-link aria-label={`Découvrir le projet ${project.titre}`}>
-                    <div class="project-tile-image h-full overflow-hidden [background:#242426] [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:[transition:transform_900ms_cubic-bezier(0.16,1,0.3,1)] min-[700px]:[clip-path:inset(2%_0)] min-[700px]:[transition:clip-path_800ms_cubic-bezier(0.22,1,0.36,1)] motion-reduce:[&_img]:[transition:none] motion-reduce:[&&]:[transition:none]">
+                    <div class="project-tile-image h-full overflow-hidden [background:var(--color-ink)] [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:[transition:transform_900ms_cubic-bezier(0.16,1,0.3,1)] min-[900px]:[clip-path:inset(2%_0)] min-[900px]:[transition:clip-path_800ms_cubic-bezier(0.22,1,0.36,1)] motion-reduce:[&_img]:[transition:none] motion-reduce:[&&]:[transition:none]">
                       {cover && (
                         <ProjectImage
                           src={cover}
                           alt={project.couverture_alt || project.titre}
                           priority={index === 0}
-                          sizes="(max-width: 699px) 90vw, 53vw"
+                          sizes="(max-width: 899px) calc(100vw - 64px), 53vw"
                           transitionName={`project-cover-${project.slug}`}
                         />
                       )}
@@ -123,20 +123,21 @@ const domains = [
             })}
           </ul>
         ) : (
-          <p class="project-browser-empty p-7.5 text-[#aaa8a4] text-[14px]">
+          <p class="project-browser-empty p-7.5 text-soft text-[14px]">
             Mes réalisations seront bientôt présentées ici.
           </p>
         )}
       </div>
-      <div class="project-details col-2 row-1 self-center min-w-0 p-[110px_clamp(32px,7.4vw,140px)_60px] [&_article]:max-w-90 [&_h2]:mt-0 [&_h2]:[font:600_clamp(34px,3.4vw,52px)/1.1_var(--font-display)] [&_h2]:uppercase [&_h2]:tracking-[-0.035em] max-[1001px]:px-8 max-[700px]:col-1 max-[700px]:row-2 max-[700px]:h-65 max-[700px]:p-[20px_24px_84px] max-[700px]:[&_article]:max-w-none max-[700px]:[&_h2]:mt-0 max-[700px]:[&_h2]:text-[32px]" data-project-details>
+      <div class="project-details col-2 row-1 self-center min-w-0 p-[110px_clamp(32px,7.4vw,140px)_60px] [&_article]:max-w-90 [&_h2]:mt-0 [&_h2]:[font:600_clamp(34px,3.4vw,52px)/1.1_var(--font-display)] [&_h2]:uppercase [&_h2]:tracking-[-0.035em] max-[1001px]:px-8 max-[900px]:col-1 max-[900px]:row-2 max-[900px]:h-auto max-[900px]:max-h-none max-[900px]:overflow-visible max-[900px]:p-[12px_24px_28px] max-[900px]:[&_article]:max-w-none max-[900px]:[&_h2]:mt-0 max-[900px]:[&_h2]:text-[32px] min-h-0 max-h-full overflow-y-auto" data-project-details>
         {projects.map((project, index) => (
           <article data-project-detail={project.slug} hidden={index > 0}>
             <h2>{project.titre}</h2>
             {project.introduction && (
-              <p class="project-detail-intro mt-9 text-[14px] leading-[1.7] max-[1001px]:text-[13px] max-[1001px]:mt-6 max-[700px]:mt-3 max-[700px]:text-[12px] max-[700px]:leading-[1.6] max-[700px]:[display:-webkit-box] max-[700px]:[-webkit-line-clamp:3] max-[700px]:[-webkit-box-orient:vertical] max-[700px]:overflow-hidden">
+              <p class="project-detail-intro mt-9 text-[14px] leading-[1.7] max-[1001px]:text-[13px] max-[1001px]:mt-6 max-[900px]:mt-3 max-[900px]:text-[12px] max-[900px]:leading-[1.6] max-[900px]:text-[14px] max-[900px]:leading-[1.7]">
                 {plainText(project.introduction)}
               </p>
             )}
+            <a class="mt-4 inline-flex min-h-11 items-center text-[11px] uppercase tracking-widest underline underline-offset-4 min-[900px]:hidden" href={`/projets/${project.slug}/`} data-project-link>Voir le projet</a>
           </article>
         ))}
       </div>
@@ -234,6 +235,9 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
   const details = [...htmlElements(root, "[data-project-detail]")];
   const detailPanel = htmlElement(root, "[data-project-details]");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const desktop = window.matchMedia("(min-width: 900px)");
+  let horizontal = !desktop.matches;
+  root.dataset.projectAxis = horizontal ? "horizontal" : "vertical";
   const storageKey = "portfolio-project-gallery-vertical";
   let visible = cards;
   let domain = "all";
@@ -255,7 +259,7 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
   function rebuildLoop() {
     loopCopies.forEach((copy) => copy.remove());
     loopCopies = [];
-    if (visible.length < 2) return;
+    if (horizontal || visible.length < 2) return;
     const track = cards[0].element.parentElement;
     for (const side of ["before", "after"]) {
       const copies = visible.map(({ element }) => {
@@ -278,29 +282,29 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
   }
   function loopSpan() {
     return loopCopies.length
-      ? loopCopies[visible.length].offsetTop - visible[0].element.offsetTop
+      ? loopCopies[visible.length][horizontal ? "offsetLeft" : "offsetTop"] - visible[0].element[horizontal ? "offsetLeft" : "offsetTop"]
       : 0;
   }
   function normalizeLoop() {
     const span = loopSpan();
     if (!span) return;
-    const start = visible[0].element.offsetTop;
-    const boundary = start - (visible[1].element.offsetTop - start) / 2;
-    const offset = viewport.scrollTop;
+    const start = visible[0].element[horizontal ? "offsetLeft" : "offsetTop"];
+    const boundary = start - (visible[1].element[horizontal ? "offsetLeft" : "offsetTop"] - start) / 2;
+    const offset = viewport[horizontal ? "scrollLeft" : "scrollTop"];
     if (offset < boundary || offset >= boundary + span)
-      viewport.scrollTop = boundary + (((offset - boundary) % span) + span) % span;
+      viewport[horizontal ? "scrollLeft" : "scrollTop"] = boundary + (((offset - boundary) % span) + span) % span;
   }
 
   const motion = createGalleryMotion({
-    read: () => viewport.scrollTop,
+    read: () => viewport[horizontal ? "scrollLeft" : "scrollTop"],
     write: (value) => {
-      viewport.scrollTop = value;
+      viewport[horizontal ? "scrollLeft" : "scrollTop"] = value;
     },
     requestFrame: (callback) => window.requestAnimationFrame(callback),
     cancelFrame: (id) => window.cancelAnimationFrame(id),
     now: () => window.performance.now(),
   });
-  viewport.setAttribute("data-animated-scroll", "true");
+  viewport.setAttribute("data-animated-scroll", String(!horizontal));
 
   function stopTimer() {
     window.clearTimeout(timer);
@@ -314,7 +318,7 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
     try {
       sessionStorage.setItem(
         storageKey,
-        JSON.stringify({ domain, offset: viewport.scrollTop, index: current }),
+        JSON.stringify({ domain, offset: viewport[horizontal ? "scrollLeft" : "scrollTop"], index: current }),
       );
     } catch {
       /* Stockage facultatif. */
@@ -322,12 +326,13 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
   }
   function canTravel() {
     return (
-      visible.length > 1 && viewport.scrollHeight > viewport.clientHeight + 1
+      visible.length > 1 && viewport[horizontal ? "scrollWidth" : "scrollHeight"] > viewport[horizontal ? "clientWidth" : "clientHeight"] + 1
     );
   }
   function scheduleAutoplay() {
     stopTimer();
     if (
+      horizontal ||
       paused ||
       focused ||
       dragging ||
@@ -349,14 +354,14 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
     normalizeLoop();
     const index = visible.reduce(
       (best, card, i) =>
-        Math.abs(card.element.offsetTop - viewport.scrollTop) <
-        Math.abs(visible[best].element.offsetTop - viewport.scrollTop)
+        Math.abs(card.element[horizontal ? "offsetLeft" : "offsetTop"] - viewport[horizontal ? "scrollLeft" : "scrollTop"]) <
+        Math.abs(visible[best].element[horizontal ? "offsetLeft" : "offsetTop"] - viewport[horizontal ? "scrollLeft" : "scrollTop"])
           ? i
           : best,
       0,
     );
-    const maximum = viewport.scrollHeight - viewport.clientHeight;
-    return maximum > 1 && viewport.scrollTop >= maximum - 2
+    const maximum = viewport[horizontal ? "scrollWidth" : "scrollHeight"] - viewport[horizontal ? "clientWidth" : "clientHeight"];
+    return maximum > 1 && viewport[horizontal ? "scrollLeft" : "scrollTop"] >= maximum - 2
       ? visible.length - 1
       : index;
   }
@@ -397,6 +402,7 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
       detail.hidden = detail !== target;
     });
     activeDetail = target;
+    if (changed && detailPanel) detailPanel.scrollTop = 0;
     if (changed && animate && !reducedMotion.matches)
       target?.animate?.(
         [
@@ -458,12 +464,13 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
     }
   }
   function centerVerticalCards() {
+    if (horizontal) { viewport.style.removeProperty("--gallery-inset"); return; }
     if (!visible.length) return;
     const height = visible[0].element.offsetHeight;
     if (Number.isFinite(height))
       viewport.style.setProperty(
         "--gallery-inset",
-        `${Math.max(0, (viewport.clientHeight - height) / 2)}px`,
+        `${Math.max(0, (viewport[horizontal ? "clientWidth" : "clientHeight"] - height) / 2)}px`,
       );
   }
   function manualInteraction() {
@@ -478,15 +485,15 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
     clearSettle();
     current = Math.max(0, Math.min(index, visible.length - 1));
     normalizeLoop();
-    let destination = visible[current].element.offsetTop;
+    let destination = visible[current].element[horizontal ? "offsetLeft" : "offsetTop"];
     const span = loopSpan();
     if (span && travelDirection) {
       const candidates = [destination - span, destination, destination + span]
         .filter((value) =>
-          (value - viewport.scrollTop) * travelDirection >= -0.5,
+          (value - viewport[horizontal ? "scrollLeft" : "scrollTop"]) * travelDirection >= -0.5,
         )
         .sort((a, b) =>
-          Math.abs(a - viewport.scrollTop) - Math.abs(b - viewport.scrollTop),
+          Math.abs(a - viewport[horizontal ? "scrollLeft" : "scrollTop"]) - Math.abs(b - viewport[horizontal ? "scrollLeft" : "scrollTop"]),
         );
       destination = candidates[0] ?? destination;
     }
@@ -494,13 +501,13 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
       0,
       Math.min(
         destination,
-        viewport.scrollHeight - viewport.clientHeight,
+        viewport[horizontal ? "scrollWidth" : "scrollHeight"] - viewport[horizontal ? "clientWidth" : "clientHeight"],
       ),
     );
-    motionDirection = target >= viewport.scrollTop ? 1 : -1;
+    motionDirection = target >= viewport[horizontal ? "scrollLeft" : "scrollTop"] ? 1 : -1;
     const syncText = textTransition(current, motionDirection);
     motion.to(target, {
-      duration: reducedMotion.matches ? 0 : MOVE_DURATION,
+      duration: reducedMotion.matches || horizontal ? 0 : MOVE_DURATION,
       onUpdate: syncText,
       onComplete: () => {
         normalizeLoop();
@@ -537,11 +544,11 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
       ),
     );
     current = 0;
-    viewport.scrollTop = 0;
+    viewport[horizontal ? "scrollLeft" : "scrollTop"] = 0;
     showDetail(current);
     centerVerticalCards();
     if (visible.length)
-      viewport.scrollTop = visible[0].element.offsetTop;
+      viewport[horizontal ? "scrollLeft" : "scrollTop"] = visible[0].element[horizontal ? "offsetLeft" : "offsetTop"];
 
     if (announce && status)
       status.textContent = `${visible.length} projet${visible.length > 1 ? "s" : ""} affiché${visible.length > 1 ? "s" : ""}.`;
@@ -550,7 +557,7 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
   }
   function settle() {
     clearSettle();
-    if (dragging || motion.running || !visible.length) return;
+    if (horizontal || dragging || motion.running || !visible.length) return;
     settleTimer = window.setTimeout(() => {
       goTo(nearestIndex(), false);
       scheduleAutoplay();
@@ -609,6 +616,13 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
       scheduleAutoplay();
     }
   });
+  detailPanel?.addEventListener("pointerdown", () => {
+    dragging = true;
+    stopMotion();
+    clearSettle();
+    stopTimer();
+  }, { passive: true });
+  detailPanel?.addEventListener("scroll", scheduleAutoplay, { passive: true });
   viewport.addEventListener(
     "scroll",
     () => {
@@ -623,7 +637,9 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
       "wheel",
       (event) => {
         if (
+          horizontal ||
           event.ctrlKey ||
+          (detailPanel && detailPanel.scrollHeight > detailPanel.clientHeight && containsTarget(detailPanel, event.target)) ||
           closestElement(event.target, "[data-project-filters]") ||
           !canTravel()
         )
@@ -635,7 +651,7 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
           (event.deltaMode === 1
             ? 20
             : event.deltaMode === 2
-              ? viewport.clientHeight
+              ? viewport[horizontal ? "clientWidth" : "clientHeight"]
               : 1);
         if (!delta) return;
         const direction = Math.sign(delta);
@@ -651,14 +667,15 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
   viewport.addEventListener("keydown", (event) => {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
     if (event.key === " ") {
+      if (horizontal) return;
       event.preventDefault();
       paused = !paused;
       scheduleAutoplay();
       if (status) status.textContent = paused ? "Défilement automatique en pause." : "Défilement automatique activé.";
       return;
     }
-    const back = "ArrowUp";
-    const forward = "ArrowDown";
+    const back = horizontal ? "ArrowLeft" : "ArrowUp";
+    const forward = horizontal ? "ArrowRight" : "ArrowDown";
     if (![back, forward, "Home", "End"].includes(event.key)) return;
     event.preventDefault();
     if (event.key === "Home") goTo(0);
@@ -707,12 +724,34 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
 
     scheduleAutoplay();
   });
-  window.addEventListener("resize", () => {
-    stopMotion();
-    centerVerticalCards();
-    requestMeasure();
+  function configureAxis() {
+    const nextHorizontal = !desktop.matches;
+    if (horizontal !== nextHorizontal) {
+      motion.cancel();
+      cancelTextAnimations();
+      stopTimer();
+      clearSettle();
+      horizontal = nextHorizontal;
+      dragging = false;
+      wheelDelta = 0;
+      root.dataset.projectAxis = horizontal ? "horizontal" : "vertical";
+      viewport.setAttribute("data-animated-scroll", String(!horizontal));
+      viewport.scrollLeft = 0;
+      viewport.scrollTop = 0;
+      rebuildLoop();
+      centerVerticalCards();
+      if (visible.length) viewport[horizontal ? "scrollLeft" : "scrollTop"] = visible[current].element[horizontal ? "offsetLeft" : "offsetTop"];
+      showDetail(current);
+      saveState();
+    } else {
+      stopMotion();
+      centerVerticalCards();
+      requestMeasure();
+    }
     scheduleAutoplay();
-  });
+  }
+  window.addEventListener("resize", configureAxis);
+  desktop.addEventListener("change", configureAxis);
   window.addEventListener("pagehide", () => {
     stopMotion();
     stopTimer();
@@ -740,13 +779,13 @@ htmlElements(document, "[data-project-browser]").forEach((root) => {
     false,
   );
   if (Number.isInteger(saved?.index) && visible[saved.index])
-    viewport.scrollTop = visible[saved.index].element.offsetTop;
+    viewport[horizontal ? "scrollLeft" : "scrollTop"] = visible[saved.index].element[horizontal ? "offsetLeft" : "offsetTop"];
   else if (saved && Number.isFinite(saved.offset) && saved.offset > 0)
-    viewport.scrollTop = saved.offset;
+    viewport[horizontal ? "scrollLeft" : "scrollTop"] = saved.offset;
   // Un changement de hauteur des cartes ne doit pas laisser le projet restauré décentré.
   if (visible.length) {
     current = nearestIndex();
-    viewport.scrollTop = visible[current].element.offsetTop;
+    viewport[horizontal ? "scrollLeft" : "scrollTop"] = visible[current].element[horizontal ? "offsetLeft" : "offsetTop"];
     showDetail(current);
   }
   if ("IntersectionObserver" in window) {

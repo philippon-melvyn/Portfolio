@@ -61,7 +61,7 @@ if (panel && trigger) {
       navigating = true;
       play(panel, [{ clipPath: snapshot === "none" ? "inset(0)" : snapshot }, { clipPath: "inset(0)" }], { duration: 250, fill: "forwards" });
       const curtain = document.createElement("div");
-      curtain.className = "menu-route-curtain menu-route-curtain-departure [content:''] fixed inset-0 [background:#a33333] pointer-events-auto z-10 motion-reduce:hidden";
+      curtain.className = "menu-route-curtain menu-route-curtain-departure [content:''] fixed inset-0 [background:var(--color-brick)] pointer-events-auto z-10 motion-reduce:hidden";
       curtain.setAttribute("aria-hidden", "true");
       panel.append(curtain);
       const cover = play(curtain, [{ transform: "translateY(101%)" }, { transform: "translateY(0)" }], { duration: 750, easing: "cubic-bezier(.76,0,.24,1)", fill: "forwards" });

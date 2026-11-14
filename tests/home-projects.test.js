@@ -3,7 +3,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { runInNewContext } from "node:vm";
 
-async function setup() {
+async function setup({ mobile = false } = {}) {
   const events = {};
   const stageEvents = {};
   const styles = new Map();
@@ -14,9 +14,9 @@ async function setup() {
   let scrollY = 1000;
   let preferenceChanged;
   const reduced = { matches: false, addEventListener(_event, cb) { preferenceChanged = cb; } };
-  const panels = Array.from({ length: 4 }, (_, index) => ({ offsetLeft: index * 1200, contains: (target) => target === index }));
+  const panels = Array.from({ length: 4 }, (_, index) => ({ offsetLeft: index * (mobile ? 338 : 1200), contains: (target) => target === index }));
   const stage = {
-    clientWidth: 1200, offsetHeight: 800, scrollLeft: 0,
+    clientWidth: mobile ? 390 : 1200, offsetHeight: 800, scrollLeft: 0,
     addEventListener: (event, cb) => { stageEvents[event] = cb; },
     scrollTo: ({ left }) => { stage.scrollLeft = left; },
   };
@@ -24,7 +24,7 @@ async function setup() {
   const root = {
     style: { setProperty: (key, value) => styles.set(key, value), removeProperty: (key) => styles.delete(key) },
     setAttribute: (key, value) => attributes.set(key, value), removeAttribute: (key) => attributes.delete(key),
-    querySelector: (selector) => selector.includes("stage") ? stage : track,
+    querySelector: (selector) => selector.includes("stage") ? stage : selector.includes("track") ? track : null,
     querySelectorAll: () => panels,
     getBoundingClientRect: () => ({ top: 1000 - scrollY }),
   };
@@ -32,7 +32,7 @@ async function setup() {
     document: { querySelector: () => root },
     window: {
       get scrollY() { return scrollY; },
-      matchMedia: (query) => query.includes("min-width") ? { matches: true, addEventListener() {} } : reduced,
+      matchMedia: (query) => query.includes("min-width") ? { matches: !mobile, addEventListener() {} } : reduced,
       addEventListener: (event, cb) => { events[event] = cb; },
       requestAnimationFrame: (cb) => { frames.set(++nextFrame, cb); return nextFrame; },
       cancelAnimationFrame: (id) => frames.delete(id),
@@ -79,4 +79,16 @@ test("Accueil : clavier, focus, mouvement reduit et nettoyage", async () => {
   assert.equal(view.trackStyles.size, 0);
   view.stageEvents.keydown({ key: "ArrowRight", preventDefault() {} });
   assert.equal(view.stage.scrollLeft, 1200);
+});
+
+
+test("Accueil téléphone : glissement natif et clavier gauche/droite", async () => {
+  const view = await setup({ mobile: true });
+  assert.equal(view.attributes.has("data-horizontal-ready"), false);
+  assert.equal(view.styles.has("height"), false);
+  assert.equal(view.events.wheel, undefined);
+  view.stage.scrollLeft = 338;
+  view.stageEvents.keydown({ key: "ArrowRight", preventDefault() {} });
+  assert.equal(view.stage.scrollLeft, 676);
+  assert.equal(view.trackStyles.has("transform"), false);
 });

@@ -11,6 +11,7 @@ test("Outils : zone fixe, apparition/disparition au scroll et retour réversible
   const rowStyles = Array.from({ length: 4 }, () => new Map());
   const style = (values) => ({ setProperty: (key, value) => values.set(key, value), removeProperty: (key) => values.delete(key) });
   let top = 0;
+  let height = 800;
   let nextFrame = 0;
   let change;
   const preference = { matches: false, addEventListener: (_name, cb) => { change = cb; } };
@@ -23,7 +24,7 @@ test("Outils : zone fixe, apparition/disparition au scroll et retour réversible
   runInNewContext(await pageScript("src/pages/index.astro", "tool-directory"), {
     document: { querySelector: () => root },
     window: {
-      innerHeight: 800,
+      get innerHeight() { return height; },
       matchMedia: () => preference,
       addEventListener: (name, cb) => { events[name] = cb; },
       requestAnimationFrame: (cb) => { frames.set(++nextFrame, cb); return nextFrame; },
@@ -51,6 +52,12 @@ test("Outils : zone fixe, apparition/disparition au scroll et retour réversible
   events.pagehide();
   assert.equal(frames.size, 0);
   assert.equal(events.wheel, undefined);
+  height = 360; events.resize();
+  assert.equal(attributes.has("data-tool-ready"), false, "En paysage bas, les mots redeviennent une liste lisible");
+  assert.equal(styles.size, 0);
+  rowStyles.forEach((values) => assert.equal(values.size, 0));
+  height = 800; events.resize();
+  assert.equal(attributes.has("data-tool-ready"), true);
   preference.matches = true; change();
   assert.equal(attributes.has("data-tool-ready"), false);
   assert.equal(styles.size, 0);

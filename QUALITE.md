@@ -122,3 +122,15 @@ Corps HTML identiques après exclusion des attributs de chargement ; empreintes 
 ## Diagnostics de l’éditeur — 13 novembre 2026
 
 110 erreurs Astro corrigées ; contrôle final sur 19 fichiers : zéro erreur, zéro avertissement, 45 suggestions informatives d’inférence conservées. 581 occurrences de classes normalisées, puis zéro suggestion canonique restante selon Tailwind 4.3.5. 45 tests et build Bun réussis ; audit SEO réussi. Comparaison statique de 12 360 éléments et états sans différence détectée. Les scripts de page restent dans Astro, avec un petit module DOM JavaScript partagé documenté en JSDoc et les définitions Node en dépendance de développement. Aucun diagnostic désactivé. Voir [DIAGNOSTICS.md](DIAGNOSTICS.md) pour le périmètre et les limites.
+
+## Mobile et palette — 13 novembre 2026
+
+Hero compact sur mobile/fenêtre basse, Contact défilable sans image superposée au contenu, champs tactiles de 16 px, lecture des descriptions Projets indépendante de la molette du carrousel et palette centralisée. 48 tests Bun réussis, dont les nouvelles régressions mobiles et les contrastes ; build statique et audit SEO réussis. Audit statique des règles CSS compilées : 362 contrôles sur 11 pages et dix formats, sans erreur. Analyse Astro sans erreur ni avertissement. Accès navigateur indisponible : aucun test visuel ou validation sur téléphone physique déclaré. Voir [MOBILE.md](MOBILE.md).
+
+Correction du hero après précision du propriétaire : la présentation verticale est limitée aux largeurs inférieures à 900 px. L’effet d’origine reste actif sur ordinateur même en fenêtre basse. 48 tests réussis et construction de production réussie ; le test de régression inclut les bureaux 1024×400 et 1440×600.
+
+Correction du conflit CSS du hero bureau : une translation responsive constante de 50 % écrasait la progression. Une seule déclaration responsive utilise désormais la variable de scroll. Nouveau test sur les règles réellement compilées et leur ordre Tailwind : échec confirmé dans une copie témoin avec l’ancien conflit, succès sur le code corrigé. 49 tests réussis et build réussi. Contrôle de la cascade à 0, 0,54 et 1 de progression sur trois formats bureau : décalages 50 %, 25 %, 0 %, conteneur sticky en haut et image couvrant 100 % de sa largeur/hauteur. Présentation mobile conservée. Pas de validation visuelle inventée.
+# Contrôle complémentaire — 14 novembre 2026
+
+Galeries mobiles : défilement horizontal natif sur l’accueil et Projets, repère de balayage et compteur communs, page Projets libre de défiler verticalement. Le changement de format conserve la sélection et rétablit le carrousel vertical sur ordinateur. Vérification : 54 tests réussis, build et audit SEO réussis, zéro erreur ou avertissement Astro sur 20 fichiers ; 76 contrôles CSS ciblés réussis sur six formats. Aucune suggestion canonique Tailwind restante. L’accès au navigateur étant indisponible, aucune validation visuelle ou tactile n’est revendiquée. Détails dans MOBILE.md.
+

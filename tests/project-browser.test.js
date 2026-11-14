@@ -28,6 +28,7 @@ test("Galerie projets : domaines multiples et navigation circulaire", () => {
 async function galleryEnvironment({
   count = 3,
   reduced = false,
+  mobile = false,
 } = {}) {
   const element = (extra = {}) => ({
     hidden: false,
@@ -104,7 +105,7 @@ async function galleryEnvironment({
     scrollTop: 0,
     clientWidth: 500,
     clientHeight: 500,
-    style: { setProperty() {} },
+    style: { setProperty() {}, removeProperty() {} },
     scrollTo({ left, top }) {
       if (left !== undefined)
         this.scrollLeft = Math.max(
@@ -140,6 +141,7 @@ async function galleryEnvironment({
     "[data-project-details]": element(),
   };
   const root = element({
+    dataset: {},
     classList: {
       add: (value) => classes.add(value),
       remove: (value) => classes.delete(value),
@@ -159,6 +161,7 @@ async function galleryEnvironment({
   let clock = 0;
   let timerId = 0;
   const media = element({ matches: reduced });
+  const desktopMedia = element({ matches: !mobile });
   const classes = new Set();
   const document = element({
     hidden: false,
@@ -172,7 +175,7 @@ async function galleryEnvironment({
     },
   });
   const window = element({
-    matchMedia: () => media,
+    matchMedia: (query) => query.includes("prefers-reduced-motion") ? media : desktopMedia,
     performance: { now: () => clock },
     requestAnimationFrame: (callback) => {
       frames.set(++frameId, callback);
@@ -227,7 +230,9 @@ async function galleryEnvironment({
     track,
     root,
     details,
+    detailPanel: map["[data-project-details]"],
     filterDrawer: map["[data-project-filters]"],
+    desktopMedia,
     filters,
     status,
     viewport,
@@ -471,4 +476,80 @@ test("Boucle verticale : inverser la molette pendant le raccord revient au derni
   env.flushFrames();
   assert.equal(env.viewport.scrollTop, lastOffset);
   assert.equal(env.details[1].hidden, false);
+});
+
+
+test("Galerie mobile : laisser défiler le texte et suspendre l’auto pendant le geste", async () => {
+  const env = await galleryEnvironment();
+  const panel = env.detailPanel;
+  panel.scrollHeight = 600;
+  panel.clientHeight = 180;
+  panel.contains = (target) => target === panel;
+  const position = env.viewport.scrollTop;
+  let prevented = false;
+  env.root.emit("wheel", { target: panel, deltaY: 80, preventDefault() { prevented = true; } });
+  assert.equal(prevented, false, "La molette appartient au panneau de texte quand il déborde");
+  assert.equal(env.viewport.scrollTop, position);
+  panel.emit("pointerdown");
+  assert.equal(env.timers.size, 0, "Le projet reste en place pendant la manipulation tactile");
+  env.window.emit("pointerup");
+  assert.ok(env.timers.size > 0);
+  panel.emit("scroll");
+  assert.ok([...env.timers.values()].some((timer) => timer.delay === 7000));
+});
+
+
+test("Galerie téléphone : glissement horizontal natif, sans boucle ni automatisme", async () => {
+  const env = await galleryEnvironment({ mobile: true });
+  assert.equal(env.root.dataset.projectAxis, "horizontal");
+  assert.equal(env.viewport.attributes["data-animated-scroll"], "false");
+  assert.equal(env.track.children.length, 3);
+  assert.equal(env.timers.size, 0);
+  env.viewport.scrollLeft = 320;
+  env.viewport.emit("scroll");
+  env.flushFrames();
+  assert.equal(env.details[1].hidden, false);
+  assert.equal(env.viewport.scrollTop, 0);
+  env.viewport.emit("pointerdown");
+  env.window.emit("pointerup");
+  assert.equal(env.timers.size, 0, "La fin du geste ne force pas une animation verticale");
+});
+
+test("Galerie téléphone : la molette verticale reste au navigateur et le clavier parcourt horizontalement", async () => {
+  const env = await galleryEnvironment({ mobile: true });
+  let prevented = false;
+  env.root.emit("wheel", { deltaY: 120, preventDefault() { prevented = true; } });
+  assert.equal(prevented, false);
+  assert.equal(env.viewport.scrollLeft, 0);
+  env.viewport.emit("keydown", { key: "ArrowRight", preventDefault() {}, target: { closest: () => null } });
+  assert.equal(env.viewport.scrollLeft, 320);
+  assert.equal(env.details[1].hidden, false);
+  env.viewport.emit("keydown", { key: "ArrowDown", preventDefault() { throw Error("La flèche bas appartient à la page"); } });
+  assert.equal(env.timers.size, 0);
+});
+
+test("Galerie : changer de largeur conserve le projet et restaure le mode vertical bureau", async () => {
+  const env = await galleryEnvironment({ mobile: true });
+  env.viewport.scrollLeft = 320; env.viewport.emit("scroll"); env.flushFrames();
+  env.desktopMedia.matches = true; env.desktopMedia.emit("change"); env.flushFrames();
+  assert.equal(env.root.dataset.projectAxis, "vertical");
+  assert.equal(env.viewport.attributes["data-animated-scroll"], "true");
+  assert.equal(env.viewport.scrollTop, env.cards[1].card.offsetTop);
+  assert.equal(env.track.children.length, 9);
+  assert.equal(env.timers.size, 1);
+  env.desktopMedia.matches = false; env.desktopMedia.emit("change"); env.flushFrames();
+  assert.equal(env.root.dataset.projectAxis, "horizontal");
+  assert.equal(env.track.children.length, 3);
+  assert.equal(env.viewport.scrollLeft, 320);
+  assert.equal(env.details[1].hidden, false);
+  assert.equal(env.timers.size, 0);
+});
+
+test("Galerie téléphone : les filtres synchronisent les descriptions visibles", async () => {
+  const env = await galleryEnvironment({ mobile: true });
+  env.filters[2].emit("click"); env.flushFrames();
+  assert.equal(env.details[2].hidden, false);
+  env.filters[0].emit("click"); env.flushFrames();
+  assert.equal(env.details[0].hidden, false);
+  assert.equal(env.timers.size, 0);
 });

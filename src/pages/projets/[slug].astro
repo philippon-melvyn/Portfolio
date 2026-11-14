@@ -90,7 +90,7 @@ const links = [1, 2]
   imageAlt={cover ? project.couverture_alt || `Visuel du projet ${project.titre}` : undefined}
   schema="project"
 >
-  <article class="project-detail [--project-background:#f4f1eb] [--project-text:#302e2a] [--project-muted:#77736b] [--project-space:clamp(24px,3vw,64px)] [background:var(--project-background)] text-(--project-text) [&[data-project-slug='bargo']_.project-lead-image_img]:w-[102%] [&[data-project-slug='bargo']_.project-lead-image_img]:max-w-none [&[data-project-slug='bargo']_.project-lead-image_img]:ml-[-1%]" data-project-slug={project.slug}>
+  <article class="project-detail [--project-background:var(--color-paper)] [--project-text:var(--color-ink)] [--project-muted:var(--color-muted)] [--project-space:clamp(24px,3vw,64px)] [background:var(--project-background)] text-(--project-text) [&[data-project-slug='bargo']_.project-lead-image_img]:w-[102%] [&[data-project-slug='bargo']_.project-lead-image_img]:max-w-none [&[data-project-slug='bargo']_.project-lead-image_img]:ml-[-1%]" data-project-slug={project.slug}>
     <header class:list={["project-opening grid grid-cols-[minmax(0,29fr)_minmax(0,37fr)_minmax(0,34fr)] min-h-svh min-[700px]:max-[1100px]:grid-cols-[minmax(0,55fr)_minmax(0,45fr)] max-[700px]:flex max-[700px]:flex-col max-[700px]:min-h-auto print:min-h-auto", { "project-opening-no-cover [&.project-opening-no-cover]:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] [&_.project-story]:max-w-200 [&.project-opening-no-story]:block [&.project-opening-no-story]:min-h-auto [&.project-opening-no-story_.project-index]:pb-20 min-[700px]:max-[1100px]:[&.project-opening-no-cover]:grid-cols-[1fr_1fr] min-[700px]:max-[1100px]:[&_.project-story]:col-2 min-[700px]:max-[1100px]:[&_.project-story]:pt-27.5 max-[700px]:[&.project-opening-no-cover]:flex max-[700px]:[&.project-opening-no-cover]:flex-col max-[700px]:[&.project-opening-no-cover]:min-h-auto": !cover, "project-opening-no-story [&.project-opening-no-story]:grid-cols-[minmax(0,40fr)_minmax(0,60fr)] min-[700px]:max-[1100px]:[&_.project-opening-cover]:row-auto": !hasStory }]}>
       <div class="project-index p-[116px_var(--project-space)_64px] min-[700px]:max-[1100px]:pt-27.5 max-[700px]:p-[104px_24px_40px] print:pt-6">
         <a class="project-back text-[10px] leading-normal tracking-[.13em] uppercase inline-block max-w-full text-(--project-muted) [&_span]:px-2 hover:text-brick" href="/projets/">Projets{domains.length > 0 && <><span aria-hidden="true">/</span> {domains.join(" · ")}</>}</a>
@@ -114,7 +114,7 @@ const links = [1, 2]
         ))}
       </div>}
       {cover && (
-        <div class="project-opening-cover relative min-w-0 [background:#e0dcd4] [&_img]:absolute [&_img]:inset-0 [&_img]:block [&_img]:w-full [&_img]:h-full [&_img]:object-cover min-[700px]:max-[1100px]:col-2 min-[700px]:max-[1100px]:row-[1/span_2] max-[700px]:h-[70svh] max-[700px]:min-h-90 print:[&_img]:static print:[&_img]:h-auto">
+        <div class="project-opening-cover relative min-w-0 [background:color-mix(in_srgb,var(--color-ink)_10%,transparent)] [&_img]:absolute [&_img]:inset-0 [&_img]:block [&_img]:w-full [&_img]:h-full [&_img]:object-cover min-[700px]:max-[1100px]:col-2 min-[700px]:max-[1100px]:row-[1/span_2] max-[700px]:h-[70svh] max-[700px]:min-h-90 print:[&_img]:static print:[&_img]:h-auto">
           <ProjectImage
             src={cover}
             alt={project.couverture_alt || project.titre}
@@ -127,7 +127,7 @@ const links = [1, 2]
     </header>
     <ProjectSections project={project} gallery={gallery} />
     {(knowledge.length > 0 || skills.length > 0) && (
-      <section class="project-credits grid grid-cols-[1fr_1fr] gap-12 p-[64px_var(--project-space)] [border-top:1px_solid_#302e2a26] max-[700px]:grid-cols-[1fr] max-[700px]:py-10">
+      <section class="project-credits grid grid-cols-[1fr_1fr] gap-12 p-[64px_var(--project-space)] [border-top:1px_solid_color-mix(in_srgb,var(--color-ink)_15%,transparent)] max-[700px]:grid-cols-[1fr] max-[700px]:py-10">
         {skills.length > 0 && (
           <div>
             <h2 class="project-label text-[10px] leading-normal tracking-[.13em] uppercase text-(--project-muted) mb-4 font-medium">Compétences mobilisées</h2>
@@ -140,7 +140,7 @@ const links = [1, 2]
         )}
         {knowledge.length > 0 && (
           <div>
-            <h2 class="project-label text-[10px] leading-normal tracking-[.13em] uppercase text-(--project-muted) mb-4 font-medium">Savoirs utilisés</h2>
+            <h2 class="project-label text-[10px] leading-normal tracking-[.13em] uppercase text-(--project-muted) mb-4 font-medium">Outils utilisés</h2>
             <ul class="project-credit-tools flex flex-wrap gap-6 text-[13px] [&_li]:flex [&_li]:items-center [&_li]:gap-2.5 [&_img]:w-6.5 [&_img]:h-6.5 [&_img]:object-contain">
               {knowledge.map((item) => {
                 const logo = imagesFor(item, "logo")[0];

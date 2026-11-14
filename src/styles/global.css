@@ -19,7 +19,9 @@
   --color-paper: #fafaf8;
   --color-ink: #14161d;
   --color-brick: #a33333;
-  --color-accent: #e53935;
+  --color-accent: var(--color-brick);
+  --color-muted: #686b73;
+  --color-soft: #b8bbc3;
   --font-sans: Inter, sans-serif;
   --font-display: "Barlow Condensed", sans-serif;
 }
