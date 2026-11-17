@@ -22,17 +22,21 @@ import { site } from "../data/site.js";
     </p>
     <h2 class="heading-medium font-display font-semibold uppercase text-[clamp(28px,3.2vw,44px)] leading-[1.05] tracking-tighter wrap-break-word">Prise de contact</h2>
     <p>
-      Les liens e-mail et le formulaire Contact ouvrent votre application de
-      messagerie. Le formulaire prépare un brouillon avec les informations
-      saisies ; vous effectuez l’envoi depuis votre messagerie. Ces informations
-      ne sont pas enregistrées dans PocketBase. Aucun compte visiteur n’est
-      proposé sur ce site.
+      Les liens e-mail ouvrent votre application de messagerie. Le formulaire
+      Contact transmet les informations saisies à FormSubmit, qui les envoie à
+      la boîte Outlook de {site.name}. Ces informations ne sont pas enregistrées
+      dans PocketBase. Aucun compte visiteur n’est proposé sur ce site.
     </p>
     <p>
       Le formulaire utilise les prénom, nom, adresse e-mail, sujet et message
-      saisis pour préparer le courriel. Les champs marqués d’un astérisque sont
-      obligatoires pour utiliser ce parcours. Sans eux, le formulaire ne prépare
-      pas le message ; le lien e-mail reste disponible.
+      saisis pour transmettre votre demande et y répondre. Les champs marqués
+      d’un astérisque sont obligatoires. Le lien e-mail reste disponible si vous
+      préférez écrire directement depuis votre messagerie.
+    </p>
+    <p>
+      FormSubmit indique conserver les soumissions pendant trente jours.
+      Consultez sa <a class="text-link [text-decoration:underline] underline-offset-[5px] hover:text-brick" href="https://formsubmit.co/privacy.pdf" target="_blank" rel="noopener noreferrer">politique de confidentialité<span class="sr-only"> (nouvel onglet)</span></a>
+      pour connaître les conditions de traitement de ce service.
     </p>
     <p>
       Les échanges reçus servent à répondre aux demandes liées au portfolio.
