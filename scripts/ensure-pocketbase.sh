@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Manual VPS recovery only. The GitHub deployment checks the public API and
+# must never invoke this tool or start/migrate PocketBase during publication.
 set -euo pipefail
 
 deploy_root=${1:?Usage: ensure-pocketbase.sh /var/www/portfolio/Portfolio}
