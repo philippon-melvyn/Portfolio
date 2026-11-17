@@ -50,6 +50,10 @@ jobs:
               https://github.com/philippon-melvyn/Portfolio.git "$deploy_source"
             git -C "$deploy_source" fsck --full
 
+            # Static generation requires the existing CMS. Recover it before
+            # building when its executable and database can be identified safely.
+            bash "$deploy_source/scripts/ensure-pocketbase.sh" "$deploy_root"
+
             # Keep server configuration private; never overwrite it or pb_data.
             for config in .env .env.local .env.production .env.production.local; do
               if [ -f "$deploy_root/$config" ]; then
