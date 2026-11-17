@@ -15,7 +15,6 @@
     "dev": "astro dev --force",
     "build": "astro build",
     "preview": "astro preview",
-    "test": "bun test",
     "check:seo": "bun scripts/check-seo.js"
   },
   "type": "module",

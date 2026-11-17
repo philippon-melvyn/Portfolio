@@ -1,7 +1,7 @@
 ---
-import ProjectTransitions from "../../components/ProjectTransitions.astro";
+import ProjectTransitions from "../../components/project/ProjectTransitions.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import ProjectImage from "../../components/ProjectImage.astro";
+import ProjectImage from "../../components/project/ProjectImage.astro";
 import { getProjects, imagesFor } from "../../lib/pocketbase.js";
 const projectDomains = (value) => [...new Set([value].flat().filter(Boolean).map((item) => String(item).trim()).filter(Boolean))];
 import { plainText } from "../../lib/content.js";

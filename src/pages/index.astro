@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import HomeIntroduction from "../components/HomeIntroduction.astro";
-import ProjectCarousel from "../components/ProjectCarousel.astro";
-import SkillsOverview from "../components/SkillsOverview.astro";
+import HomeIntroduction from "../components/home/HomeIntroduction.astro";
+import ProjectCarousel from "../components/home/ProjectCarousel.astro";
+import SkillsOverview from "../components/home/SkillsOverview.astro";
 import { getProjects, getKnowledge, getSkills } from "../lib/pocketbase.js";
 const [projects, knowledge, skills] = await Promise.all([
   getProjects(),

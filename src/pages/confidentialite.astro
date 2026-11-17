@@ -6,15 +6,19 @@ import { site } from "../data/site.js";
 <BaseLayout title="Confidentialité" description="Informations sur les données personnelles et le fonctionnement du portfolio de Melvyn Philippon." noindex>
   <article class="legal-page panel pl-[clamp(24px,3.472vw,80px)] pr-[clamp(24px,3.472vw,80px)] min-w-0 max-w-275 mx-auto py-27.5 [&_.heading-medium]:mt-17.5 [&_.heading-medium]:mb-7 [&_p+p]:mt-6">
     <h1 class="heading-large font-display font-semibold uppercase text-[clamp(38px,5vw,72px)] leading-[1.14] tracking-[-0.0357em] wrap-break-word max-[900px]:text-[clamp(40px,7vw,64px)] max-[600px]:tracking-[-0.035em]">Confidentialité</h1>
-    <p class="legal-notice mt-10 p-6 [border-left:4px_solid_var(--color-brick)]">
-      Informations à vérifier et compléter avec l’hébergement définitif.
+    <h2 class="heading-medium font-display font-semibold uppercase text-[clamp(28px,3.2vw,44px)] leading-[1.05] tracking-tighter wrap-break-word">Responsable et contact</h2>
+    <p>
+      {site.name} édite ce portfolio personnel en France. Pour toute question
+      concernant vos données, vous pouvez écrire à{" "}
+      <a class="text-link [text-decoration:underline] underline-offset-[5px] hover:text-brick" href={`mailto:${site.email}`}>{site.email}</a>.
     </p>
     <h2 class="heading-medium font-display font-semibold uppercase text-[clamp(28px,3.2vw,44px)] leading-[1.05] tracking-tighter wrap-break-word">Navigation</h2>
     <p>
-      Le code de ce portfolio n’ajoute aucun outil de mesure d’audience, cookie
-      de suivi ou contenu tiers embarqué. Les typographies sont hébergées avec
-      le site. Les fichiers des projets sont servis par l’instance PocketBase
-      configurée.
+      Aucun outil de mesure d’audience, publicité ou CDN n’est déclaré par
+      l’éditeur. Aucun outil de suivi n’a été repéré dans le code examiné.
+      Les typographies sont hébergées avec le site. Certains médias sont intégrés
+      aux fichiers générés du portfolio ; d’autres peuvent être chargés directement
+      depuis l’instance PocketBase configurée.
     </p>
     <h2 class="heading-medium font-display font-semibold uppercase text-[clamp(28px,3.2vw,44px)] leading-[1.05] tracking-tighter wrap-break-word">Prise de contact</h2>
     <p>
@@ -25,19 +29,54 @@ import { site } from "../data/site.js";
       proposé sur ce site.
     </p>
     <p>
-      Responsable du traitement, finalités et durée de conservation des
-      échanges, destinataires, modalités d’exercice des droits et éventuels
-      transferts : à compléter par l’éditeur avant publication. Contact :{" "}
-      <a class="text-link [text-decoration:underline] underline-offset-[5px] hover:text-brick" href={`mailto:${site.email}`}>
-        {site.email}
-      </a>
-      .
+      Le formulaire utilise les prénom, nom, adresse e-mail, sujet et message
+      saisis pour préparer le courriel. Les champs marqués d’un astérisque sont
+      obligatoires pour utiliser ce parcours. Sans eux, le formulaire ne prépare
+      pas le message ; le lien e-mail reste disponible.
+    </p>
+    <p>
+      Les échanges reçus servent à répondre aux demandes liées au portfolio.
+      Aucune utilisation pour une newsletter ou de la prospection n’est déclarée.
+      La messagerie de contact est fournie par Microsoft (Outlook).
+      Le portfolio ne constitue pas de fichier de contacts dans PocketBase ;
+      les courriels reçus peuvent néanmoins contenir les coordonnées de leurs
+      expéditeurs et être conservés dans la messagerie.
+    </p>
+    <h2 class="heading-medium font-display font-semibold uppercase text-[clamp(28px,3.2vw,44px)] leading-[1.05] tracking-tighter wrap-break-word">Stockage dans le navigateur</h2>
+    <p>
+      Deux éléments sont conservés dans le stockage de session du navigateur :
+      « portfolio-menu-transition », pour une transition du menu, et
+      « portfolio-project-gallery-vertical », pour retrouver le filtre et la
+      position dans le catalogue des projets. Ils ne sont pas transmis à un
+      serveur par les scripts qui les utilisent.
+    </p>
+    <p>
+      La transition a une validité logique de douze secondes et son entrée est
+      supprimée lors de sa lecture sur la page suivante. L’état du catalogue
+      reste dans le stockage de session, sans expiration propre au code.
     </p>
     <h2 class="heading-medium font-display font-semibold uppercase text-[clamp(28px,3.2vw,44px)] leading-[1.05] tracking-tighter wrap-break-word">Hébergement et journaux techniques</h2>
     <p>
-      Les pratiques de journalisation, la durée de conservation et la
-      localisation des données doivent être précisées après le choix de
-      l’hébergeur et de l’instance PocketBase de production.
+      L’absence de compte visiteur et d’enregistrement du formulaire dans
+      PocketBase n’exclut pas des journaux techniques contenant, par exemple,
+      des adresses IP ou des informations de requête.
+    </p>
+    <h2 class="heading-medium font-display font-semibold uppercase text-[clamp(28px,3.2vw,44px)] leading-[1.05] tracking-tighter wrap-break-word">Vos droits</h2>
+    <p>
+      Selon les conditions prévues par le RGPD, vous pouvez demander l’accès à
+      vos données, leur rectification, leur effacement ou la limitation de leur
+      traitement. L’opposition s’applique notamment aux traitements fondés sur
+      l’intérêt légitime ; la portabilité dépend de ses conditions légales.
+      Si un traitement repose sur votre consentement, vous pouvez le retirer
+      sans remettre en cause les traitements antérieurs à ce retrait.
+    </p>
+    <p>
+      Pour exercer vos droits, écrivez à{" "}
+      <a class="text-link [text-decoration:underline] underline-offset-[5px] hover:text-brick" href={`mailto:${site.email}`}>{site.email}</a>.
+      Le délai de réponse est en principe d’un mois ; une prolongation motivée
+      peut être applicable dans les conditions du RGPD. Vous pouvez également
+      adresser une réclamation à la{" "}
+      <a class="text-link [text-decoration:underline] underline-offset-[5px] hover:text-brick" href="https://www.cnil.fr/fr/adresser-une-plainte">CNIL</a>.
     </p>
   </article>
 </BaseLayout>

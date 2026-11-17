@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ArrowLink from "../components/ui/ArrowLink.astro";
 import { Image } from "astro:assets";
 import portrait from "../../public/images/portrait.webp";
 const method = [
@@ -26,8 +27,11 @@ const method = [
               <p>Curieux et créatif, j’aime dessiner, explorer de nouveaux univers et imaginer ce que je pourrais en faire à ma manière.</p>
               <p>Persévérant, je prends le temps d’essayer, d’ajuster et d’apprendre, en restant ouvert aux regards des autres.</p>
             </div>
+            <div class="about-cv-action mt-8" data-about-reveal>
+              <ArrowLink href="/documents/cv-melvyn-philippon.pdf" label="Télécharger mon CV" download="CV-Melvyn-Philippon.pdf" filled />
+            </div>
           </div>
-          <figure class="about-portrait [align-self:start] m-0 [&_img]:block [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:object-[center_55%] [&_figcaption]:mt-4 [&_figcaption]:text-(--about-muted) [&_figcaption]:text-[10px] max-[800px]:w-[70%] max-[800px]:[justify-self:end] max-[500px]:w-full" data-about-reveal data-about-effect="portrait">
+          <figure class="about-portrait [align-self:start] m-0 [&_img]:block [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:object-[center_55%] max-[800px]:w-[70%] max-[800px]:[justify-self:end] max-[500px]:w-full" data-about-reveal data-about-effect="portrait">
             <div class="about-portrait-frame h-[min(76svh,800px)] min-h-110 overflow-hidden [background:color-mix(in_srgb,var(--color-ink)_10%,transparent)] max-[800px]:h-auto max-[800px]:min-h-0 max-[800px]:aspect-4/5">
               <Image src={portrait} widths={[400, 640, 960, 1124]} width={960} sizes="(min-width: 900px) 38vw, (min-width: 600px) 62vw, 85vw" format="webp" alt="Portrait de Melvyn Philippon" loading="eager" fetchpriority="high" />
             </div>
@@ -54,7 +58,7 @@ const method = [
       </div>
     </section>
 
-    <section id="about-inspirations" class="about-inspirations py-[clamp(100px,11vw,200px)] [background:var(--color-ink)] text-paper [&_.about-label]:text-soft" aria-labelledby="inspirations-title" data-about-section>
+    <section id="about-inspirations" class="about-inspirations py-[clamp(100px,11vw,200px)] [background:var(--color-ink)] text-paper" aria-labelledby="inspirations-title" data-about-section>
       <div class="about-wrap w-full px-[max(24px,6.5%)]">
         <h2 id="inspirations-title" class="about-statement mt-10.5 [font:500_clamp(46px,6vw,110px)/1.05_var(--font-sans)] tracking-[-.055em] [translate:var(--about-drift,0px)_0]" data-about-reveal data-about-effect="lines">
           <span class="about-motion-line block overflow-clip pb-[.12em] mb-[-.12em]"><span class="about-line-content block origin-[left_bottom]">Mes inspirations.</span></span>

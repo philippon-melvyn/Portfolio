@@ -1,6 +1,82 @@
+# Organisation et vérifications
+
+Le site conserve Astro, Tailwind CSS dans les composants et JavaScript. Les versions, les dépendances Bun et `bun.lock` sont conservés.
+
+## Se repérer dans le projet
+
+| Dossier | Utilité |
+| --- | --- |
+| `src/pages/` | Pages, routes et JavaScript propre à chaque page |
+| `src/components/layout/` | En-tête, pied de page et raccord de navigation |
+| `src/components/home/` | Sections de l’accueil |
+| `src/components/project/` | Images, galeries et transitions des projets |
+| `src/components/ui/` | Éléments d’interface partagés |
+| `src/layouts/` | Structure commune et métadonnées des pages |
+| `src/scripts/` | JavaScript utilisé sur plusieurs pages |
+| `src/lib/` | Lecture PocketBase et fonctions partagées |
+| `src/data/` | Configuration existante, laissée intacte |
+| `src/styles/global.css` | Entrée Tailwind, couleurs et polices |
+| `src/assets/` et `public/` | Ressources utilisées par le site |
+| `scripts/check-seo.js` | Contrôle requis par le déploiement |
+| `.github/workflows/` | Déploiement existant, conservé |
+
+Les fichiers `.env`, les dossiers de données et de migrations PocketBase, son exécutable et `src/data` ne sont pas modifiés. Les dossiers `node_modules`, `.astro`, `dist` et `.vscode` sont conservés et visibles dans l’explorateur VS Code, conformément à la demande du propriétaire.
+
+## Nettoyage demandé
+
+- Suppression des tests et de leurs données synthétiques, des outils et captures Figma, des anciens essais et copies de travail.
+- Suppression des documents Markdown séparés, à l’exception de `QUALITE.md` et `IA.md`.
+- Conservation des images effectivement affichées, des polices et de leurs licences.
+- Retrait de quatre classes Tailwind sans cible dans À propos.
+- Suppression de la commande `test` du manifeste ; commandes `dev`, `build`, `preview` et `check:seo` inchangées.
+
+## Vérifications
+
+Les 55 tests existants ont réussi avant leur suppression.
+
+Résultats finaux :
+- Build Bun réussi ; contrôle SEO réussi sur 12 pages, neuf URL indexables et 49 images référencées.
+- Les 13 fichiers HTML générés (dont la redirection) sont identiques après normalisation du nom du CSS et retrait des quatre classes sans cible.
+- Les 11 fichiers JavaScript du navigateur sont strictement identiques, octet pour octet.
+- Cinq règles CSS inutilisées disparaissent : quatre anciennes règles de légende/surtitre et une ancienne écriture de couleur présente seulement dans les documents supprimés. Aucune règle CSS restante n’est modifiée et aucune règle n’est ajoutée.
+- 19 fichiers Astro contrôlés : zéro erreur, zéro avertissement ; les 45 suggestions informatives existantes ne sont pas masquées.
+- Aucun import cassé ni fichier source orphelin. Les 30 fichiers de code de l’application restent en Astro ou JavaScript.
+- Empreintes de `.env`, `.env.example`, `src/data` et `bun.lock` inchangées. Aucune dépendance ou version modifiée.
+- Environ 594 Mo d’anciens fichiers de travail supprimés ; seuls les fichiers générés normalement par Astro sont recréés dans `.astro`.
+
+## Ressources et licence conservées
+
+Les images `bangsal-nam-9HMGyZJfrk8-unsplash.jpg`, `engin-akyurt-pxA3AcRb0UE-unsplash.jpg`, le portrait, le logo et les ressources de projets existantes sont conservés. Les images de projets et les logos d’outils restent lus dans PocketBase. Inter et Barlow Condensed conservent leurs fichiers de licence dans `public/fonts/`.
+
+La notice ci-dessous, auparavant dans `LICENSE.md`, est conservée ici pour l’exécutable PocketBase fourni dans le projet.
+
+The MIT License (MIT)
+Copyright (c) 2022 - present, Gani Georgiev
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+and associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the Software, and to permit persons to whom the Software
+is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or
+substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+---
+
+## Historique des vérifications
+
+Les entrées ci-dessous décrivent les interventions précédentes. Les anciens tests, rapports et documents auxquels elles se réfèrent ont été retirés du projet à la demande du propriétaire.
+
 # Contrôles qualité
 
-État au 7 novembre 2026. « Réussi » indique un contrôle effectivement exécuté ; une règle de code ou une intention ne remplace pas un test visuel.
+« Réussi » indique un contrôle effectivement exécuté ; une règle de code ou une intention ne remplace pas un test visuel.
 
 | Contrôle                        | Méthode et résultat                                                                                               | Statut                                                          |
 | ------------------------------- | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
@@ -52,36 +128,36 @@ Ajout de `transitions.css` et `transitions.js`, avec fondu des carrousels. Const
 5. Vérifier la console et les requêtes réseau ; contrôler une image absente, une relation vide et un lien final non renseigné.
 6. Corriger les règles API et compléter les contenus légaux, coordonnées et domaine avant toute mise en ligne.
 
-## Version visuelle épurée — 7 novembre 2026
+## Version visuelle épurée
 
 Vérifications exécutées : les sept tests passent avec `bun run test`, la compilation `bun run build` réussit et les six pages principales répondent en HTTP 200. Six liens internes, dix ressources locales, la page 404, robots.txt et le sitemap ont été vérifiés. Le contrôle visuel des animations reste à faire, l’accès au navigateur étant indisponible dans cette session.
 
 Contrôles à effectuer dans le navigateur : parallax vertical, démarrage et fin de la séquence horizontale, retour au scroll vertical, flèches et lien Passer la galerie ; glissement tactile à 390 et 768 px ; disparition du mode épinglé si le mouvement réduit est activé. Le code ne bloque pas la molette. Sans JavaScript, la galerie reste accessible par défilement horizontal. Les images sont hébergées localement avec leurs crédits. Les limites et positions du parcours horizontal sont couvertes par des tests de calcul, sans les présenter comme un test visuel.
 
-## Refonte en grille — 8 novembre 2026
+## Refonte en grille
 
 Compilation de production réussie avec huit pages, dont le vrai projet Olyvia et ses images optimisées. Contrôle HTTP des six pages principales, de sept liens internes et de vingt-neuf ressources réussi. Tests des filtres : catégories simples/multiples avec espaces terminaux, pagination sans doublon ni omission, clic sur catégorie, retour à la première page et annonces accessibles. Tests de contact, données, sections de projet et calculs du scroll conservés.
 
 À vérifier visuellement : largeurs 390, 768 et 1440 px ; filtres et navigation des cartes ; lisibilité des fonds sombres pendant leur changement de couleur ; cadrage des photos ; début et fin du scroll horizontal ; retour en haut ; mouvement réduit et clavier. L’accès au navigateur reste indisponible et aucun contrôle visuel n’est déclaré réussi.
-## 8 novembre 2026 — Références du PDF Inspiration
+## Références du PDF Inspiration
 
 Lecture visuelle des quatre pages du PDF fourni par le propriétaire, rendues dans le dossier ignoré .astro/inspiration-review. Choix des galeries sombres à trois colonnes et compositions décalées (page 1), de la présentation architecturale à trois zones et de la bande de matière (page 2), du footer à colonnes avec grande signature (page 3), et des alignements de galerie décalés (page 4).
 
 Adaptation dans le portfolio Astro : triptyque d’accueil avec un vrai visuel Olyvia, présentation asymétrique, grille des projets, pages À propos et Contact à trois zones, introduction des projets en trois colonnes, footer noir avec bande textile et signature Philippon. Les images du PDF, les logos, les textes et les affirmations des autres studios ne sont pas réutilisés. Les photos déjà créditées et les contenus PocketBase restent les sources du site. Les boutons rectangulaires en majuscules et les suppressions demandées sont conservés.
 
 Compilation de huit pages réussie ; dix tests réussis ; contrôles HTTP de six pages principales, de sept liens internes et de vingt-neuf ressources réussis. Le contrôle visuel du site et des animations reste à effectuer dans le navigateur, inaccessible aux outils de cette session. Aucun changement de base, ajout à l’index, commit, push ou déploiement.
-## 8 novembre 2026 — Reprise de la maquette Figma d’origine
+## Reprise de la maquette Figma d’origine
 
 Le propriétaire demande de repartir de zéro et confirme explicitement la maquette Figma d’origine. Nouvelle lecture des contextes détaillés et captures des cinq écrans de Desktop-apres : Accueil 725:604, Projets 725:637, À propos 725:647, modèle de projet 725:690 et Contact 725:732. Les compositions du PDF et les refontes expérimentales sont abandonnées.
 
 Reprise des colonnes 61/39, du header blanc de 64 px, des couleurs et typographies d’origine, des textes de la maquette, des carrousels et du footer sombre avec portrait. Réintégration du formulaire Contact, de sa photographie Figma téléchargée localement et du bouton Retour. Le formulaire prépare un e-mail et n’annonce pas de faux envoi ; les champs sont validés et le destinataire reste configurable. Les profils sans URL ne reçoivent pas de faux liens ; le téléchargement du CV est désactivé tant que son URL n’est pas renseignée.
 
-Les composants, scripts, styles et tests spécifiques aux expérimentations ont été retirés. L’état précédent est conservé sous .astro/before-maquette-restart-20261108, ignoré par Git. Les données, le schéma, les règles API, le correctif de tri des compétences et le rendu dynamique des sections sont conservés.
+Les composants, scripts, styles et tests spécifiques aux expérimentations ont été retirés. L’état précédent est conservé sous .astro/before-maquette-restart, ignoré par Git. Les données, le schéma, les règles API, le correctif de tri des compétences et le rendu dynamique des sections sont conservés.
 
 Cinq tests réussissent, dont deux consacrés à la préparation du message et à la validation du formulaire. La compilation de huit pages et les contrôles HTTP des pages et ressources réussissent. Le navigateur a été réessayé mais reste inaccessible ; aucune comparaison visuelle de rendu navigateur n’est déclarée réussie. Les captures Figma ne sont jamais utilisées comme images de page dans le site.
 
 Aucun ajout à l’index, commit, push ou déploiement effectué.
-## 8 novembre 2026 — Galerie horizontale des projets
+## Galerie horizontale des projets
 
 À la demande du propriétaire, seule la liste /projets/ devient une galerie plein écran sans footer sous les cartes. Le composant Footer.astro est inchangé, vérifié par empreinte SHA256. Sidebar de filtres construite depuis les domaines PocketBase, cartes portrait, zoom de l’image et agrandissement de la carte au survol. Les vraies pages de projet et leurs sections restent disponibles après clic.
 
@@ -90,14 +166,14 @@ Défilement automatique uniquement quand plusieurs projets débordent : pause au
 Transition native entre carte et couverture via un nom de transition partagé, avec fondu de départ en repli. Le script et les styles de la galerie sont isolés de l’accueil et du footer. L’état du filtre et la position sont conservés dans le stockage de session lorsque disponible.
 
 Neuf tests réussis : données, champs, sections dynamiques, construction Astro, filtres, navigation circulaire, défilement automatique, pauses, mouvement réduit et liens modifiés. Compilation de huit pages réussie. Galerie et page Olyvia vérifiées via HTTP. Tests d’interaction exécutés dans un DOM simulé ; aucune validation visuelle ou tactile réelle n’est déclarée, car les outils de navigateur restent indisponibles.
-## 8 novembre 2026 — Filtres repliés et header transparent
+## Filtres repliés et header transparent
 
 Demande ciblée du propriétaire : masquer la sidebar au chargement, donner davantage de hauteur aux cartes et remplacer le header par un logo à gauche et un hamburger à droite sur fond transparent. Le header ne réserve plus de bande dans la mise en page ; ses éléments flottent au-dessus du contenu. Le contraste des icônes s’adapte au fond avec le mode de fusion difference.
 
 La galerie utilise toute la largeur disponible. Le bouton Filtres ouvre un panneau repliable ; les cartes sont plus hautes et leur largeur est limitée selon la hauteur de l’écran pour conserver une silhouette verticale. Les menus sont natifs, fermés initialement et exclusifs, avec fermeture au clavier, clic extérieur, sortie du focus ou sélection d’un filtre. Le défilement automatique s’arrête tant que le panneau des filtres est ouvert.
 
 Onze tests réussissent, dont les interactions des menus et l’absence d’ouverture initiale ; compilation de huit pages et vérification HTTP des pages, de sept liens et de quarante-et-une ressources réussies. Footer.astro inchangé, contrôlé par empreinte SHA256. Aucune modification de données PocketBase ni opération Git d’écriture. Le contrôle visuel reste à effectuer dans un navigateur accessible.
-## 8 novembre 2026 — Galerie verticale et déplacement des cartes sur l’accueil
+## Galerie verticale et déplacement des cartes sur l’accueil
 
 Lecture visuelle de l’unique page du PDF Desktop - 1 fourni par le propriétaire. Seule la composition sert de référence : les blocs gris et le texte de remplissage ne sont pas intégrés. /projets/ devient une colonne d’images défilant verticalement à gauche avec titre, domaines, introduction et lien du projet actif à droite. Le bouton rouge Filtrer les projets reste visible en haut, son panneau est replié. Sur mobile, les informations sont placées sous les images.
 
@@ -106,31 +182,31 @@ Les cartes rectangulaires précédemment développées sont déplacées dans le 
 Treize tests passent, dont la synchronisation de la description verticale, les axes distincts, les filtres, les menus, les pauses et le comportement de la molette sur l’accueil. Compilation de huit pages et vérification HTTP des six pages principales, de sept liens internes et de quarante-et-une ressources réussies. La base contient toujours un seul projet publié ; aucun doublon ni projet de remplissage n’est ajouté. Les tests d’interaction utilisent un DOM simulé. Le contrôle visuel du site reste à faire dans le navigateur, inaccessible aux outils de cette session.
 
 Aucune modification de données PocketBase, aucun ajout à l’index, commit, push ou déploiement.
-## 8 novembre 2026 — Défilement fluide et automatisme de sept secondes
+## Défilement fluide et automatisme de sept secondes
 
 À la demande du propriétaire, retrait des commandes Précédent, Suivant et Défilement auto de la page Projets, ainsi que du compteur et de la barre visible. Le bouton des filtres reste en bas à droite. Le carrousel avance automatiquement toutes les sept secondes et reprend après la molette, sans pause permanente faute de bouton de reprise.
 
 Remplacement du cumul scroll natif/aimantation/animation par un seul pilote requestAnimationFrame de 1,4 seconde : départ lent, accélération centrale et arrivée ralentie. Sortie et entrée du texte synchronisées sur le passage des images. Les événements successifs d’une impulsion ne redémarrent pas le mouvement ; une inversion repart de la position réelle. Le tactile conserve le déplacement natif avec recentrage en fin de geste. Les préférences de réduction du mouvement, le clavier, l’onglet masqué et les filtres ouverts restent pris en compte.
 
 Dix-neuf tests réussissent, incluant la courbe de mouvement, l’annulation et l’inversion, le délai de sept secondes, la reprise après molette et la synchronisation du texte. Compilation de neuf pages réussie avec les deux projets désormais publiés. Vérification HTTP : les commandes retirées ne sont plus présentes. Footer inchangé, empreinte SHA256 vérifiée. Le rendu des animations reste à valider dans un navigateur accessible ; les tests simulés ne constituent pas une validation visuelle.
-## SEO technique — 13 novembre 2026
+## SEO technique
 
-Audit et corrections documentés dans [SEO.md](SEO.md). Contrôles effectivement exécutés : installation figée avec `bun ci`, 45 tests réussis avec `bun run test`, build réel de production et build de staging avec Bun, audit des deux sorties : 12 pages, 9 URL sitemap, 49 images, 7 pages JSON-LD et 286 références, sans erreur. HTML validé, XML parsé et JSON-LD décodé. Les builds isolés sans SITE_URL, avec un domaine local ou avec PocketBase inaccessible échouent comme attendu. Le YAML du workflow et la syntaxe shell ont été contrôlés localement ; aucune promotion serveur n’a été exécutée.
+Audit et corrections documentés dans SEO.md. Contrôles effectivement exécutés : installation figée avec `bun ci`, 45 tests réussis avec `bun run test`, build réel de production et build de staging avec Bun, audit des deux sorties : 12 pages, 9 URL sitemap, 49 images, 7 pages JSON-LD et 286 références, sans erreur. HTML validé, XML parsé et JSON-LD décodé. Les builds isolés sans SITE_URL, avec un domaine local ou avec PocketBase inaccessible échouent comme attendu. Le YAML du workflow et la syntaxe shell ont été contrôlés localement ; aucune promotion serveur n’a été exécutée.
 
 Corps HTML identiques après exclusion des attributs de chargement ; empreintes CSS et poids du JavaScript navigateur inchangés. Les JPEG de partage sont ajoutés sans modifier les images du corps des pages. Aucun secret ajouté aux fichiers à versionner. Pas de validation visuelle : l’accès natif au navigateur a échoué. Lighthouse, tests tactiles, résultats enrichis externes, Core Web Vitals réels et configuration Apache sur le VPS restent à vérifier. Les constats de cette entrée décrivent l’état actuel ; les entrées datées précédentes restent un historique.
 
-## Diagnostics de l’éditeur — 13 novembre 2026
+## Diagnostics de l’éditeur
 
-110 erreurs Astro corrigées ; contrôle final sur 19 fichiers : zéro erreur, zéro avertissement, 45 suggestions informatives d’inférence conservées. 581 occurrences de classes normalisées, puis zéro suggestion canonique restante selon Tailwind 4.3.5. 45 tests et build Bun réussis ; audit SEO réussi. Comparaison statique de 12 360 éléments et états sans différence détectée. Les scripts de page restent dans Astro, avec un petit module DOM JavaScript partagé documenté en JSDoc et les définitions Node en dépendance de développement. Aucun diagnostic désactivé. Voir [DIAGNOSTICS.md](DIAGNOSTICS.md) pour le périmètre et les limites.
+110 erreurs Astro corrigées ; contrôle final sur 19 fichiers : zéro erreur, zéro avertissement, 45 suggestions informatives d’inférence conservées. 581 occurrences de classes normalisées, puis zéro suggestion canonique restante selon Tailwind 4.3.5. 45 tests et build Bun réussis ; audit SEO réussi. Comparaison statique de 12 360 éléments et états sans différence détectée. Les scripts de page restent dans Astro, avec un petit module DOM JavaScript partagé documenté en JSDoc et les définitions Node en dépendance de développement. Aucun diagnostic désactivé. Voir DIAGNOSTICS.md pour le périmètre et les limites.
 
-## Mobile et palette — 13 novembre 2026
+## Mobile et palette
 
-Hero compact sur mobile/fenêtre basse, Contact défilable sans image superposée au contenu, champs tactiles de 16 px, lecture des descriptions Projets indépendante de la molette du carrousel et palette centralisée. 48 tests Bun réussis, dont les nouvelles régressions mobiles et les contrastes ; build statique et audit SEO réussis. Audit statique des règles CSS compilées : 362 contrôles sur 11 pages et dix formats, sans erreur. Analyse Astro sans erreur ni avertissement. Accès navigateur indisponible : aucun test visuel ou validation sur téléphone physique déclaré. Voir [MOBILE.md](MOBILE.md).
+Hero compact sur mobile/fenêtre basse, Contact défilable sans image superposée au contenu, champs tactiles de 16 px, lecture des descriptions Projets indépendante de la molette du carrousel et palette centralisée. 48 tests Bun réussis, dont les nouvelles régressions mobiles et les contrastes ; build statique et audit SEO réussis. Audit statique des règles CSS compilées : 362 contrôles sur 11 pages et dix formats, sans erreur. Analyse Astro sans erreur ni avertissement. Accès navigateur indisponible : aucun test visuel ou validation sur téléphone physique déclaré. Voir MOBILE.md.
 
 Correction du hero après précision du propriétaire : la présentation verticale est limitée aux largeurs inférieures à 900 px. L’effet d’origine reste actif sur ordinateur même en fenêtre basse. 48 tests réussis et construction de production réussie ; le test de régression inclut les bureaux 1024×400 et 1440×600.
 
 Correction du conflit CSS du hero bureau : une translation responsive constante de 50 % écrasait la progression. Une seule déclaration responsive utilise désormais la variable de scroll. Nouveau test sur les règles réellement compilées et leur ordre Tailwind : échec confirmé dans une copie témoin avec l’ancien conflit, succès sur le code corrigé. 49 tests réussis et build réussi. Contrôle de la cascade à 0, 0,54 et 1 de progression sur trois formats bureau : décalages 50 %, 25 %, 0 %, conteneur sticky en haut et image couvrant 100 % de sa largeur/hauteur. Présentation mobile conservée. Pas de validation visuelle inventée.
-# Contrôle complémentaire — 14 novembre 2026
+# Contrôle complémentaire
 
 Galeries mobiles : défilement horizontal natif sur l’accueil et Projets, repère de balayage et compteur communs, page Projets libre de défiler verticalement. Le changement de format conserve la sélection et rétablit le carrousel vertical sur ordinateur. Vérification : 54 tests réussis, build et audit SEO réussis, zéro erreur ou avertissement Astro sur 20 fichiers ; 76 contrôles CSS ciblés réussis sur six formats. Aucune suggestion canonique Tailwind restante. L’accès au navigateur étant indisponible, aucune validation visuelle ou tactile n’est revendiquée. Détails dans MOBILE.md.
 

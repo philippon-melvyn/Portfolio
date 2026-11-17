@@ -1,7 +1,7 @@
 ---
-import ProjectTransitions from "./ProjectTransitions.astro";
-import ProjectImage from "./ProjectImage.astro";
-import { imagesFor } from "../lib/pocketbase.js";
+import ProjectTransitions from "../project/ProjectTransitions.astro";
+import ProjectImage from "../project/ProjectImage.astro";
+import { imagesFor } from "../../lib/pocketbase.js";
 const { projects = [] } = Astro.props;
 ---
 <ProjectTransitions />

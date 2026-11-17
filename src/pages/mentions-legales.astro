@@ -6,9 +6,6 @@ import { site } from "../data/site.js";
 <BaseLayout title="Mentions légales" description="Informations sur l’éditeur, l’hébergement et les crédits du portfolio de Melvyn Philippon." noindex>
   <article class="legal-page panel pl-[clamp(24px,3.472vw,80px)] pr-[clamp(24px,3.472vw,80px)] min-w-0 max-w-275 mx-auto py-27.5 [&_.heading-medium]:mt-17.5 [&_.heading-medium]:mb-7 [&_p+p]:mt-6">
     <h1 class="heading-large font-display font-semibold uppercase text-[clamp(38px,5vw,72px)] leading-[1.14] tracking-[-0.0357em] wrap-break-word max-[900px]:text-[clamp(40px,7vw,64px)] max-[600px]:tracking-[-0.035em]">Mentions légales</h1>
-    <p class="legal-notice mt-10 p-6 [border-left:4px_solid_var(--color-brick)]">
-      Informations à compléter avant la mise en ligne publique.
-    </p>
     <h2 class="heading-medium font-display font-semibold uppercase text-[clamp(28px,3.2vw,44px)] leading-[1.05] tracking-tighter wrap-break-word">Éditeur du site</h2>
     <p>
       {site.name} — Portfolio individuel réalisé dans le cadre du BUT MMI,
@@ -22,26 +19,28 @@ import { site } from "../data/site.js";
       .
     </p>
     <p>
-      Statut de l’éditeur, coordonnées de publication et responsable de
-      publication : à compléter et vérifier.
+      Ce site est édité à titre personnel et non professionnel par {site.name},
+      son créateur et éditeur, établi en France. Il présente ses réalisations
+      étudiantes et permet de le contacter, sans vente en ligne.
     </p>
     <h2 class="heading-medium font-display font-semibold uppercase text-[clamp(28px,3.2vw,44px)] leading-[1.05] tracking-tighter wrap-break-word">Hébergement</h2>
     <p>
-      Nom de l’hébergeur, raison sociale, adresse et coordonnées : à compléter
-      après le choix de l’hébergement.
+      Le site est hébergé sur un VPS.
+    </p>
+    <p>
+      Infomaniak gère uniquement le nom de domaine et sa zone DNS, qui pointe
+      vers le VPS ; il n’est pas l’hébergeur du site.
     </p>
     <h2 class="heading-medium font-display font-semibold uppercase text-[clamp(28px,3.2vw,44px)] leading-[1.05] tracking-tighter wrap-break-word">Créations et crédits</h2>
     <p>
-      Les projets présentés doivent préciser les contributions de chaque membre
-      de l’équipe. Les droits de diffusion et les crédits des photographies,
-      illustrations et autres médias doivent être vérifiés avant publication.
+      Les photographies d’illustration utilisées sur ce site proviennent
+      d’<a class="text-link [text-decoration:underline] underline-offset-[5px] hover:text-brick" href="https://unsplash.com/">Unsplash</a>.
+      Leur utilisation est encadrée par la{" "}
+      <a class="text-link [text-decoration:underline] underline-offset-[5px] hover:text-brick" href="https://unsplash.com/license">licence Unsplash</a>.
     </p>
     <p>
       Typographies Inter et Barlow Condensed, distribuées sous licence SIL Open
-      Font License. Le portrait, la photographie d’architecture de Contact, le
-      logo et les icônes proviennent de la maquette Figma fournie par l’éditeur.
-      Les auteurs et les droits de diffusion de ces ressources restent à
-      préciser par l’éditeur.
+      Font License.
     </p>
     <p>
       <a class="text-link [text-decoration:underline] underline-offset-[5px] hover:text-brick" href="/confidentialite/">
