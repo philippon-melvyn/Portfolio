@@ -33,12 +33,16 @@ jobs:
             cd "$deploy_root"
             mkdir -p .astro
 
-            # Never read the old VPS .git database: it contains corrupt objects.
-            # A fresh clone also isolates each build from stale server sources.
-            deploy_source=$(mktemp -d "$deploy_root/.astro/deploy-source.XXXXXX")
+            # Bun also reads ancestor package.json files. Build outside the old
+            # VPS tree so neither its corrupt Git objects nor manifests are read.
+            deploy_source=$(mktemp -d /tmp/portfolio-deploy-source.XXXXXX)
+            deploy_stage=
             cleanup_source() {
               case "$deploy_source" in
-                "$deploy_root"/.astro/deploy-source.*) rm -rf -- "$deploy_source" ;;
+                /tmp/portfolio-deploy-source.*) rm -rf -- "$deploy_source" ;;
+              esac
+              case "$deploy_stage" in
+                "$deploy_root"/.astro/deploy-stage.*) rm -rf -- "$deploy_stage" ;;
               esac
             }
             trap cleanup_source EXIT
@@ -64,6 +68,11 @@ jobs:
               exit 1
             fi
 
+            # /tmp may be on another filesystem. Finish the copy before moving
+            # the live site; the final rename then stays on the same filesystem.
+            deploy_stage=$(mktemp -d "$deploy_root/.astro/deploy-stage.XXXXXX")
+            cp -a -- "$deploy_source/.astro/deploy-dist" "$deploy_stage/dist"
+
             # Promote only a complete, checked build; restore on a failed swap.
             # All paths are relative to /var/www/portfolio/Portfolio above.
             if [ -e .astro/deploy-previous ]; then
@@ -71,12 +80,12 @@ jobs:
               exit 1
             fi
             if [ -d dist ]; then mv dist .astro/deploy-previous; fi
-            if ! mv "$deploy_source/.astro/deploy-dist" dist; then
+            if ! mv "$deploy_stage/dist" dist; then
               if [ -d .astro/deploy-previous ]; then mv .astro/deploy-previous dist; fi
               exit 1
             fi
-            if ! curl --fail --output /dev/null https://portfolio.melvyn-philippon.fr/; then
-              mv dist "$deploy_source/.astro/deploy-dist"
+            if ! curl --fail --connect-timeout 10 --max-time 30 --output /dev/null https://portfolio.melvyn-philippon.fr/; then
+              mv dist "$deploy_stage/dist"
               if [ -d .astro/deploy-previous ]; then mv .astro/deploy-previous dist; fi
               exit 1
             fi
